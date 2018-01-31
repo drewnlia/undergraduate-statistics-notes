@@ -274,7 +274,7 @@ $$P(D|+)={98 \over 98+999}=0.08933455$$
 
 Practice Exam Question
 
-My birthday is August 26, what is the probability at least one of my 23 cadets in class will have the same birthday?
+My birthday is March 26, what is the probability at least one of my 23 students in class will have the same birthday?
 
 ## Discrete Distributions {#L7}
 

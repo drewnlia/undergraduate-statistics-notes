@@ -1,0 +1,922 @@
+# Continuous Distributions {#Chpt3}
+
+The third chapter is completed in six lessons. Section 3.2 is small so it is combined in one lesson with the first part of section 3.3.  Sections 3.5 and 3.6 are combined into one lessons.
+
+## Uniform and Exponential Distribution {#L12} 
+
+### Objectives
+
+1. Know and confirm properties of pdf, use pdf to find cdf or vice versa.
+2. Find transformations of random variables using cdf method.
+3. Calculate probabilities for uniform and exponential distribution.
+
+### Probability Density Function  
+
+Probability density function is used with continuous random variables; the pdf is denoted f(x) much like the probability mass function but has a much different interpretation.  To get probabilities from a pdf you must integrate.  It is the area under the pdf that is the probability.  This is similar to the idea in physics where mass is considered a point or found by integrating density.  The following figure illustrates the $P(a<X<b)=\int_{a}^{b}f(x)dx$.  
+
+![Figure 3.1a](./images/Less14a.png) 
+
+Now using what we now about probability and calculus we know:
+
+1. $f(x) \geq 0$ 
+2. $\int_{-\infty}^{\infty}f(x)dx=1$
+
+Since probabilities are [0,1], $f(x)$ has to be non-negative otherwise we would get negative probabilities.  A common mistake is to think that $f(x)$ has to be less than or equal to one.  That is not true.  If you are doing this mistake, you are confusing probability with density.  The area under the density curve, which is a probability, has to be less than or equal to one.
+
+Use calculus knowledge to solve probability problems for continuous random variables.
+
+For example $P(X=a)=\int_{a}^{a}f(x)dx=0$.
+
+The cumulative distribution function has the same definition
+$$P(X\leq x)=\int_{-\infty}^{x}f(x)dx=F(x)$$
+
+The variable $x$ in the integral is confusing to students but remember the variable in the integration is a dummy variable so we could have written it as  
+$$P(X\leq x)=\int_{-\infty}^{x}f(w)dw=F(x)$$
+
+Using the fundamental theorem of calculus, we know the relationship between the pdf and cdf
+
+$$f(x)={d \over dx}F(x)$$
+
+Definition 3.1.5 in the book is important if you want to state that two random variables have the same distribution.  
+
+### Work problem 3.1a including finding cdf.
+
+Do this by hand.  In R you can do the following:
+
+Define the kernel as a vectorized R function
+```{r}
+f<-function(x){
+    sapply(x,(function(x)((x-2)*(x+2)*{x>=-2&x<=2})))
+}
+```
+
+Notice that I used a function inside the function.  Since I did not give it a name it is often called an anonymous function.
+
+A plot of the kernel
+
+```{r}
+plot(seq(-2,2,.01),f(seq(-2,2,.01)),type="l",ylab="f(x)",xlab="x")
+```
+
+Notice this is not a pdf.  We must find the scaling constant.
+
+```{r eval=FALSE}
+library(MASS)
+```
+
+
+```{r warning=FALSE}
+fractions(integrate(f,-Inf,Inf)$value)
+```
+
+Thus the pdf is 
+
+$$f(x)={-3 \over 32}(x-2)(x+2) \mbox{ for } -2 \leq x \leq 2$$
+
+and
+$$f(x)=0 \mbox{ otherwise}$$
+
+Let's see if we need to vectorize the function as the author suggested.  Here is my pdf function
+
+```{r}
+f3.1<-function(x)(-3/32*(x-2)*(x+2)*{x>=-2&x<=2})
+```
+
+This would be an R function that started with the letter `d`.
+
+A plot of the pdf  
+
+```{r}
+plot(seq(-2,2,.01),f3.1(seq(-2,2,.01)),type="l",ylab="f(x)",xlab="x")
+```  
+
+This is proper pdf since
+$$f(x) \geq 0$$
+and
+$$\int_{-\infty}^{\infty}f(x)dx=1$$
+
+```{r}
+integrate(f3.1,-Inf,Inf)$value
+```
+
+It does not appear that we need to vectorize the function.  Perhaps the logical statement is the function that is vectorizing the function for us.
+
+By hand we get
+
+$$\int_{-\infty}^{\infty}f(x)dx=\int_{-\infty}^{-2}0dx+\int_{-2}^{2}{-3 \over 32}(x-2)(x+2)dx+\int_{2}^{\infty}0dx=$$
+$${-3 \over 32}({x^3 \over 3} -4x) \vert_{-2}^{2}=$$
+$${-3 \over 32}({8 \over 3}-8 -({-8 \over 3} +8) )=$$
+$${-3 \over 32}*(16/3-16)=1$$
+
+The cdf is 
+$$F(x)=P(X\leq x)=\int_{-\infty}^{x}f(x)dx=\int_{-\infty}^{-2}0dx+\int_{-2}^{x}{-3 \over 32}(x-2)(x+2)dx=$$
+$$-{(x^3-12x-16) \over 32}$$
+
+Thus the cdf is 
+$$0 \mbox{ for }x \leq -2$$
+$$-{(x^3-12x-16) \over 32} \mbox{ for } -2 \leq x \leq 2$$
+$$1 \mbox{ for } x>2$$  
+
+As an R function
+
+```{r}
+cdf3.1<-function(x){
+    if (x< -2) {
+        result=0
+    } else if (x>2){
+        result=1
+    } else result = -(x^3-12*x-16)/32
+return(result)
+}
+```
+
+This would be an R function that started with the letter `p`.  
+
+As a check
+```{r}
+fractions(cdf3.1(-1))
+```
+
+```{r}
+fractions(integrate(f3.1,-Inf,-1)$value)
+```
+
+or equivalently
+```{r}
+fractions(integrate(f3.1,-2,-1)$value)
+```
+
+As an advanced problem, we can create our own `q` version of the function as well.  This is where we find the quantiles.  Here is my code
+
+```{r}
+q3.1<-function(y)uniroot(function(x)cdf3.1(x)-y,c(-2,2))$root
+```
+
+I did not put any error checking in this function so I am assuming a knowledgeable user.
+
+Let's test it.
+
+```{r}
+q3.1(.5)
+q3.1(.75)
+q3.1(1)
+q3.1(0)
+```
+
+Finally, I could write my R function as well.
+
+```{r}
+r3.1<-function(n)sapply(runif(n),q3.1)
+```
+
+This is generating random samples from the distribution.
+
+```{r}
+set.seed(2018)
+r3.1(40)
+```
+
+A plot of the sample is
+
+```{r eval=FALSE}
+library(lattice)
+```
+
+
+```{r}
+set.seed(2019)
+densityplot(r3.1(2000),xlab="x")
+```
+
+This looks like our pdf.
+
+### Transformation Problem
+
+For problem 3.1a, find the pdf of Y where Y=X+2.
+
+Unlike the discrete case, we cannot simply substitute the transformation relationship into the pdf.  However, since equality of distributions relies on the cdf we will use it.
+
+We want to find the cdf of $Y$
+$$F_{Y}(y)=P(Y \leq y)=$$
+$$P(X+2 \leq y)=$$
+$$P(X \leq y-2)=$$
+$$F_{X}(y-2)$$
+
+This is the cdf of $X$ which we know.
+
+Thus the cdf of $Y$ is 
+$$0 \mbox{ for }y \leq 0$$
+$$-{((y-2)^3-12(y-2)-16) \over 32} \mbox{ for } 0 \leq y \leq 4$$
+$$1 \mbox{ for } y>4$$
+
+We find the domain of the cdf for $Y$ by substituting in the domain values of $X$ into the transformation relationship.
+
+We have to be careful in this approach that the transformation in one-to-one and unto.  If not, we have to divide the problem into regions where it is.
+
+The pdf of $Y$ is found by taking the derivative of the cdf.  
+
+$$f_{Y}(y)=-{(3(y-2)^2-12) \over 32} \mbox{ for } 0 \leq y \leq 4$$
+
+We should check that this is a pdf.  I will use R to do the work for me.
+
+```{r}
+f3.1a<-function(y)(-3/32*((y-2)^2-4)*{y>=0&y<=4})
+```
+
+```{r}
+plot(seq(0,4,.01),f3.1a(seq(0,4,.01)),type="l",ylab="f(y)",xlab="y")
+```
+
+```{r}
+integrate(f3.1a,0,4)$value
+```
+
+### Named Continuous Random Variables: Uniform and Exponential
+
+We introduce two named distributions, the uniform and exponential.  
+
+#### Uniform  
+
+Just as the name implies, for the uniform, the pdf is constant.  It is typically written as $U(a,b)$.  Using the properties of a pdf and the fact that it must be a constant, the pdf is
+$$f(x)={1 \over (b-a)} \mbox{ for } a \leq x \leq b$$  
+
+For a $U(1,1.5)$ what is the pdf?  Note that a pdf can be greater than one.  
+
+The pdf is $f(x)=2$ for $1 \leq x \leq 1.5$.
+
+Notice that you can use geometry to verify this is a proper pdf.  Likewise, to find the cdf, you can use geometry.  
+
+#### Exponential
+
+Exponential is the interval (time or distance) until next occurrence.  Here the interval is random and the occurrences are fixed, as one.  In the Poisson the occurrences are random and the interval is fixed.  The exponential also uses $\lambda$ for the parameter but now it has to be the average number of occurrences per unit time.
+
+Let's work Prob 2.80a again using exponential.
+
+Y = Time in minutes until the next customer arrives.  We want P(Y>20)
+$\lambda = 6/60$ which is the average number of customer per minute.
+
+```{r}
+1-pexp(20,1/10)
+```
+
+or using Poisson to check
+```{r}
+dpois(0,2)
+```
+
+The distribution is called exponential because the pdf is an exponential function, $f(y)=\lambda e^{-\lambda y}$ for $y \geq 0$.
+
+The exponential is often used for queuing models.  It is also used in reliability models where we are looking for time to failure.  It makes a strong assumption called the memory-less property.  The probability of failure being greater than time $t_1 + t_2$ given the item has already lasted time $t_1$ is simply the probability an item last more than time $t_2$.  This is a strong assumption and often not realistic.  
+
+### Additional Homework Problems  
+
+1.  Let the probability density function of $X$ be exponential with $\lambda = 1$.
+Find the probability density function of $Y$ where $y = \sqrt{X}$. 
+
+2.  The average number of cars that enter the North Gate is 48 per hour.  What is the probability that no cars enter the gate in the next 5 minutes?
+
+
+## Moments  {#L13}
+
+### Objectives
+
+1. Use Lemma 3.2.2 to find any kth moment about the mean or origin.
+2. Interpret coefficient of skewness and coefficient of kurtosis.
+
+### Review
+
+Solve problem 2.80a both as a Poisson and an Exponential.  Write the random variable in each case.
+
+#### Solution Poisson:  
+
+X = The number of customers in 20 minutes.  We get an average of 6 customers per hour so $\lambda$ is 2.  We want $P(X=0)$.  Using R
+
+
+```{r}
+dpois(0,2)
+```
+
+#### Solution Exponential:  
+As an exponential, the random variable is Y = the time in minutes until the next customer arrives.  Here the parameter is the average number of customer per minute, $\lambda$ =${1 \over 10}$.  The probability statement is $P(Y>20)$.  using R
+
+```{r}
+1-pexp(20,1/10)
+```
+
+Or if you wanted to use W = the time in hours until the next customer arrives, $P(W>{1 \over 3})$
+
+```{r}
+1-pexp(1/3,6)
+```
+
+
+### Definitions
+
+1. The notation can be difficult as we now use $\mu$ to represent expected values, which are also called moments.  In addition, the prime indicates a moment about the mean and the absence of a prime indicates a moment about the origin.  Note that $\mu_1$ is sometimes just called $\mu$ and $\mu_{2}'$ is variance $\sigma ^2$.
+
+2.  Lemma 3.2.2 is the key basic idea.
+
+$$E[t(X)]=\int_{-\infty}^{\infty}t(x)f(x)dx$$
+
+3. Moments about the origin:
+$$\mu_{k}=E(X^k)=\int_{-\infty}^{\infty}x^k f(x)dx$$
+
+4. Moments about the mean:
+$$\mu_{k}'=E[(X-E(X))^k]=\int_{-\infty}^{\infty}(x-\mu)^k f(x)dx$$
+
+5. Practical:  Moments are used to summarize/describe the data.  The first moment about the origin is the mean and describes location.  The second moment about the mean is variance and describes spread of the distribution.  The third moment about the mean is used to calculate the coefficient of skewness which describes symmetry of the distribution.  Finally, the fourth moment about the mean can be used to calculate the coefficient of kurtosis which describes if the data has a peak.
+
+### Practice 
+
+For X ~ U(0,2), find $E(X),E(X^2)$,$V(X)$,$E(X^3)$,$\mu^{'}_3$, and $\gamma_1$.
+
+The pdf is $f(x)={1 \over 2}$ for $0\leq x \leq 2$.
+
+$$E(X)=\int_{-\infty}^{\infty}xf(x)dx=\int_{0}^{2}{1 \over 2}xdx={x^2 \over 4}\vert_{0}^{2}=1$$
+$$E(X^2)=\int_{-\infty}^{\infty}x^2f(x)dx=\int_{0}^{2}{1 \over 2}x^2dx={x^3 \over 6}\vert_{0}^{2}={4 \over 3}$$
+Check using R
+```{r eval=FALSE}
+library(MASS)
+```  
+
+```{r}
+fractions(integrate(function(x)1/2*x*(x>=0 & x<=2),0,2)$value)
+```
+```{r}
+fractions(integrate(function(x)1/2*x^2*(x>=0 & x<=2),0,2)$value)
+```
+
+$$V(X)=E[(X-\mu)^2]=E(X^2)-E(X)^2={4 \over 3}-1^2={1 \over 3}$$
+
+```{r}
+fractions(integrate(function(x)1/2*(x-1)^2*(x>=0 & x<=2),0,2)$value)
+```
+
+$$E(X^3)=\int_{-\infty}^{\infty}x^3f(x)dx=\int_{0}^{2}{1 \over 2}x^3dx={x^4 \over 8}\vert_{0}^{2}=2$$
+
+```{r}
+fractions(integrate(function(x)1/2*x^3*(x>=0 & x<=2),0,2)$value)
+```
+
+$$\mu^{'}_3=E[(X-\mu)^3]=\int_{-\infty}^{\infty}(x-1)^3f(x)dx=\int_{0}^{2}{1 \over 2}(x-1)^3dx$$
+
+This is going to be difficult but can be done if we expand the polynomial.  We could use R.
+
+```{r}
+fractions(integrate(function(x)1/2*(x-1)^3*(x>=0 & x<=2),0,2)$value)
+```
+
+
+We could also use Lemma 3.3.2.
+$$\mu_{3}'=\mu_{3}-3\mu_{2}\mu+2\mu^3=2-3*{4 \over 3}*1+2*1^3=2-4+2=0$$
+
+$$\gamma_1={\mu_{3}' \over \sigma^3}={0 \over \sigma^3}=0$$
+
+It is a symmetric distribution.
+
+Do Homework 3.12  
+
+## Generating Functions {#L14} 
+
+### Objectives  
+
+1. Given a pdf/pmf find the mgf, $M_{X}(t)$.
+2. Find moments from a moment generating function.
+3.  Use moment generating function to find distributions of a transformation of a random variable, Thm 3.3.6.
+
+### Review  
+
+The Maclaurin series is a special case of the Taylor series.  This is a power series representation of a function.  We now have a fourth way to represent a function.  One is a table, another is a formula, another is a graph, and now we can use an infinite sum.  In general the Maclaurin series is 
+
+$$f(x)=f(0)+{f'(0)x \over 1!}+{f''(0)x^2 \over 2!}+{f^{(3)}(0)x^3 \over 3!}+\dots+{f^{(k)}(0)x^k \over k!}+\dots$$
+
+In Calculus we were interested in using the power series to represent function and one of the most common was 
+
+$$e^x=1+x+{x^2 \over 2!}+{x^3 \over 3!}+\dots$$
+
+We will use this expression.
+
+Also remember that moments characterize a distribution.  However, to find them we need to integrate.  From last lesson we have 
+
+$$\mu_{k}=E(X^k)=\int_{-\infty}^{\infty}x^k f(x)dx$$
+
+The key idea in this lesson is that we want to find a single function that summarizes, generates, all the moments of a distribution.  Sounds like a crazy idea, but in fact it can be done.  It is called the moment generating function.  There are two advantages of the moment generating functions
+
+`i)` You use derivatives instead of integration to find moments, differentiation is often much easier than integration.  
+
+`ii)` If you can recognize a moment generating function, a big if, then you can find the distribution of a linear transformation of a random variable or the linear combination of random variables.  This is often easier than using the cdf method we learned earlier.
+  
+
+### Moment Generating Functions  
+
+By definition the moment generating function is:
+
+$$M_{X}(t)=E[e^{tX}] = \int_{-\infty}^{\infty}e^{tx}f(x)dx$$ for continuous random variables; for discrete random variables, replace the integration with a summation.
+
+To find a the kth moment about the origin take the kth derivative of the moment generating function and evaluate at t = 0.  That is $$\mu_{k}=\left(  {d^{k}M_{X}(t) \over dt^{k}} \right) _{t=0}$$
+
+Why would this work?  The book gives a nice summary of the ideas.  Along a similar thread, let's use the Maclaurin power series of $e^tx$:
+
+$$e^{tx}=1+tx+t^{2}x^{2}/2! + \dots $$
+
+Thus
+
+$$M_{X}(t)=E[e^{tX}]=E[1+tx+t^{2}x^{2}/2! + \dots]=1+tE[X]+t^{2}E[X^{2}]+\dots$$
+
+Now taking the derivative with respect to $t$ and then evaluating at $t=0$ leads to the kth moment about the origin. 
+
+### Practice
+
+1. Find the moment generating function for $U(0,1)$.  
+
+$$E(e^{tX})=\int_{-\infty}^{\infty}e^{tx}f(x)dx=\int_{0}^{1}e^{tx}dx=={1 \over t}e^{tx}\vert_{0}^{1}={1 \over t}\left[e^{t}-1\right]$$
+
+Note that this function is not defined at $t=0$ but we can use our Macluarin again to help us.
+
+$$M_{X}(t)={1 \over t}\left[e^{t}-1\right]={1 \over t}\left[t+{t^2 \over 2!}+\dots \right]=\left[1+{t \over 2!}+{t^2 \over 3!}+\dots \right]$$
+
+Now you can take the derivative and evaluate at $t=0$.
+
+$${dM_{X}(t) \over dt}_{t=0}={1 \over 2}$$
+
+2. The moment generating function for the Poisson is $e^{-\lambda + \lambda e^{t}}$, find the mean and variance.
+
+$${dM_{X}(t) \over dt}=\left(e^{-\lambda + \lambda e^{t}}\right) \lambda e^{t}$$
+
+Evaluating at $t=0$ yields
+$$E(X)=\left(e^{-\lambda + \lambda e^{0}}\right) \lambda e^{0}=\left(e^{-\lambda + \lambda} \right) \lambda=\lambda$$
+
+$$E(X^2)=\mu_{2}=\left(  {d^{2}M_{X}(t) \over dt^{2}} \right) _{t=0}$$
+
+$${d^{2}M_{X}(t) \over dt^{2}}=\left(e^{-\lambda + \lambda e^{t}}\right) \lambda + \left(e^{-\lambda + \lambda e^{t}}\right) \lambda^2 e^{2t}$$
+
+$$\left(  {d^{2}M_{X}(t) \over dt^{2}} \right) _{t=0}=\left(e^{-\lambda + \lambda e^{0}}\right) \lambda + \left(e^{-\lambda + \lambda e^{0}}\right) \lambda^2 e^{0}=\lambda +\lambda^2$$
+
+Finally, 
+
+$$V(X)=E(X^2)-E(X)=\lambda +\lambda^2-(\lambda)^2=\lambda$$
+
+###  Transformations  
+
+There is no need to memorize the formulas in Theorem 3.3.6, you can derive them.  For example, let $Y=aX$
+
+$$M_{Y}(t)=E(e^{tY})=E(e^{(ta)X)})=M_{X}(at)$$
+
+The problem with this method is that we have to recognize the moment generating function.  This is not necessarily easy.
+
+### Practice
+
+Given $X\sim U(0,1)$ find $Y=2X+3$ using Thm 3.3.6 and then the cdf method.
+
+$$M_{X}(t)={1 \over t}\left[e^{t}-1\right]$$
+$$M_{Y}(t)=E(e^{tY})=E(e^{t(2X+3)})=E(e^{2tx}e^{3t})=e^{3t}E(e^{2tX})=e^{3t}M_{X}(2t)=$$
+$$e^{3t}{1 \over 2t}\left[e^{2t}-1\right] = {1 \over 2t}\left[e^{5t}-e^{3t}\right]$$
+
+Now we know 
+$$M_{Y}(t)={1 \over 2t}\left[e^{5t}-e^{3t}\right]$$
+but the difficult part is that we have to recognize this.  It turns out, if you look at the table in the back of the book, this is a uniform.  Thus
+$$Y \sim U(3,5)$$
+
+Using the cdf method
+$$X \sim U(0,1)$$
+$$f(x)=1$$
+$$Y=2X+3$$
+
+$$F_{Y}(y)=P(Y \leq y)=P(2X+3 \leq y)=P\left( X \leq {y-3 \over 2}\right) =$$
+$$\int_{0}^{{y-3 \over 2}}1dx={y-3 \over 2}$$
+$$f_{Y}(y)={dF_{Y}(y) \over dy}={1 \over 2} \mbox{ for } 0 \leq {y-3 \over 2} \leq 1$$ 
+Cleaning this up
+$$f_{Y}(y)={1 \over 2} \mbox{ for } 3 \leq y \leq 5$$ 
+
+This is a uniform.  
+
+## Important Continous Distributions {#L15} 
+
+### Objectives  
+
+1. Solve probability problems involving the normal, gamma, Weibull, and beta distributions.
+2. Find distribution or mgf for transformations of known distributions.
+3. Find quantiles of distributions.
+
+### Normal  
+
+Normal arises from the sum of random variables, common when errors are additive.  The reading on this section is good, it brings in many ideas from previous sections and motivates why the standard normal is important.  
+
+
+The empirical rule is used for the normal.  68% of population within one standard deviation of the mean, 95% within 2, and 99.7 within 3.  This is the idea behind the six sigma movement.
+
+The normal has two parameters, the mean and the standard deviation.  They completely specify the distribution.  The notation is
+$$X \sim N(\mu,\sigma)$$  
+
+The pdf for a normal is difficult to integrate and there is no closed form solution for the cdf.  Software packages use a numerical method to find the cdf.  
+
+A common distribution is the standard normal $Z={x - \mu \over \sigma}$ where $X \sim N(\mu,\sigma)$  
+
+We can check these in R.  Using a standard normal, the default in R
+
+```{r}
+qnorm(.68+.16)
+qnorm(.16)
+```
+
+So 68% is between -1 and 1, which is within one standard deviation of the mean.  Or using pnorm
+
+```{r}
+pnorm(1)-pnorm(-1)
+```
+
+Just to check, let's use a different Normal with $\mu$ 4 and $\sigma$ of 3.
+
+```{r}
+pnorm(7,4,3)-pnorm(1,4,3)
+```
+
+Likewise for two and three standard deviations
+
+```{r}
+pnorm(2)-pnorm(-2)
+pnorm(3)-pnorm(-3)
+```
+
+The normal will place an important role in hypothesis testing because of the Central Limit Theorem.
+
+To bring some other ideas back in.  The book claims that the moment generating function for $N(\mu,\sigma)$ is 
+$$M_{X}(t)=e^{\mu t + {\sigma ^2 t^2 \over 2}}$$
+
+We can go from any Normal to the standard Normal using the following transformation, Z is used for the standard normal:
+$$Z={X - \mu \over \sigma}$$
+
+We know $E(X)=\mu$ so $E(Z)=E\left( {X - \mu \over \sigma} \right)={1\over \sigma}E(x-\mu)={1\over \sigma}(E(x)-\mu)=0$
+
+To find the distribution of $Z$ use the cdf method or the mgf method.  We will use that later.
+
+$$M_{Z}(t)=E(e^{Zt})=E\left[e^{\left( {X - \mu \over \sigma}t \right)} \right] = $$ 
+$$e^{-{\mu \over \sigma}t}E\left[e^{\left( {X  \over \sigma}t \right)} \right] = $$
+$$e^{-{\mu \over \sigma}t}M_{X}\left( {t  \over \sigma}\right)=$$
+$$e^{-{\mu \over \sigma}t}\left[e^{\mu {t \over \sigma} + {\sigma ^2 t^2 \over \sigma^2 2}}\right]=e^{-{t^2 \over 2}}$$
+
+Now we must recognize this moment generating function, which is the Normal with $\mu =$ 0 and $\sigma =$ 1.
+
+For a standard Normal, find $E(X^2)$.
+
+$${d^2M(t) \over dt^2}\vert_{t=0}=\left(e^{-{t^2 \over 2}}+\left(e^{-{t^2 \over 2}}\right) t^2 \right)\vert_{t=0}=1$$
+
+### Gamma 
+
+The gamma distribution is for non-negative random variables.  It is an extremely flexible distribution.  It has been used in reliability analysis as well as medical fields for survival analysis.  The gamma distribution has two parameters $\alpha$ called the shape parameter and $\lambda$ called the rate.  If $\alpha$ is an integer then the gamma is a generalization of the exponential and can represent the time until $\alpha$ occurrences.  You can give R rate for the parameter or 1/rate, called scale, be careful.  Look at the help menu.
+
+The pdf has a gamma function in for the scaling constant.  This function is implemented in R.
+
+```{r}
+gamma(4)
+gamma(.5)
+```
+
+### Weibull 
+
+This distributions is also used to model failures where the entire system fails when the weakest link breaks.  The Weibull has two parameters, $\alpha$ the shape parameter, and $\beta$ the scale parameter.
+
+### Beta  
+
+The Beta generalizes the uniform and is used to model proportions.  The beta distribution also has two parameters $\alpha$ and $\beta$.  The bottom of page 143 has a nice summary of the impact of $\alpha$ and $\beta$ on the shape of the distribution. 
+
+Note: Read the last three paragraphs on page 144.
+
+### Problems
+
+1) The scores on an exam can be model as a normal with mean 75 and variance 100.  
+
+a)  Find the probability of scoring more than 90.
+b)  Find the .8-quantile
+c)  Given that someone scored more than 50, what is the probability of scoring less than 90?
+
+```{r}
+1-pnorm(90,75,10)
+qnorm(.8,75,10)
+(pnorm(90,75,10)-pnorm(50,75,10))/(1-pnorm(50,75,10))
+```  
+
+2)  The percentages on an exam can be modeled with a Beta distribution with $\alpha = 5$ and $\beta = 2.7$.   Here is a plot of the pdf.
+
+```{r echo=FALSE}
+plot(seq(0,1,by=.01),dbeta(seq(0,1,by=.01),5,2.7),type="l",xlab="x",ylab="f(x)",main="Beta ")
+```  
+
+a)  Find the probability of scoring more than .90.
+b)  Find the .8-quantile
+c)  Given that someone scored more than .50, what is the probability of scoring less than .90?  
+
+```{r}
+1-pbeta(0.9,5,2.7)
+qbeta(.8,5,2.7)
+(pbeta(.9,5,2.7)-pbeta(.5,5,2.7))/(1-pbeta(.5,5,2.7))
+```
+
+3)  The arrival of customers at a restaurant follows a Poison process with 15 customers per hour on average.
+
+a) Using a Poisson random variable, find the probability of 2 or less customers in 15 minutes.
+b) Same probability question as part a, but using a Gamma with the random variable as time in minutes until 3 customers arrive.  
+
+```{r}
+ppois(2,15/4)
+1-pgamma(15,3,1/4)
+1-pgamma(15,3,scale=4)
+```
+
+## Plots of Distributions {#L16} 
+
+### Objectives  
+
+1.  Interpret normal-quantile plots and explain the types of departures from normality.  
+2.  Generate quantile-quantile plots for any distribution.  
+3.  Given data, generate density plots in R.
+
+### Review  
+
+The time to failure of an anchor chain in years in follows a Weibull distribution with shape parameter 2 and scale parameter 10.  What is the third quartile?
+
+```{r}
+qweibull(.75,2,10)
+```
+
+### Background
+
+When we have data how do we estimate the pdf and/or determine if one of our known distributions is appropriate to use as a model?  This is an empirical study question and can never be answered in certainty.  This is the work of analysts and is difficult and a bit of an art.
+
+### Density Estimation
+
+First, we will use data to estimate the probability density function.  We actually did this before when we used a histogram, it is an estimate of the pdf, but we will look at more up-to-date and state-of-the-art methods.  The idea of density estimation presented is similar to convolution and band-pass filters for the engineers.  For the math and OR majors, we can think of it a running a window across the data and the shape of the window determines the weighting of the data.  We are using data to develop a model of the population.  This will be an important idea for the remainder of the semester.  
+
+To start, let's use the height data we collected earlier this semester.
+
+```{r}
+Lesson2_Height <- read.csv("Lesson2_Height.csv")
+```
+
+
+```{r}
+summary(Lesson2_Height)
+```
+
+Now, let's use the author's code to explore the idea of density estimation.
+
+
+```{r eval=FALSE}
+library(fastR)
+```
+
+```{r}
+K1 <- function(x) { # rectangular
+     return( as.numeric( -1 < x & x < 1 ) )
+}
+K2 <- function(x) { # triangular
+     return( (1 - abs(x)) * as.numeric(abs(x) < 1) )
+ }
+
+K3 <- function(x) {     # parabola / Epanechnikov
+      return( (1 - x^2) * as.numeric(abs(x) < 1) )
+}
+
+K4 <- dnorm         # Gaussian
+```
+
+```{r}
+kde <- function(data,kernel=K1,...) {
+     n <- length(data)
+     scalingConstant=integrate(function(x){kernel(x,...)},-Inf,Inf)$value
+     f <- function(x) {
+         mat <- outer(x,data, FUN=function(x,data) {kernel(x-data,...)} )
+         val <- apply(mat,1,sum)
+         val <- val/(n*scalingConstant)
+         return(val)
+     }
+     return(f)
+ }
+```
+
+Let's look at the kernel K4 at the point 69.  
+
+```{r}
+plot(Lesson2_Height$Height,K4(Lesson2_Height$Height-69),xlab="Height",ylab="Weight Used",main="Weigthing of Data Points at 69")
+```
+
+Likewise, here it is at the point 73.
+
+```{r}
+plot(Lesson2_Height$Height,K4(Lesson2_Height$Height-73),xlab="Height",ylab="Weight Used",main="Weigthing of Data Points at 73")
+```
+
+Now the kde function, applies the kernel in a moving window across the data.  This gives an estimate of the pdf.  For the height data, this is the estimate.
+
+```{r}
+plot(seq(64,75,.1),kde(data=Lesson2_Height$Height,kernel = K4)(seq(64,75,.1)),type="l",xlab="Height",ylab="Density",main="Density Estimate using Normal Kernel")
+```
+
+Now the width of the kernel will impact the estimate of the pdf.  Let's change K4 to have a different width, standard deviation.
+
+```{r}
+plot(seq(64,75,.1),kde(data=Lesson2_Height$Height,kernel = K4,sd=.5)(seq(64,75,.1)),type="l",xlab="Height",ylab="Density",main="Density Estimate using Normal Kernel SD=.5")       
+```
+
+This estimate is more sensitive to local data points.  In the extreme we have
+
+```{r}
+plot(seq(64,75,.1),kde(data=Lesson2_Height$Height,kernel = K4,sd=.1)(seq(64,75,.1)),type="l",xlab="Height",ylab="Density",main="Density Estimate using Normal Kernel SD=.1")
+```
+
+The width of the kernel is a tuning parameter that we must choose.  This requires an objective function.  The book talks about using mean integrated square error.  Luckily, R has a function that does this for us.
+
+```{r}
+densityplot(Lesson2_Height$Height,xlab="Height",ylab="Density",main="Density Estimate using densityplot")
+```
+
+We can change the bandwidth directly or just scale the selected bandwidth using the `adjust` option.
+
+```{r}
+densityplot(Lesson2_Height$Height,adjust=.5,xlab="Height",ylab="Density",main="Density Estimate using densityplot")
+```
+
+### Practice  
+
+Let's work an example using the `gpa` data in fastR.
+
+
+```{r}
+summary(gpa)
+```  
+
+In Chapter 1 we made a histogram to summarize the data.  For examples to summarize the gpa
+
+```{r}
+histogram(gpa$gpa)
+```
+
+Now let's use a density plot:
+
+```{r}
+densityplot(gpa$gpa,xlab="GPA")
+```
+
+I think this gives a better representation of the data.  Let's make the bandwidth 1/2 of the default.
+
+```{r}
+densityplot(gpa$gpa,xlab="GPA",adjust=.5)
+```
+
+This is picking up more of the noise.  Let's make the bandwidth larger which may cause too much smoothing.
+
+```{r}
+densityplot(gpa$gpa,xlab="GPA",adjust=4)
+```
+
+### Q-Q Plots  
+
+Next, we would like to be able to justify a certain distribution as a reasonable model for our data.  For example, with the gpa data, you may be asked if it is valid to assume that the data is normally distributed.  One way to answer this is by comparing the empirical quantiles from the data with the quantiles from the reference distribution.  If it is a good match, the scatterplot will have the data points lying on a straight line.  The function `xqqmath` in the fastR package makes this easy for us.
+
+Let's start with the height data
+
+```{r}
+xqqmath(~Height,data=Lesson2_Height)
+```
+
+```{r}
+xqqmath(~Height,data=Lesson2_Height,fitline=TRUE)
+```
+
+This plot is subjective. It is finding the empirical quantiles and then plotting these against the same quantiles from selected distribution, the normal by default.  If the data comes from the selected distribution, the quantiles lie along a straight line.  The data points will not be perfectly along the line, but as long as they are close, we feel comfortable with our assumption.  As a follow-up, we can also check how sensitive our analysis is to the distributional assumption.  
+
+We can build our own q-q plot just to understand the process.
+
+We have 25 data points that we will sort. The empirical quantiles are found by noticing that each data point is 1/25 or .04 of the data.  We don't want to start or stop at 0 or 1, so let's split the .04 and start at .02 and end at .98.  Thus the quantiles are
+
+```{r}
+ seq(.02,.98,.04)
+```
+
+Now, we must decide what to do with ties.  We could just treat them as separate data points or we can accumulate all the probability at each point.
+
+Here is the first method
+
+```{r}
+plot(qnorm(seq(.02,.98,.04)),sort(Lesson2_Height$Height),xlab="qnorm",ylab="Height",main="My Own Q-Q Plot")
+```
+
+The second method is harder to do.  I must table the numbers
+
+```{r}
+table(Lesson2_Height$Height)
+```
+
+So at 67, the quantile will jump by 0.12 instead of 0.04.  Thus the empirical quantiles are
+
+```{r}
+temp<-c(0.02,0.06,0.10,0.14,0.26,0.38,0.46,0.58,0.62,0.70,0.74,0.82,0.86,0.94,0.98)
+```
+
+```{r}
+plot(qnorm(temp),sort(unique(Lesson2_Height$Height)),xlab="qnorm",ylab="Height",main="My Own Q-Q Plot")
+```
+
+
+Back to `xqqmath`, the default method of inserting a line is to put it through the first and third quartiles.  Another is the fit a line by estimating the mean and standard deviation.  We will learn about these ideas later.  
+
+```{r}
+xqqmath(~Height,data=Lesson2_Height,fitline=TRUE)
+```
+
+From our data, the normal assumption is not bad.
+
+Let's try it for the `gpa` data.  
+
+
+```{r}
+xqqmath(~gpa,data=gpa)
+```  
+
+From this plot we can see that our data is skewed to the left compared with the normal distribution.  Look at the right side of the figure, if the quantiles from the data increased as fast as those from the normal the points would fall along the line.  Using a normal distribution for this data is not a good idea.
+
+Maybe if we put gpa on a scale of 0 to 1 and then compare with a Beta, that is a better fit.
+
+```{r}
+mygpa<-gpa$gpa/4
+densityplot(mygpa)
+```
+
+Next chapter we will look at estimating the parameters of a distributions; for now we will a Beta(5,2)
+
+```{r}
+plot(seq(0,1,.01),dbeta(seq(0,1,.01),5,2),type="l")
+```
+
+```{r}
+qb<-function(x){qbeta(x,5,2)}
+xqqmath(~mygpa,distribution=qb)
+```  
+
+There are still some problems with the fit but it is better.  The Beta has a longer tail to the right versus our data.
+
+Finding the parameters using ideas from Chapter 4
+
+
+```{r}
+plot(seq(0,1,.01),dbeta(seq(0,1,.01),6.156995,1.189227),type="l")
+```
+
+```{r}
+qb<-function(x){qbeta(x,6.156995,1.189227)}
+xqqmath(~mygpa,distribution=qb)
+```  
+
+Do Homework 3.38 
+
+## Continuous Joint Distributions {#L17}  
+
+### Objectives
+
+1. From a joint pdf find the marginal and conditional pdf  
+2. Calculate marginal, joint, and conditional probabilities using integration  
+3. Determine if two random variables are independent  
+4. Find the distribution of a sum of independent random variables, the most important case being normal random variables    
+
+### Background  
+
+With continuous random variables, we use all the same ideas from joint distributions for discrete as well as the ideas from univariate continuous except  
+
+1.  To find $P(X<x|Y=y)$ we need to find the conditional pdf ${f_{X,Y}(x,y) \over f_{Y}(y)}|_{Y=y}$  
+2.  Independence, iff $f_{X,Y}(x,y)=g(x)h(y)$ and the domain is rectangular $a \leq x \leq b$ and $c \leq y \leq d$ for real numbers $a,b,c,$ and $d$.  
+3. Distribution of a sum of independent random variables, you can use the moment generating function and Thm 3.7.10.  
+
+Note: most of the problems in this section require Calc III ideas.  Draw a picture of the domain to setup limits of integration.  Also, for inequalities, set as an equality and then pick a point on one side of the line to check if it meets the condition of the inequality.  
+
+### Practice  
+
+To make use of the ideas we will practice  
+
+1.  Problem 3.45  
+a.  Find joint pdf and verify it is a proper pdf  
+b.  Find the probability that Alice and Bob arrive before 5:15  
+c.  Find the probability that Alice arrives before Bob  
+d.  Find the probability that Alice arrives before 5:30 given that Bob arrives before 5:30  
+e.  Find the probability that Alice arrives before 5:30 given that Bob arrives at exactly 5:30
+
+2. Change the problem to state that Alice will always arrive before Bob.  Thus the domain is $5 \leq x < y \leq 6$.  Assume the joint pdf is uniform. 
+a.  Find joint pdf and verify it is a proper pdf  
+b.  Find the probability that Alice and Bob arrive before 5:15  
+c.  Find the probability that Alice arrives before Bob  
+d.  Find the probability that Alice arrives before 5:30 given that Bob arrives before 5:45  
+e.  Find the probability that Alice arrives before 5:30 given that Bob arrives at 5:45  
+f.  Are X and Y independent?
+
+3.  Problem 3.51  
+
+4.  If $X_{i} \overset{iid}{\sim} \mbox{Norm} (2,3)$ what is the distribution of $\bar{X}$ for a sample size of 10?  
+
+Here is some interesting code to perform multivariate integration.
+
+```{r}
+f<-function(x,y)1/4*(x+2*y)
+integrate(function(y){sapply(y,function(y){integrate(function(x)f(x,y),y,2)$value})},0,1)
+integrate(function(y){sapply(y,function(y){integrate(function(x)f(x,y),0,2)$value})},0,1)
+```
+
+

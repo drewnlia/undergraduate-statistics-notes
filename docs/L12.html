@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Notes for Teaching an Undergraduate Statistics Using fastR</title>
+  <meta name="description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Notes for Teaching an Undergraduate Statistics Using fastR" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book." />
+  <meta name="github-repo" content="BawCOS/undergraduate-statistics-notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Notes for Teaching an Undergraduate Statistics Using fastR" />
+  
+  <meta name="twitter:description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book." />
+  
+
+<meta name="author" content="Bradley Warner">
+
+
+<meta name="date" content="2018-01-30">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="Chpt3.html">
+<link rel="next" href="L13.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Notes for Stats Course</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="who-is-this-book-for.html"><a href="who-is-this-book-for.html"><i class="fa fa-check"></i><b>0.1</b> Who is this book for?</a></li>
+<li class="chapter" data-level="0.2" data-path="book-structure-and-how-to-use-it.html"><a href="book-structure-and-how-to-use-it.html"><i class="fa fa-check"></i><b>0.2</b> Book Structure and How to Use It</a></li>
+<li class="chapter" data-level="0.3" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>0.3</b> Prerequisites</a></li>
+<li class="chapter" data-level="0.4" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>0.4</b> Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="Chpt1.html"><a href="Chpt1.html"><i class="fa fa-check"></i><b>1</b> Summarizing Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="L1.html"><a href="L1.html"><i class="fa fa-check"></i><b>1.1</b> Admin and Course Introduction</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="L1.html"><a href="L1.html#objectives"><i class="fa fa-check"></i><b>1.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.1.2" data-path="L1.html"><a href="L1.html#in-class-work"><i class="fa fa-check"></i><b>1.1.2</b> In Class Work</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="Les2.html"><a href="Les2.html"><i class="fa fa-check"></i><b>1.2</b> Summarizing Univariate Data</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="Les2.html"><a href="Les2.html#objectives-1"><i class="fa fa-check"></i><b>1.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.2.2" data-path="Les2.html"><a href="Les2.html#intro-material"><i class="fa fa-check"></i><b>1.2.2</b> Intro Material</a></li>
+<li class="chapter" data-level="1.2.3" data-path="Les2.html"><a href="Les2.html#data-collection"><i class="fa fa-check"></i><b>1.2.3</b> Data Collection</a></li>
+<li class="chapter" data-level="1.2.4" data-path="Les2.html"><a href="Les2.html#background"><i class="fa fa-check"></i><b>1.2.4</b> Background</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="L3.html"><a href="L3.html"><i class="fa fa-check"></i><b>1.3</b> Summarizing Multivariate Data</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="L3.html"><a href="L3.html#objectives-2"><i class="fa fa-check"></i><b>1.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.3.2" data-path="L3.html"><a href="L3.html#ideas-from-last-lesson"><i class="fa fa-check"></i><b>1.3.2</b> Ideas from last lesson</a></li>
+<li class="chapter" data-level="1.3.3" data-path="L3.html"><a href="L3.html#bivariate-data"><i class="fa fa-check"></i><b>1.3.3</b> Bivariate Data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Chpt2.html"><a href="Chpt2.html"><i class="fa fa-check"></i><b>2</b> Probability and Random Variables</a><ul>
+<li class="chapter" data-level="2.1" data-path="L4.html"><a href="L4.html"><i class="fa fa-check"></i><b>2.1</b> Random Variables</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="L4.html"><a href="L4.html#objectives-3"><i class="fa fa-check"></i><b>2.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.1.2" data-path="L4.html"><a href="L4.html#teminology"><i class="fa fa-check"></i><b>2.1.2</b> Teminology</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="L5.html"><a href="L5.html"><i class="fa fa-check"></i><b>2.2</b> Probability Rules</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="L5.html"><a href="L5.html#objectives-4"><i class="fa fa-check"></i><b>2.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.2.2" data-path="L5.html"><a href="L5.html#probability-general"><i class="fa fa-check"></i><b>2.2.2</b> Probability: General</a></li>
+<li class="chapter" data-level="2.2.3" data-path="L5.html"><a href="L5.html#counting"><i class="fa fa-check"></i><b>2.2.3</b> Counting</a></li>
+<li class="chapter" data-level="2.2.4" data-path="L5.html"><a href="L5.html#probability-equally-likely-events"><i class="fa fa-check"></i><b>2.2.4</b> Probability: Equally Likely Events</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="L6.html"><a href="L6.html"><i class="fa fa-check"></i><b>2.3</b> Inclusion-Exclusion, Conditional Probability</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="L6.html"><a href="L6.html#objectives-5"><i class="fa fa-check"></i><b>2.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.3.2" data-path="L6.html"><a href="L6.html#definitions"><i class="fa fa-check"></i><b>2.3.2</b> Definitions</a></li>
+<li class="chapter" data-level="2.3.3" data-path="L6.html"><a href="L6.html#problems"><i class="fa fa-check"></i><b>2.3.3</b> Problems</a></li>
+<li class="chapter" data-level="2.3.4" data-path="L6.html"><a href="L6.html#bayes-rule"><i class="fa fa-check"></i><b>2.3.4</b> Bayes Rule</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="L7.html"><a href="L7.html"><i class="fa fa-check"></i><b>2.4</b> Discrete Distributions</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="L7.html"><a href="L7.html#objectives-6"><i class="fa fa-check"></i><b>2.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.4.2" data-path="L7.html"><a href="L7.html#definitions-1"><i class="fa fa-check"></i><b>2.4.2</b> Definitions</a></li>
+<li class="chapter" data-level="2.4.3" data-path="L7.html"><a href="L7.html#practice"><i class="fa fa-check"></i><b>2.4.3</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="L8.html"><a href="L8.html"><i class="fa fa-check"></i><b>2.5</b> Introduction to Hypothesis Testing</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="L8.html"><a href="L8.html#objectives-7"><i class="fa fa-check"></i><b>2.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.5.2" data-path="L8.html"><a href="L8.html#hypotheses-testing"><i class="fa fa-check"></i><b>2.5.2</b> Hypotheses Testing</a></li>
+<li class="chapter" data-level="2.5.3" data-path="L8.html"><a href="L8.html#more-terms---errors"><i class="fa fa-check"></i><b>2.5.3</b> More terms - Errors</a></li>
+<li class="chapter" data-level="2.5.4" data-path="L8.html"><a href="L8.html#sample-size"><i class="fa fa-check"></i><b>2.5.4</b> Sample Size</a></li>
+<li class="chapter" data-level="2.5.5" data-path="L8.html"><a href="L8.html#complex-hypothesis"><i class="fa fa-check"></i><b>2.5.5</b> Complex Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="L9.html"><a href="L9.html"><i class="fa fa-check"></i><b>2.6</b> Mean and Variance of Discrete Random Variable</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="L9.html"><a href="L9.html#objectives-8"><i class="fa fa-check"></i><b>2.6.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.6.2" data-path="L9.html"><a href="L9.html#review"><i class="fa fa-check"></i><b>2.6.2</b> Review</a></li>
+<li class="chapter" data-level="2.6.3" data-path="L9.html"><a href="L9.html#problem"><i class="fa fa-check"></i><b>2.6.3</b> Problem</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="L10.html"><a href="L10.html"><i class="fa fa-check"></i><b>2.7</b> Discrete Joint Distributions</a><ul>
+<li class="chapter" data-level="2.7.1" data-path="L10.html"><a href="L10.html#objectives-9"><i class="fa fa-check"></i><b>2.7.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.7.2" data-path="L10.html"><a href="L10.html#example"><i class="fa fa-check"></i><b>2.7.2</b> Example</a></li>
+<li class="chapter" data-level="2.7.3" data-path="L10.html"><a href="L10.html#problem-1"><i class="fa fa-check"></i><b>2.7.3</b> Problem 1</a></li>
+<li class="chapter" data-level="2.7.4" data-path="L10.html"><a href="L10.html#problem-2"><i class="fa fa-check"></i><b>2.7.4</b> Problem 2</a></li>
+<li class="chapter" data-level="2.7.5" data-path="L10.html"><a href="L10.html#other"><i class="fa fa-check"></i><b>2.7.5</b> Other</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="L11.html"><a href="L11.html"><i class="fa fa-check"></i><b>2.8</b> Other Discrete Distributions</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="L11.html"><a href="L11.html#objectives-10"><i class="fa fa-check"></i><b>2.8.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.8.2" data-path="L11.html"><a href="L11.html#distributions"><i class="fa fa-check"></i><b>2.8.2</b> Distributions</a></li>
+<li class="chapter" data-level="2.8.3" data-path="L11.html"><a href="L11.html#examples"><i class="fa fa-check"></i><b>2.8.3</b> Examples</a></li>
+<li class="chapter" data-level="2.8.4" data-path="L11.html"><a href="L11.html#fishers-exact-test"><i class="fa fa-check"></i><b>2.8.4</b> Fisher’s Exact Test</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Chpt3.html"><a href="Chpt3.html"><i class="fa fa-check"></i><b>3</b> Continuous Distributions</a><ul>
+<li class="chapter" data-level="3.1" data-path="L12.html"><a href="L12.html"><i class="fa fa-check"></i><b>3.1</b> Uniform and Exponential Distribution</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="L12.html"><a href="L12.html#objectives-11"><i class="fa fa-check"></i><b>3.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.1.2" data-path="L12.html"><a href="L12.html#probability-density-function"><i class="fa fa-check"></i><b>3.1.2</b> Probability Density Function</a></li>
+<li class="chapter" data-level="3.1.3" data-path="L12.html"><a href="L12.html#work-problem-3.1a-including-finding-cdf."><i class="fa fa-check"></i><b>3.1.3</b> Work problem 3.1a including finding cdf.</a></li>
+<li class="chapter" data-level="3.1.4" data-path="L12.html"><a href="L12.html#transformation-problem"><i class="fa fa-check"></i><b>3.1.4</b> Transformation Problem</a></li>
+<li class="chapter" data-level="3.1.5" data-path="L12.html"><a href="L12.html#named-continuous-random-variables-uniform-and-exponential"><i class="fa fa-check"></i><b>3.1.5</b> Named Continuous Random Variables: Uniform and Exponential</a></li>
+<li class="chapter" data-level="3.1.6" data-path="L12.html"><a href="L12.html#additional-homework-problems"><i class="fa fa-check"></i><b>3.1.6</b> Additional Homework Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="L13.html"><a href="L13.html"><i class="fa fa-check"></i><b>3.2</b> Moments</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="L13.html"><a href="L13.html#objectives-12"><i class="fa fa-check"></i><b>3.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.2.2" data-path="L13.html"><a href="L13.html#review-1"><i class="fa fa-check"></i><b>3.2.2</b> Review</a></li>
+<li class="chapter" data-level="3.2.3" data-path="L13.html"><a href="L13.html#definitions-2"><i class="fa fa-check"></i><b>3.2.3</b> Definitions</a></li>
+<li class="chapter" data-level="3.2.4" data-path="L13.html"><a href="L13.html#practice-1"><i class="fa fa-check"></i><b>3.2.4</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="L14.html"><a href="L14.html"><i class="fa fa-check"></i><b>3.3</b> Generating Functions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="L14.html"><a href="L14.html#objectives-13"><i class="fa fa-check"></i><b>3.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.3.2" data-path="L14.html"><a href="L14.html#review-2"><i class="fa fa-check"></i><b>3.3.2</b> Review</a></li>
+<li class="chapter" data-level="3.3.3" data-path="L14.html"><a href="L14.html#moment-generating-functions"><i class="fa fa-check"></i><b>3.3.3</b> Moment Generating Functions</a></li>
+<li class="chapter" data-level="3.3.4" data-path="L14.html"><a href="L14.html#practice-2"><i class="fa fa-check"></i><b>3.3.4</b> Practice</a></li>
+<li class="chapter" data-level="3.3.5" data-path="L14.html"><a href="L14.html#transformations"><i class="fa fa-check"></i><b>3.3.5</b> Transformations</a></li>
+<li class="chapter" data-level="3.3.6" data-path="L14.html"><a href="L14.html#practice-3"><i class="fa fa-check"></i><b>3.3.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="L15.html"><a href="L15.html"><i class="fa fa-check"></i><b>3.4</b> Important Continous Distributions</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="L15.html"><a href="L15.html#objectives-14"><i class="fa fa-check"></i><b>3.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.4.2" data-path="L15.html"><a href="L15.html#normal"><i class="fa fa-check"></i><b>3.4.2</b> Normal</a></li>
+<li class="chapter" data-level="3.4.3" data-path="L15.html"><a href="L15.html#gamma"><i class="fa fa-check"></i><b>3.4.3</b> Gamma</a></li>
+<li class="chapter" data-level="3.4.4" data-path="L15.html"><a href="L15.html#weibull"><i class="fa fa-check"></i><b>3.4.4</b> Weibull</a></li>
+<li class="chapter" data-level="3.4.5" data-path="L15.html"><a href="L15.html#beta"><i class="fa fa-check"></i><b>3.4.5</b> Beta</a></li>
+<li class="chapter" data-level="3.4.6" data-path="L15.html"><a href="L15.html#problems-1"><i class="fa fa-check"></i><b>3.4.6</b> Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="L16.html"><a href="L16.html"><i class="fa fa-check"></i><b>3.5</b> Plots of Distributions</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="L16.html"><a href="L16.html#objectives-15"><i class="fa fa-check"></i><b>3.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.5.2" data-path="L16.html"><a href="L16.html#review-3"><i class="fa fa-check"></i><b>3.5.2</b> Review</a></li>
+<li class="chapter" data-level="3.5.3" data-path="L16.html"><a href="L16.html#background-1"><i class="fa fa-check"></i><b>3.5.3</b> Background</a></li>
+<li class="chapter" data-level="3.5.4" data-path="L16.html"><a href="L16.html#density-estimation"><i class="fa fa-check"></i><b>3.5.4</b> Density Estimation</a></li>
+<li class="chapter" data-level="3.5.5" data-path="L16.html"><a href="L16.html#practice-4"><i class="fa fa-check"></i><b>3.5.5</b> Practice</a></li>
+<li class="chapter" data-level="3.5.6" data-path="L16.html"><a href="L16.html#q-q-plots"><i class="fa fa-check"></i><b>3.5.6</b> Q-Q Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="L17.html"><a href="L17.html"><i class="fa fa-check"></i><b>3.6</b> Continuous Joint Distributions</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="L17.html"><a href="L17.html#objectives-16"><i class="fa fa-check"></i><b>3.6.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.6.2" data-path="L17.html"><a href="L17.html#background-2"><i class="fa fa-check"></i><b>3.6.2</b> Background</a></li>
+<li class="chapter" data-level="3.6.3" data-path="L17.html"><a href="L17.html#practice-5"><i class="fa fa-check"></i><b>3.6.3</b> Practice</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="Chpt4.html"><a href="Chpt4.html"><i class="fa fa-check"></i><b>4</b> Parameter Estimation and Testing</a><ul>
+<li class="chapter" data-level="4.1" data-path="L18.html"><a href="L18.html"><i class="fa fa-check"></i><b>4.1</b> Method of Moments</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="L18.html"><a href="L18.html#objectives-17"><i class="fa fa-check"></i><b>4.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.1.2" data-path="L18.html"><a href="L18.html#introduction"><i class="fa fa-check"></i><b>4.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.1.3" data-path="L18.html"><a href="L18.html#method-of-moment-estimates"><i class="fa fa-check"></i><b>4.1.3</b> Method of Moment Estimates</a></li>
+<li class="chapter" data-level="4.1.4" data-path="L18.html"><a href="L18.html#example-1"><i class="fa fa-check"></i><b>4.1.4</b> Example</a></li>
+<li class="chapter" data-level="4.1.5" data-path="L18.html"><a href="L18.html#practice-6"><i class="fa fa-check"></i><b>4.1.5</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="L19.html"><a href="L19.html"><i class="fa fa-check"></i><b>4.2</b> Estimates and Estimators</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="L19.html"><a href="L19.html#objectives-18"><i class="fa fa-check"></i><b>4.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.2.2" data-path="L19.html"><a href="L19.html#background-3"><i class="fa fa-check"></i><b>4.2.2</b> Background</a></li>
+<li class="chapter" data-level="4.2.3" data-path="L19.html"><a href="L19.html#estimator-as-a-random-variable"><i class="fa fa-check"></i><b>4.2.3</b> Estimator as a Random Variable</a></li>
+<li class="chapter" data-level="4.2.4" data-path="L19.html"><a href="L19.html#properties-of-estimators"><i class="fa fa-check"></i><b>4.2.4</b> Properties of Estimators</a></li>
+<li class="chapter" data-level="4.2.5" data-path="L19.html"><a href="L19.html#chebyshevs-inequality"><i class="fa fa-check"></i><b>4.2.5</b> Chebyshev’s Inequality</a></li>
+<li class="chapter" data-level="4.2.6" data-path="L19.html"><a href="L19.html#practice-7"><i class="fa fa-check"></i><b>4.2.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="L20.html"><a href="L20.html"><i class="fa fa-check"></i><b>4.3</b> Limit Theorems</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="L20.html"><a href="L20.html#objectives-19"><i class="fa fa-check"></i><b>4.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.3.2" data-path="L20.html"><a href="L20.html#introduction-1"><i class="fa fa-check"></i><b>4.3.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.3.3" data-path="L20.html"><a href="L20.html#parent-population-is-normal"><i class="fa fa-check"></i><b>4.3.3</b> Parent Population is Normal</a></li>
+<li class="chapter" data-level="4.3.4" data-path="L20.html"><a href="L20.html#parent-population-is-not-normal"><i class="fa fa-check"></i><b>4.3.4</b> Parent Population is not Normal</a></li>
+<li class="chapter" data-level="4.3.5" data-path="L20.html"><a href="L20.html#more-examples-of-the-clt"><i class="fa fa-check"></i><b>4.3.5</b> More examples of the CLT</a></li>
+<li class="chapter" data-level="4.3.6" data-path="L20.html"><a href="L20.html#continuity-correction"><i class="fa fa-check"></i><b>4.3.6</b> Continuity Correction</a></li>
+<li class="chapter" data-level="4.3.7" data-path="L20.html"><a href="L20.html#practice-8"><i class="fa fa-check"></i><b>4.3.7</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="L21.html"><a href="L21.html"><i class="fa fa-check"></i><b>4.4</b> Inference for Mean (Variance Known)</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="L21.html"><a href="L21.html#objectives-20"><i class="fa fa-check"></i><b>4.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.4.2" data-path="L21.html"><a href="L21.html#background-4"><i class="fa fa-check"></i><b>4.4.2</b> Background</a></li>
+<li class="chapter" data-level="4.4.3" data-path="L21.html"><a href="L21.html#problem-3"><i class="fa fa-check"></i><b>4.4.3</b> Problem</a></li>
+<li class="chapter" data-level="4.4.4" data-path="L21.html"><a href="L21.html#hypothesis-testing-for-the-mean"><i class="fa fa-check"></i><b>4.4.4</b> Hypothesis Testing for the Mean</a></li>
+<li class="chapter" data-level="4.4.5" data-path="L21.html"><a href="L21.html#hypothesis-testing-explained-in-depth"><i class="fa fa-check"></i><b>4.4.5</b> Hypothesis Testing Explained in Depth</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="L22.html"><a href="L22.html"><i class="fa fa-check"></i><b>4.5</b> Estimating Variance</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="L22.html"><a href="L22.html#objectives-21"><i class="fa fa-check"></i><b>4.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.5.2" data-path="L22.html"><a href="L22.html#sample-variance"><i class="fa fa-check"></i><b>4.5.2</b> Sample Variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="L22.html"><a href="L22.html#inference-for-variance"><i class="fa fa-check"></i><b>4.5.3</b> Inference for Variance</a></li>
+<li class="chapter" data-level="4.5.4" data-path="L22.html"><a href="L22.html#inference-for-mean-when-population-variance-is-unknown"><i class="fa fa-check"></i><b>4.5.4</b> Inference for Mean when Population Variance is Unknown</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="L23.html"><a href="L23.html"><i class="fa fa-check"></i><b>4.6</b> Two Additional Tests</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="L23.html"><a href="L23.html#objectives-22"><i class="fa fa-check"></i><b>4.6.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="L24.html"><a href="L24.html"><i class="fa fa-check"></i><b>4.7</b> Permutations Tests</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="L24.html"><a href="L24.html#objectives-23"><i class="fa fa-check"></i><b>4.7.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.7.2" data-path="L24.html"><a href="L24.html#introduction-2"><i class="fa fa-check"></i><b>4.7.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.7.3" data-path="L24.html"><a href="L24.html#review-4"><i class="fa fa-check"></i><b>4.7.3</b> Review</a></li>
+<li class="chapter" data-level="4.7.4" data-path="L24.html"><a href="L24.html#another-example"><i class="fa fa-check"></i><b>4.7.4</b> Another Example</a></li>
+<li class="chapter" data-level="4.7.5" data-path="L24.html"><a href="L24.html#test-of-the-median"><i class="fa fa-check"></i><b>4.7.5</b> Test of the Median</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="Chpt5.html"><a href="Chpt5.html"><i class="fa fa-check"></i><b>5</b> Likelihood-Based Statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="L25.html"><a href="L25.html"><i class="fa fa-check"></i><b>5.1</b> Maximum Likelihood Estimators</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="L25.html"><a href="L25.html#objectives-24"><i class="fa fa-check"></i><b>5.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="5.1.2" data-path="L25.html"><a href="L25.html#introduction-3"><i class="fa fa-check"></i><b>5.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.1.3" data-path="L25.html"><a href="L25.html#example-2"><i class="fa fa-check"></i><b>5.1.3</b> Example:</a></li>
+<li class="chapter" data-level="5.1.4" data-path="L25.html"><a href="L25.html#data"><i class="fa fa-check"></i><b>5.1.4</b> Data</a></li>
+<li class="chapter" data-level="5.1.5" data-path="L25.html"><a href="L25.html#practice-10"><i class="fa fa-check"></i><b>5.1.5</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="LRT.html"><a href="LRT.html"><i class="fa fa-check"></i><b>5.2</b> Likelihood Ratio Tests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="LRT.html"><a href="LRT.html#objective"><i class="fa fa-check"></i><b>5.2.1</b> Objective</a></li>
+<li class="chapter" data-level="5.2.2" data-path="LRT.html"><a href="LRT.html#introduction-4"><i class="fa fa-check"></i><b>5.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.2.3" data-path="LRT.html"><a href="LRT.html#review-5"><i class="fa fa-check"></i><b>5.2.3</b> Review</a></li>
+<li class="chapter" data-level="5.2.4" data-path="LRT.html"><a href="LRT.html#hypothesis-testing"><i class="fa fa-check"></i><b>5.2.4</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="5.2.5" data-path="LRT.html"><a href="LRT.html#likelihood-ratio-test"><i class="fa fa-check"></i><b>5.2.5</b> Likelihood Ratio Test</a></li>
+<li class="chapter" data-level="5.2.6" data-path="LRT.html"><a href="LRT.html#practice-11"><i class="fa fa-check"></i><b>5.2.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="L27.html"><a href="L27.html"><i class="fa fa-check"></i><b>5.3</b> Goodness of Fit Testing</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="L27.html"><a href="L27.html#objectives-25"><i class="fa fa-check"></i><b>5.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="5.3.2" data-path="L27.html"><a href="L27.html#introduction-5"><i class="fa fa-check"></i><b>5.3.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.3.3" data-path="L27.html"><a href="L27.html#review-6"><i class="fa fa-check"></i><b>5.3.3</b> Review</a></li>
+<li class="chapter" data-level="5.3.4" data-path="L27.html"><a href="L27.html#goodness-of-fit-test"><i class="fa fa-check"></i><b>5.3.4</b> Goodness of Fit Test</a></li>
+<li class="chapter" data-level="5.3.5" data-path="L27.html"><a href="L27.html#improved-test"><i class="fa fa-check"></i><b>5.3.5</b> Improved Test</a></li>
+<li class="chapter" data-level="5.3.6" data-path="L27.html"><a href="L27.html#theta-unknown"><i class="fa fa-check"></i><b>5.3.6</b> <span class="math inline">\(\theta\)</span> Unknown</a></li>
+<li class="chapter" data-level="5.3.7" data-path="L27.html"><a href="L27.html#practice-12"><i class="fa fa-check"></i><b>5.3.7</b> Practice</a></li>
+<li class="chapter" data-level="5.3.8" data-path="L27.html"><a href="L27.html#solution"><i class="fa fa-check"></i><b>5.3.8</b> Solution</a></li>
+<li class="chapter" data-level="5.3.9" data-path="L27.html"><a href="L27.html#practice-13"><i class="fa fa-check"></i><b>5.3.9</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="L28.html"><a href="L28.html"><i class="fa fa-check"></i><b>5.4</b> Two-way Tables</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="L28.html"><a href="L28.html#objective-1"><i class="fa fa-check"></i><b>5.4.1</b> Objective</a></li>
+<li class="chapter" data-level="5.4.2" data-path="L28.html"><a href="L28.html#background-5"><i class="fa fa-check"></i><b>5.4.2</b> Background</a></li>
+<li class="chapter" data-level="5.4.3" data-path="L28.html"><a href="L28.html#review-7"><i class="fa fa-check"></i><b>5.4.3</b> Review</a></li>
+<li class="chapter" data-level="5.4.4" data-path="L28.html"><a href="L28.html#introduction-to-rxc-tables"><i class="fa fa-check"></i><b>5.4.4</b> Introduction to RxC Tables</a></li>
+<li class="chapter" data-level="5.4.5" data-path="L28.html"><a href="L28.html#example-3"><i class="fa fa-check"></i><b>5.4.5</b> Example</a></li>
+<li class="chapter" data-level="5.4.6" data-path="L28.html"><a href="L28.html#second-example"><i class="fa fa-check"></i><b>5.4.6</b> Second Example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="Chpt6.html"><a href="Chpt6.html"><i class="fa fa-check"></i><b>6</b> Introduction to Linear Models</a><ul>
+<li class="chapter" data-level="6.1" data-path="L29.html"><a href="L29.html"><i class="fa fa-check"></i><b>6.1</b> Introduction to Linear Models</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="L29.html"><a href="L29.html#objectives-26"><i class="fa fa-check"></i><b>6.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.1.2" data-path="L29.html"><a href="L29.html#linear-regression"><i class="fa fa-check"></i><b>6.1.2</b> Linear Regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="L29.html"><a href="L29.html#examples-1"><i class="fa fa-check"></i><b>6.1.3</b> Examples</a></li>
+<li class="chapter" data-level="6.1.4" data-path="L29.html"><a href="L29.html#least-squares"><i class="fa fa-check"></i><b>6.1.4</b> Least Squares</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="L30.html"><a href="L30.html"><i class="fa fa-check"></i><b>6.2</b> Simple Linear Regression</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="L30.html"><a href="L30.html#objectives-27"><i class="fa fa-check"></i><b>6.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.2.2" data-path="L30.html"><a href="L30.html#review-8"><i class="fa fa-check"></i><b>6.2.2</b> Review</a></li>
+<li class="chapter" data-level="6.2.3" data-path="L30.html"><a href="L30.html#estimating-parameters"><i class="fa fa-check"></i><b>6.2.3</b> Estimating parameters</a></li>
+<li class="chapter" data-level="6.2.4" data-path="L30.html"><a href="L30.html#in-r"><i class="fa fa-check"></i><b>6.2.4</b> In R</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="L31.html"><a href="L31.html"><i class="fa fa-check"></i><b>6.3</b> Inference for Simple Linear Regression</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="L31.html"><a href="L31.html#objectives-28"><i class="fa fa-check"></i><b>6.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.3.2" data-path="L31.html"><a href="L31.html#inference-for-regression-model-slope"><i class="fa fa-check"></i><b>6.3.2</b> Inference for Regression Model Slope</a></li>
+<li class="chapter" data-level="6.3.3" data-path="L31.html"><a href="L31.html#inference-for-regression-model-predicted-values"><i class="fa fa-check"></i><b>6.3.3</b> Inference for Regression Model Predicted Values</a></li>
+<li class="chapter" data-level="6.3.4" data-path="L31.html"><a href="L31.html#anova"><i class="fa fa-check"></i><b>6.3.4</b> ANOVA</a></li>
+<li class="chapter" data-level="6.3.5" data-path="L31.html"><a href="L31.html#example-4"><i class="fa fa-check"></i><b>6.3.5</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="L32.html"><a href="L32.html"><i class="fa fa-check"></i><b>6.4</b> Regression Diagnosics</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="L32.html"><a href="L32.html#objective-2"><i class="fa fa-check"></i><b>6.4.1</b> Objective</a></li>
+<li class="chapter" data-level="6.4.2" data-path="L32.html"><a href="L32.html#review-9"><i class="fa fa-check"></i><b>6.4.2</b> Review</a></li>
+<li class="chapter" data-level="6.4.3" data-path="L32.html"><a href="L32.html#assumptions-about-the-errors"><i class="fa fa-check"></i><b>6.4.3</b> Assumptions about the Errors</a></li>
+<li class="chapter" data-level="6.4.4" data-path="L32.html"><a href="L32.html#outliers-leverage-and-influence"><i class="fa fa-check"></i><b>6.4.4</b> Outliers, Leverage, and Influence</a></li>
+<li class="chapter" data-level="6.4.5" data-path="L32.html"><a href="L32.html#example-5"><i class="fa fa-check"></i><b>6.4.5</b> Example</a></li>
+</ul></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="AppA.html"><a href="AppA.html"><i class="fa fa-check"></i><b>A</b> Syllabus</a></li>
+<li class="chapter" data-level="B" data-path="AppB.html"><a href="AppB.html"><i class="fa fa-check"></i><b>B</b> Project</a><ul>
+<li class="chapter" data-level="B.0.1" data-path="AppB.html"><a href="AppB.html#introduction-6"><i class="fa fa-check"></i><b>B.0.1</b> Introduction</a></li>
+<li class="chapter" data-level="B.0.2" data-path="AppB.html"><a href="AppB.html#deliverables"><i class="fa fa-check"></i><b>B.0.2</b> Deliverables</a></li>
+<li class="chapter" data-level="B.0.3" data-path="AppB.html"><a href="AppB.html#components"><i class="fa fa-check"></i><b>B.0.3</b> Components</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/BawCOS/undergraduate-statistics-notes" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes for Teaching an Undergraduate Statistics Using fastR</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="L12" class="section level2">
+<h2><span class="header-section-number">3.1</span> Uniform and Exponential Distribution</h2>
+<div id="objectives-11" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Objectives</h3>
+<ol style="list-style-type: decimal">
+<li>Know and confirm properties of pdf, use pdf to find cdf or vice versa.</li>
+<li>Find transformations of random variables using cdf method.</li>
+<li>Calculate probabilities for uniform and exponential distribution.</li>
+</ol>
+</div>
+<div id="probability-density-function" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Probability Density Function</h3>
+<p>Probability density function is used with continuous random variables; the pdf is denoted f(x) much like the probability mass function but has a much different interpretation. To get probabilities from a pdf you must integrate. It is the area under the pdf that is the probability. This is similar to the idea in physics where mass is considered a point or found by integrating density. The following figure illustrates the <span class="math inline">\(P(a&lt;X&lt;b)=\int_{a}^{b}f(x)dx\)</span>.</p>
+<div class="figure">
+<img src="images/Less14a.png" alt="Figure 3.1a" />
+<p class="caption">Figure 3.1a</p>
+</div>
+<p>Now using what we now about probability and calculus we know:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(f(x) \geq 0\)</span></li>
+<li><span class="math inline">\(\int_{-\infty}^{\infty}f(x)dx=1\)</span></li>
+</ol>
+<p>Since probabilities are [0,1], <span class="math inline">\(f(x)\)</span> has to be non-negative otherwise we would get negative probabilities. A common mistake is to think that <span class="math inline">\(f(x)\)</span> has to be less than or equal to one. That is not true. If you are doing this mistake, you are confusing probability with density. The area under the density curve, which is a probability, has to be less than or equal to one.</p>
+<p>Use calculus knowledge to solve probability problems for continuous random variables.</p>
+<p>For example <span class="math inline">\(P(X=a)=\int_{a}^{a}f(x)dx=0\)</span>.</p>
+<p>The cumulative distribution function has the same definition <span class="math display">\[P(X\leq x)=\int_{-\infty}^{x}f(x)dx=F(x)\]</span></p>
+<p>The variable <span class="math inline">\(x\)</span> in the integral is confusing to students but remember the variable in the integration is a dummy variable so we could have written it as<br />
+<span class="math display">\[P(X\leq x)=\int_{-\infty}^{x}f(w)dw=F(x)\]</span></p>
+<p>Using the fundamental theorem of calculus, we know the relationship between the pdf and cdf</p>
+<p><span class="math display">\[f(x)={d \over dx}F(x)\]</span></p>
+<p>Definition 3.1.5 in the book is important if you want to state that two random variables have the same distribution.</p>
+</div>
+<div id="work-problem-3.1a-including-finding-cdf." class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Work problem 3.1a including finding cdf.</h3>
+<p>Do this by hand. In R you can do the following:</p>
+<p>Define the kernel as a vectorized R function</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f&lt;-<span class="cf">function</span>(x){
+    <span class="kw">sapply</span>(x,(<span class="cf">function</span>(x)((x<span class="op">-</span><span class="dv">2</span>)<span class="op">*</span>(x<span class="op">+</span><span class="dv">2</span>)<span class="op">*</span>{x<span class="op">&gt;=-</span><span class="dv">2</span><span class="op">&amp;</span>x<span class="op">&lt;=</span><span class="dv">2</span>})))
+}</code></pre></div>
+<p>Notice that I used a function inside the function. Since I did not give it a name it is often called an anonymous function.</p>
+<p>A plot of the kernel</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>),<span class="kw">f</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;f(x)&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
+<p>Notice this is not a pdf. We must find the scaling constant.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MASS)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fractions</span>(<span class="kw">integrate</span>(f,<span class="op">-</span><span class="ot">Inf</span>,<span class="ot">Inf</span>)<span class="op">$</span>value)</code></pre></div>
+<pre><code>## [1] -32/3</code></pre>
+<p>Thus the pdf is</p>
+<p><span class="math display">\[f(x)={-3 \over 32}(x-2)(x+2) \mbox{ for } -2 \leq x \leq 2\]</span></p>
+<p>and <span class="math display">\[f(x)=0 \mbox{ otherwise}\]</span></p>
+<p>Let’s see if we need to vectorize the function as the author suggested. Here is my pdf function</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f3.<span class="dv">1</span>&lt;-<span class="cf">function</span>(x)(<span class="op">-</span><span class="dv">3</span><span class="op">/</span><span class="dv">32</span><span class="op">*</span>(x<span class="op">-</span><span class="dv">2</span>)<span class="op">*</span>(x<span class="op">+</span><span class="dv">2</span>)<span class="op">*</span>{x<span class="op">&gt;=-</span><span class="dv">2</span><span class="op">&amp;</span>x<span class="op">&lt;=</span><span class="dv">2</span>})</code></pre></div>
+<p>This would be an R function that started with the letter <code>d</code>.</p>
+<p>A plot of the pdf</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>),<span class="kw">f3.1</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;f(x)&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
+<p>This is proper pdf since <span class="math display">\[f(x) \geq 0\]</span> and <span class="math display">\[\int_{-\infty}^{\infty}f(x)dx=1\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">integrate</span>(f3.<span class="dv">1</span>,<span class="op">-</span><span class="ot">Inf</span>,<span class="ot">Inf</span>)<span class="op">$</span>value</code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>It does not appear that we need to vectorize the function. Perhaps the logical statement is the function that is vectorizing the function for us.</p>
+<p>By hand we get</p>
+<p><span class="math display">\[\int_{-\infty}^{\infty}f(x)dx=\int_{-\infty}^{-2}0dx+\int_{-2}^{2}{-3 \over 32}(x-2)(x+2)dx+\int_{2}^{\infty}0dx=\]</span> <span class="math display">\[{-3 \over 32}({x^3 \over 3} -4x) \vert_{-2}^{2}=\]</span> <span class="math display">\[{-3 \over 32}({8 \over 3}-8 -({-8 \over 3} +8) )=\]</span> <span class="math display">\[{-3 \over 32}*(16/3-16)=1\]</span></p>
+<p>The cdf is <span class="math display">\[F(x)=P(X\leq x)=\int_{-\infty}^{x}f(x)dx=\int_{-\infty}^{-2}0dx+\int_{-2}^{x}{-3 \over 32}(x-2)(x+2)dx=\]</span> <span class="math display">\[-{(x^3-12x-16) \over 32}\]</span></p>
+<p>Thus the cdf is <span class="math display">\[0 \mbox{ for }x \leq -2\]</span> <span class="math display">\[-{(x^3-12x-16) \over 32} \mbox{ for } -2 \leq x \leq 2\]</span> <span class="math display">\[1 \mbox{ for } x&gt;2\]</span></p>
+<p>As an R function</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cdf3.<span class="dv">1</span>&lt;-<span class="cf">function</span>(x){
+    <span class="cf">if</span> (x<span class="op">&lt;</span><span class="st"> </span><span class="op">-</span><span class="dv">2</span>) {
+        result=<span class="dv">0</span>
+    } <span class="cf">else</span> <span class="cf">if</span> (x<span class="op">&gt;</span><span class="dv">2</span>){
+        result=<span class="dv">1</span>
+    } <span class="cf">else</span> result =<span class="st"> </span><span class="op">-</span>(x<span class="op">^</span><span class="dv">3</span><span class="op">-</span><span class="dv">12</span><span class="op">*</span>x<span class="op">-</span><span class="dv">16</span>)<span class="op">/</span><span class="dv">32</span>
+<span class="kw">return</span>(result)
+}</code></pre></div>
+<p>This would be an R function that started with the letter <code>p</code>.</p>
+<p>As a check</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fractions</span>(<span class="kw">cdf3.1</span>(<span class="op">-</span><span class="dv">1</span>))</code></pre></div>
+<pre><code>## [1] 5/32</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fractions</span>(<span class="kw">integrate</span>(f3.<span class="dv">1</span>,<span class="op">-</span><span class="ot">Inf</span>,<span class="op">-</span><span class="dv">1</span>)<span class="op">$</span>value)</code></pre></div>
+<pre><code>## [1] 5/32</code></pre>
+<p>or equivalently</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fractions</span>(<span class="kw">integrate</span>(f3.<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>)<span class="op">$</span>value)</code></pre></div>
+<pre><code>## [1] 5/32</code></pre>
+<p>As an advanced problem, we can create our own <code>q</code> version of the function as well. This is where we find the quantiles. Here is my code</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">q3.<span class="dv">1</span>&lt;-<span class="cf">function</span>(y)<span class="kw">uniroot</span>(<span class="cf">function</span>(x)<span class="kw">cdf3.1</span>(x)<span class="op">-</span>y,<span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>))<span class="op">$</span>root</code></pre></div>
+<p>I did not put any error checking in this function so I am assuming a knowledgeable user.</p>
+<p>Let’s test it.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">q3.1</span>(.<span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">q3.1</span>(.<span class="dv">75</span>)</code></pre></div>
+<pre><code>## [1] 0.6946066</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">q3.1</span>(<span class="dv">1</span>)</code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">q3.1</span>(<span class="dv">0</span>)</code></pre></div>
+<pre><code>## [1] -2</code></pre>
+<p>Finally, I could write my R function as well.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r3.<span class="dv">1</span>&lt;-<span class="cf">function</span>(n)<span class="kw">sapply</span>(<span class="kw">runif</span>(n),q3.<span class="dv">1</span>)</code></pre></div>
+<p>This is generating random samples from the distribution.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2018</span>)
+<span class="kw">r3.1</span>(<span class="dv">40</span>)</code></pre></div>
+<pre><code>##  [1] -0.44421232 -0.09678344 -1.40086226 -0.85981410 -0.06853322
+##  [6] -0.54394904  0.28665737 -1.09649783  1.50998881  0.12509517
+## [11] -0.28019423  0.44615514  1.68262229  0.48473231  0.87117150
+## [16]  0.36177270 -0.63245071  0.14131294  0.65832434  0.94636589
+## [21] -0.66414309  0.18280379 -1.01699362 -1.23849172  0.73101697
+## [26]  0.09591294 -0.46749589  1.32583168  0.26369534 -1.37995268
+## [31] -1.05390319  1.06862839 -1.55871257 -0.02612256  0.01648085
+## [36]  0.73137964 -1.48148037 -1.44633673  0.21686676 -0.93427163</code></pre>
+<p>A plot of the sample is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lattice)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2019</span>)
+<span class="kw">densityplot</span>(<span class="kw">r3.1</span>(<span class="dv">2000</span>),<span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
+<p>This looks like our pdf.</p>
+</div>
+<div id="transformation-problem" class="section level3">
+<h3><span class="header-section-number">3.1.4</span> Transformation Problem</h3>
+<p>For problem 3.1a, find the pdf of Y where Y=X+2.</p>
+<p>Unlike the discrete case, we cannot simply substitute the transformation relationship into the pdf. However, since equality of distributions relies on the cdf we will use it.</p>
+<p>We want to find the cdf of <span class="math inline">\(Y\)</span> <span class="math display">\[F_{Y}(y)=P(Y \leq y)=\]</span> <span class="math display">\[P(X+2 \leq y)=\]</span> <span class="math display">\[P(X \leq y-2)=\]</span> <span class="math display">\[F_{X}(y-2)\]</span></p>
+<p>This is the cdf of <span class="math inline">\(X\)</span> which we know.</p>
+<p>Thus the cdf of <span class="math inline">\(Y\)</span> is <span class="math display">\[0 \mbox{ for }y \leq 0\]</span> <span class="math display">\[-{((y-2)^3-12(y-2)-16) \over 32} \mbox{ for } 0 \leq y \leq 4\]</span> <span class="math display">\[1 \mbox{ for } y&gt;4\]</span></p>
+<p>We find the domain of the cdf for <span class="math inline">\(Y\)</span> by substituting in the domain values of <span class="math inline">\(X\)</span> into the transformation relationship.</p>
+<p>We have to be careful in this approach that the transformation in one-to-one and unto. If not, we have to divide the problem into regions where it is.</p>
+<p>The pdf of <span class="math inline">\(Y\)</span> is found by taking the derivative of the cdf.</p>
+<p><span class="math display">\[f_{Y}(y)=-{(3(y-2)^2-12) \over 32} \mbox{ for } 0 \leq y \leq 4\]</span></p>
+<p>We should check that this is a pdf. I will use R to do the work for me.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f3.1a&lt;-<span class="cf">function</span>(y)(<span class="op">-</span><span class="dv">3</span><span class="op">/</span><span class="dv">32</span><span class="op">*</span>((y<span class="op">-</span><span class="dv">2</span>)<span class="op">^</span><span class="dv">2</span><span class="op">-</span><span class="dv">4</span>)<span class="op">*</span>{y<span class="op">&gt;=</span><span class="dv">0</span><span class="op">&amp;</span>y<span class="op">&lt;=</span><span class="dv">4</span>})</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,.<span class="dv">01</span>),<span class="kw">f3.1a</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,.<span class="dv">01</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;f(y)&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;y&quot;</span>)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">integrate</span>(f3.1a,<span class="dv">0</span>,<span class="dv">4</span>)<span class="op">$</span>value</code></pre></div>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="named-continuous-random-variables-uniform-and-exponential" class="section level3">
+<h3><span class="header-section-number">3.1.5</span> Named Continuous Random Variables: Uniform and Exponential</h3>
+<p>We introduce two named distributions, the uniform and exponential.</p>
+<div id="uniform" class="section level4">
+<h4><span class="header-section-number">3.1.5.1</span> Uniform</h4>
+<p>Just as the name implies, for the uniform, the pdf is constant. It is typically written as <span class="math inline">\(U(a,b)\)</span>. Using the properties of a pdf and the fact that it must be a constant, the pdf is <span class="math display">\[f(x)={1 \over (b-a)} \mbox{ for } a \leq x \leq b\]</span></p>
+<p>For a <span class="math inline">\(U(1,1.5)\)</span> what is the pdf? Note that a pdf can be greater than one.</p>
+<p>The pdf is <span class="math inline">\(f(x)=2\)</span> for <span class="math inline">\(1 \leq x \leq 1.5\)</span>.</p>
+<p>Notice that you can use geometry to verify this is a proper pdf. Likewise, to find the cdf, you can use geometry.</p>
+</div>
+<div id="exponential" class="section level4">
+<h4><span class="header-section-number">3.1.5.2</span> Exponential</h4>
+<p>Exponential is the interval (time or distance) until next occurrence. Here the interval is random and the occurrences are fixed, as one. In the Poisson the occurrences are random and the interval is fixed. The exponential also uses <span class="math inline">\(\lambda\)</span> for the parameter but now it has to be the average number of occurrences per unit time.</p>
+<p>Let’s work Prob 2.80a again using exponential.</p>
+<p>Y = Time in minutes until the next customer arrives. We want P(Y&gt;20) <span class="math inline">\(\lambda = 6/60\)</span> which is the average number of customer per minute.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pexp</span>(<span class="dv">20</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">10</span>)</code></pre></div>
+<pre><code>## [1] 0.1353353</code></pre>
+<p>or using Poisson to check</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dpois</span>(<span class="dv">0</span>,<span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 0.1353353</code></pre>
+<p>The distribution is called exponential because the pdf is an exponential function, <span class="math inline">\(f(y)=\lambda e^{-\lambda y}\)</span> for <span class="math inline">\(y \geq 0\)</span>.</p>
+<p>The exponential is often used for queuing models. It is also used in reliability models where we are looking for time to failure. It makes a strong assumption called the memory-less property. The probability of failure being greater than time <span class="math inline">\(t_1 + t_2\)</span> given the item has already lasted time <span class="math inline">\(t_1\)</span> is simply the probability an item last more than time <span class="math inline">\(t_2\)</span>. This is a strong assumption and often not realistic.</p>
+</div>
+</div>
+<div id="additional-homework-problems" class="section level3">
+<h3><span class="header-section-number">3.1.6</span> Additional Homework Problems</h3>
+<ol style="list-style-type: decimal">
+<li><p>Let the probability density function of <span class="math inline">\(X\)</span> be exponential with <span class="math inline">\(\lambda = 1\)</span>. Find the probability density function of <span class="math inline">\(Y\)</span> where <span class="math inline">\(y = \sqrt{X}\)</span>.</p></li>
+<li><p>The average number of cars that enter the North Gate is 48 per hour. What is the probability that no cars enter the gate in the next 5 minutes?</p></li>
+</ol>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Chpt3.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="L13.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/BawCOS/undergraduate-statistics-notes/edit/master/03-Continuous-Distributions.Rmd",
+"text": "Edit"
+},
+"download": ["fastR-Notes.pdf", "fastR-Notes.epub"],
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

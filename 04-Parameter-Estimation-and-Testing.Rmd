@@ -1,0 +1,1375 @@
+# Parameter Estimation and Testing {#Chpt4}
+
+The fourth chapter is completed in seven lessons. Sections 4.1 and 4.2 are combined into one lesson.  The same is true for sections 4.6 and 4.7 as well as 4.8 and 4.9. Section 4.6 tends to be technical and mathematical so we only require the students to know Lemma 4.6.1, Theorem 4.6.5, Definition 4.6.6, Lemma 4.6.7, Lemma 4.6.8, and Corollary 4.6.9.
+
+## Method of Moments {#L18}  
+
+### Objectives
+
+1. Know and properly use the new terminology and notation to include but not limited to, sample moment, around origin and sample mean, parameter, and independent and identically distributed  
+2. Find parameter estimates, univariate and multivariate, using the method of moments, this may include using a root solver  
+3. Know the relationship between the second sample moment about the sample mean and the sample variance  
+  
+### Introduction  
+
+The book does a great job introducing the idea of statistical mathematical models.  Typically in this class, we want to use them by using a sample and model of the population to make an inference about the population.  In Math 378, we will start to use them to make predictions.  We also see this a little at the end of this course when we introduce linear regression.  
+
+There are several issues that we have to handle.  First we have to decide which model is appropriate.  We already partially addressed this with the Q-Q plots of last chapter.  The second issue is how to estimate parameters for the model.  That is this lesson.  Finally, we will have to address how to make inferences about the population parameter from the sample estimate.  
+
+### Method of Moment Estimates  
+
+Once we have decided on a model for the population, we typically want to estimate parameters by using data from a sample.  The idea that we will use is simply that we will equate sample moments to population moments and then try to solve for the parameter(s) of interest.  
+
+The book defines sample moments both around the origin and around the sample mean.  See page 180.  Do not confuse these with the population moments from Chapter 3, see page 126. Those are moments for the entire population and not just a sample.
+
+As a comparison, here are the formulas for the `kth` sample moment about the origin and the `kth` moment about the origin. 
+
+$$\hat{\mu}_{k}={1 \over n}\sum_{i=1}^n\left( x_{i} \right)^k$$
+$$\mu_{k}=E\left(x^k \right)$$
+
+Notice the `hat` on the sample moment.  This notation is used to denote an estimate.
+
+### Example  
+
+```{r results='hide',echo=FALSE}
+set.seed(2019)
+Les22Data<-rgamma(40,5,2)
+``` 
+
+Suppose I have some data
+
+```{r}
+Les22Data
+```  
+
+Let's plot it:
+
+```{r eval=FALSE}
+library(fastR)
+```
+
+```{r}
+densityplot(Les22Data)
+```  
+
+I don't know the population mean, what would be a reasonable estimate?  The sample mean is an obvious choice. Thus my estimate of $E(X)$ which is also called $\mu$ is $\hat{\mu}$.   
+
+
+Again, the key idea from this section is that the population moments are a function of the parameters of the distribution.  Thus we can estimate those parameters by equating sample moments with population moments. 
+
+Here are the first sample moment about the origin and the second sample moment about the sample mean.  Notice that the second sample moment about the sample mean is not the same as the sample variance.  That is because one divides by `n` and the other by `n-1`.
+
+```{r}
+(Les22Datamean<-mean(Les22Data))
+sum((Les22Data-Les22Datamean)^2)/length(Les22Data)
+var(Les22Data)
+```  
+
+Now suppose we think the data comes from a gamma with $\alpha = 2$.  Estimate $\lambda$.
+
+From the back of the book, $E(X)$ for a gamma is ${\alpha \over \lambda} = {2 \over \lambda}$.  So $\bar{x}=  {2 \over \lambda}$ and we have $\hat{\lambda}={2 \over \bar{x}}$.  Finally $\hat{\lambda}=$ `r 2/Les22Datamean`.
+
+We could check using a q-q plot.
+
+```{r}
+qLes22<-function(x){qgamma(x,2,rate=2/Les22Datamean)}
+xqqmath(~Les22Data,distribution=qLes22)
+```  
+
+This is not a good model, so we need to estimate both $\alpha$ and $\lambda$.
+
+### Practice
+
+1.  We think the data in this lesson comes from either an exponential or gamma.  Use the method of moments to estimate the parameters of each model.
+2.  Homework 4.2
+3.  Homework 4.3 and 4.5
+
+For the gamma
+$$E(X)={\alpha \over \lambda}$$
+$$V(X)=E\left( x-\mu  \right)^2=\mu_{2}'={\alpha \over \lambda^2}$$
+So
+$$\hat{\mu}_{1}=\bar{x}={\alpha \over \lambda}$$
+$$\hat{\mu}_{2}'={\alpha \over \lambda^2}$$
+
+so
+$$\hat{\lambda}={\hat{\mu}_{1} \over \hat{\mu}_{2}'}$$
+$$\hat{\alpha}={\hat{\mu}_{1}^{2} \over \hat{\mu}_{2}'}$$
+
+```{r cache=TRUE}
+prob4.3<-function(n=6,theta=1){
+    x<-runif(n,max=theta)
+    return(as.numeric(2*mean(x)<max(x)))
+}
+sum(replicate(10000,prob4.3(6,1)))/10000
+```  
+
+## Estimates and Estimators {#L19} 
+
+### Objectives  
+
+1. Know and use notation and terminology such as estimate, estimator, simple random sample, independent and identically distributed sampling, unbiased estimator, consistent estimator, sequence of estimators, and the weak law of large numbers.  
+2. Determine if an estimator is unbiased and consistent by finding its mean and variance.  
+3. Know and apply Chebyshev’s Inequality.    
+4. Use simulation in R to evaluate properties of estimators.  
+
+### Background  
+
+This section is technical and only a small subset of estimator theory.  The most important idea is to think of an estimator as a random variable.  For example, the sample mean.  If we have numbers, actual values, we could find the sample mean by adding all the numbers together and dividing by the total number.  This will give us a single number, an estimate.  However if we think of each value as a random variable, then the sample mean is a random variable.  This is called an estimator.  It will have a probability distribution, called the sampling distribution.  We can then use this probability distribution to make inference decisions. 
+
+To compare estimators, we will use two ideas.  Unbiased and consistency.  There are many other ideas to compare estimators such as mean squared error (MSE) and minimum variance.  However, we will only focus on the two in this class.
+
+### Estimator as a Random Variable  
+
+The abstraction in the sampling process and generation of an estimate is difficult is to think about.  That is because we are repeating the process of sampling over and over when in practice we only get one sample.  Let's do a simulation to help us understand.  The advantage of simulation is that we know the answer and can compare it with the sampling results from the simulation.  
+
+Let's simulate data from a gamma with parameters 5 and 2.  Suppose we claim that we have data on the length of time in months until a light bulb fails.  Here is the data:
+
+```{r results='hide',echo=FALSE}
+set.seed(2018)
+```
+
+```{r}
+Les23Data<-rgamma(40,5,2)
+``` 
+
+```{r}
+Les23Data
+``` 
+
+Suppose we think the distribution is an exponential.  From this we calculated a method of moments estimate for an exponential distribution as
+$$\hat{\lambda}={1 \over \bar{x}}$$  
+
+For this data set, the estimate is
+
+```{r}
+1/mean(Les23Data)
+```
+
+Now suppose we could repeat this process with another data set.  We would get another estimate of $\hat{\lambda}$.
+
+```{r}
+Les23Data2<-rgamma(40,5,2)
+``` 
+
+```{r}
+Les23Data2
+```  
+```{r}
+1/mean(Les23Data2)
+```  
+
+Repeating this process many times, I start to get an idea of the distribution of $\hat{\lambda}$.  Here is a density plot of 1000 estimates of $\lambda$.  That is, I collected 40 data points, found the method of moment estimate and repeated 1000 times.
+
+Load `fastR` and set the seed for repeatability.  
+
+```{r eval=FALSE}
+library(fastR) 
+```
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(2018)
+```
+
+```{r}
+Les23DataMany<-replicate(1000,rgamma(40,5,2))
+LambdaEstimator<-apply(Les23DataMany,2,function(x)(1/mean(x)))
+```  
+
+```{r echo=FALSE}
+densityplot(LambdaEstimator,xlab = "Estimates of Lambda")
+``` 
+
+This is just a simulation but this is the idea of thinking of an estimator as a random variable.  It will vary from sample to sample and have a distribution.  The distribution of the estimator is not necessarily the same as the distribution of the parent population. Since the estimator has a distribution, we can use ideas from previous sections such as moments, $E(X)$. 
+
+### Properties of Estimators  
+
+Now that we have seen how to view estimators as random variables, let's look at some properties of estimators.  We could understand properties of the distribution of estimators by using
+
+1. Mathematical approach - this is general and abstract.  We will do this with unbiased and consistent.  
+2. Repeat the experiment - this approach is the easiest but is way to costly in terms of time and money to be practical.  
+3. simulation - this is fast and easy but we must write programs and make assumptions about parent distribution and parameters.  
+
+The method of moments estimator uses the idea that the sample mean $\bar{X}$, as a random variable, is a good estimator of the population mean $E(x)$.  What does good mean?  There are many ways to answer this questions but our book will only focus on two, unbiased and consistent.  Note also that the book discusses two sampling methods, simple random sample and independent and identically distributed.  In either case, these two methods don't change the two properties we want to discuss.
+
+Let's explore these ideas using problem 4.1 as a reference.  Here we flip a coin and record 0 if it is tails and 1 if it is heads.  Thus $X$ is a binomial random variable and is described as the number of heads in one flip of a coin.  Now if we repeat this process $n$ number of times, we have a sequence of random variables $X_{1},X_{2},X_{3},...,X_{n}$.  These are independent and identically distributed.  The method of moments estimator of the probability of heads is 
+$$\hat{\pi}=\bar{X}$$
+
+As a example, suppose we repeat the flip 100 times.  Here is a simulation of our data:
+
+```{r results='hide',echo=FALSE}
+set.seed(333)
+```
+
+```{r}
+Les23flips<-rbinom(100,1,.5)
+```
+
+```{r echo=FALSE}
+Les23flips
+```  
+
+We would estimate $\hat{\pi}$ as
+
+```{r echo=FALSE}
+mean(Les23flips)
+```  
+
+If we think of $\bar{X}$ as estimator of $\pi$, then we could simulate it sampling distribution.
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(2018)
+```
+
+```{r results='hide',message=FALSE}
+Les23FlipsMany<-replicate(1000,rbinom(100,1,.5))
+PiEstimator<-apply(Les23FlipsMany,2,mean)
+```  
+
+```{r echo=FALSE}
+densityplot(PiEstimator,xlab = "Estimates of Pi")
+``` 
+
+
+The two properties of estimators that we are interested in are  
+1) Unbiased, definition 4.3.4 and   
+2) Consistent, definition 4.3.6  
+
+Unbiased means
+
+$$E(\hat{\pi})=\pi$$
+
+We have $X_{i} \overset{iid}{\sim} \mbox{binom} (1,\pi)$ and we know
+$$E(X_{i})=\pi$$  
+$$Var(X_{i})=\pi(1-\pi)$$
+
+Our method of moments estimator is
+$$\hat{\pi}=\bar{X}$$
+and by definition  
+$$\bar{X}={\sum_{i=1}^{n}X_{i} \over n}$$
+Thus
+$$E(\bar{X})=E \left( {\sum_{i=1}^{n}X_{i} \over n}\right)={1 \over n} E \left( \sum_{i=1}^{n}X_{i}\right)={1 \over n}\sum_{i=1}^{n}E(X_{i})={1 \over n}(n\pi)=\pi$$
+
+Thus we have an unbiased estimator.  Let's simulate to get an idea
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(4390)
+```
+
+```{r cache=TRUE, tidy=TRUE}
+histogram(~replicate(10000,mean(rbinom(100,1,.5))),v=.5,xlab=expression(hat(pi)),
+          main="Simulation of the Distribution of the Method of Moments Estimator \nfor Binom(0,.5), Sample Size 10",xlim=c(0,1))
+```
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(4390)
+```
+
+```{r cache=TRUE, tidy=TRUE}
+densityplot(~replicate(10000,mean(rbinom(100,1,.5))),v=.5,xlim=c(0,1),xlab=expression(hat(pi)))
+```  
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(4390)
+```
+
+```{r cache=TRUE, tidy=TRUE}
+mean(replicate(10000,mean(rbinom(100,1,.5))))
+```  
+
+Notice that mean we calculated from the simulated sampling distribution is close to the true mean of 0.50.  
+
+The idea of consistent is what happens as I make the sample size arbitrarily large.  A desirable property is that as the sample size increases, the estimator gets arbitrarily close to the value being estimated.  For us this means that the probability approaches one.  We call this convergence in probability.  There are many different types of convergence, convergence in distribution, convergence in mean, almost sure convergence, etc.  To understand consistency, let's increase the sample size and see what happens in our simulation.
+
+```{r cache=TRUE, tidy=TRUE}
+histogram(~replicate(10000,mean(rbinom(200,1,.5))),v=.5,xlab=expression(hat(pi)),
+          main="Simulation of the Distribution of the Method of Moments Estimator \nfor Binom(0,.5) Sample Size 20",xlim=c(0,1))
+```
+
+```{r tidy=TRUE}
+densityplot(~replicate(10000,mean(rbinom(200,1,.5))),v=.5,xlim=c(0,1),xlab=expression(hat(pi)))
+```  
+
+```{r cache=TRUE, tidy=TRUE}
+histogram(~replicate(10000,mean(rbinom(1000,1,.5))),v=.5,xlab=expression(hat(pi)),
+          main="Simulation of the Distribution of the Method of Moments Estimator \nfor Binom(0,.5) Sample Size 100",xlim=c(0,1))
+```
+
+```{r tidy=TRUE}
+densityplot(~replicate(10000,mean(rbinom(1000,1,.5))),v=.5,xlim=c(0,1),xlab=expression(hat(pi)))
+```  
+
+```{r cache=TRUE, tidy=TRUE}
+histogram(~replicate(10000,mean(rbinom(10000,1,.5))),v=.5,xlab=expression(hat(pi)),
+          main="Simulation of the Distribution of the Method of Moments Estimator \nfor Binom(0,.5) Sample Size 100",xlim=c(0,1))
+```
+
+```{r tidy=TRUE}
+densityplot(~replicate(10000,mean(rbinom(10000,1,.5))),v=.5,xlim=c(0,1),xlab=expression(hat(pi)))
+```
+
+This is tiresome so let's write a function that will plot the behavior:
+
+```{r cache=TRUE}
+myrbinom<-function(n){rbinom(n,1,.5)}
+xyplot(sapply(lapply(1:10000,myrbinom),mean)~1:10000,xlab="n",ylab=expression(hat(pi)),alpha=.4,
+       panel = function(...) {
+         panel.abline(h=.5, lty = "dotted", col = "black",lwd=2)
+         panel.xyplot(...)})
+```  
+
+It looks like the sample mean is a consistent estimator of the probability of success.  Mathematically we show this as
+$$Var(\bar{X})={1 \over n^{2}} \sum_{i=1}^{n}Var(X_{i}) = {1 \over n^{2}}(n\pi(1-\pi))={\pi(1-\pi) \over n}$$
+We made use of independence in this argument.  
+Now
+$$\lim{n \to \infty}{\pi(1-\pi) \over n}=0$$.
+
+### Chebyshev's Inequality  
+
+$$P(\vert X- \mu \vert \geq k \sigma) \leq {1 \over k^2}$$
+
+### Practice  
+Homework 4.11 and 4.13
+
+## Limit Theorems {#L20} 
+
+### Objectives  
+
+1. Find the distribution and solve probability questions for the sum of independent and identically distributed normal random variables.  
+2. Find the distribution and solve probability questions with and without the continuity correction, to include hypothesis testing, using the central limit theorem for the sum of independent and identically distributed binomial random variables.  
+3. Find the distribution and solve probability questions using the central limit theorem for the sum of independent and identically distributed random variables that are not normal.  
+
+
+### Introduction  
+
+This section has the important result of the Central Limit Theorem.  This idea has been and continues to be, at least for small sample inference, the corner stone of statistical inference.  Its importance cannot be overstated. 
+
+From the previous two lessons, we have found a method to estimate parameters.  It is called the method of moments.  Assuming a sample is representative of the population, we set sample moments equal to population moments to find estimators of the population parameters.  
+
+Then we learned these estimators were random variables.  We look at desirable properties based on the idea that these random variables have a distribution.  The first property we found useful was unbiased.  On average, the estimator should equal the true population parameter.  This is $E(\hat{\theta})=\theta$.  The second idea was consistency.  The estimator should get arbitrarily close to the parameter as the sample size increases.  For an unbiased estimator, this means the variance of the estimator approaches 0 as the sample size becomes unbounded.
+
+Without knowing the distribution of the estimator, we could use Chebyshev's equality to find probabilities on the sample mean as an estimator.  In this section, we will try to find the distribution of the sample mean.
+
+### Parent Population is Normal  
+
+The sample mean is often used as an estimator of the population mean.  We know it is unbiased and consistent.  We could do more if we knew the distribution of the sample mean.
+
+We know from previous work that if 
+$$X_{i} \overset{iid}{\sim}\mbox{Norm}(\mu,\sigma)$$ 
+then
+$$\sum_{i=1}^{n}X_{i} \sim\mbox{Norm}(n\mu,\sqrt{n}\sigma)$$
+or the more well known results
+$$\bar{X}=\sum_{i=1}^{n}{X_{i} \over n} \sim \mbox{Norm}(\mu,{\sigma \over \sqrt{n}})$$
+
+You should be able to prove this using moment generating functions.  Try it!
+
+Thus if the parent population is normal, then the sample mean is normal.
+
+### Parent Population is not Normal  
+
+The central limit theorem states that even if the parent population is not normal, a sum of iid random variables will be approximately normal.
+
+$$\bar{X}_{n} \dot{\sim} \mbox{Norm}(\mu,{\sigma \over \sqrt{n}})$$
+
+This is called convergence in distribution.
+
+Let's simulate the idea using the binomial from problem 4.1.
+
+$$X_{i} \overset{iid}{\sim}\mbox{Binom}(1,\pi)$$
+
+We found the method of moments estimator to be
+$$\hat{\pi}=\bar{X}$$
+
+Using the central limit theorem the distribution of $\bar{X}$ is  
+
+$$\bar{X}_{n} \dot{\sim} \mbox{Norm}(\pi,\sqrt{{\pi(1-\pi) \over n}})$$
+```{r message=FALSE,results='hide'}
+set.seed(6574)
+```
+
+```{r eval=FALSE}
+library(fastR)
+```
+
+```{r cache=TRUE}
+Less24Data<-apply(replicate(10000,rbinom(200,1,.5)),2,mean)
+```
+
+```{r}
+favstats(Less24Data)
+```
+
+```{r}
+histogram(~Less24Data,xlab="Binomial Sample Mean",xlim=c(0,1))
+```
+
+```{r}
+densityplot(Less24Data)
+xqqmath(~Less24Data)
+```
+
+There is some difficulty because the binomial is discrete while the normal is continuous.  We will deal with that shortly.  
+
+There is also a question of how fast the convergence to the normal is.  We will investigate that next with a simulation.
+
+### More examples of the CLT  
+
+Instead of using our own code, the package `TeachingDemos` has a function built-in that will help.
+
+```{r eval=FALSE}
+library(TeachingDemos)
+```
+
+This package has four distributions, the normal, the gamma, the uniform, and the beta.  They each have different degrees of symmetry/skewness.
+
+As a baseline, here are the four distributions,
+
+```{r}
+clt.examp(1)
+```
+
+Now let's plot the distribution of the sample mean from each of these where the sample size is 2.
+
+```{r}
+clt.examp(2)
+```
+
+Of course, the sample mean from a normal is already normal.  The uniform is already looking like a normal but it was symmetric to begin with.
+
+Now let's take the sample size to 5.  
+
+```{r}
+clt.examp(5)
+```
+
+The results are even better.
+
+Finally let's try 30.
+
+```{r}
+clt.examp(30)
+```
+
+A better plot would be the q-q plot.  But you should get the idea.
+
+In practice, people make the claim that a sample size of 30 is enough to use a normal approximation for the mean.
+
+### Continuity Correction  
+
+Since the binomial is discrete and the normal is continuous, we can do a better job approximating the binomial with a normal by expanding the limits of integration by 0.50.
+
+```{r}
+pbinom(80,100,.75)-pbinom(69,100,.75)
+pnorm(80,75,sqrt(100*.75*.25))-pnorm(70,75,sqrt(100*.75*.25))
+pnorm(80.5,75,sqrt(100*.75*.25))-pnorm(69.5,75,sqrt(100*.75*.25))
+```
+
+### Practice  
+
+Homework 4.20, 4.21
+
+## Inference for Mean (Variance Known)  {#L21}
+
+### Objectives
+
+1) Conduct and interpret a hypothesis test for the mean with variance known using correct terminology  
+2) Calculate and interpret a confidence interval for the mean  
+3) Use to the link between confidence intervals and hypothesis testing to use confidence intervals for hypothesis testing  
+
+### Background
+
+The author of textbook does a nice job re-introducing us to the idea of hypothesis testing on page 200.  Read the 5 points of the general framework again.  The basic idea is that we want to make a decision about a population from a sample since we can't access the entire population due to time, money, or other practical constraints.  We use statistics from the sample to make inference about the population.
+
+### Problem  
+
+We will look at statistical inference, that is obtaining information about a population parameter from a sample, by using both a hypothesis test and a confidence interval.  These two ideas are linked and we will explore that relationship as well.
+
+In 2016 there is a proposition, [106](https://ballotpedia.org/Colorado_%22End_of_Life_Options_Act,%22_Proposition_106_(2016)) on the Colorado ballot.  Briefly, a "yes" vote supports making assisted death legal among patients with a terminal illness who receive a prognosis of death within six months.  To estimate if the measure will pass, a poll of 504 voters was taken and 282 stated they would vote yes.  Will proposition 106 pass?
+
+To make things simple we will be performing statistical hypothesis testing for the population mean.  The population are the voters and we want to estimate the proportion that will vote yes.  For simplicity we will ignore not sure and assume that the outcome is either yes or no.  Each vote is a binomial random variable $Y \sim \mbox{Binom}(1,\pi)$ where $\pi$ is the probability of voting yes on proposition 106.  From the method of moments, an estimate of $\pi$ is $\bar{Y}$ the mean of the number of yes votes from a sample of size $n$, see homework problem 4.1.  
+
+To setup as a hypothesis test, we have
+
+$$H_{0}: \pi = 0.50$$
+$$H_{A}: \pi > 0.50$$
+
+where $\pi$ is the population proportion of yes votes.  In Chapter 2, we solved this with the binomial test.
+
+```{r}
+binom.test(282,504,.5,alt="greater")
+```
+
+Now, let's use the Central Limit Theorem.  From what we now know about the Central Limit Theorem, we can use a normal because the sample mean, treated as a random variable is
+$$\bar{Y}\dot{\sim} \mbox{Norm}\left(\pi,{\sqrt{\pi(1-\pi)  \over n}}\right)$$  
+
+The question is what to use for $\pi$ in the standard deviation.  Most people use the hypothesized value but you could also use the estimated value.  Thus the p-value is
+
+```{r}
+1-pnorm(282/504,0.50,sqrt(.5*(1-.5)/504))
+```
+
+There is a built-in function
+
+```{r}
+prop.test(282,504,p=.5,alt="greater",correct=FALSE)
+```
+
+
+Since the binomial is discrete, we can do better using the continuity correction.
+
+```{r}
+1-pnorm((282-.5)/504,0.50,sqrt(.5*(1-.5)/504))
+```
+
+or using built-in function
+
+```{r}
+prop.test(282,504,p=.5,alt="greater")
+```
+
+Notice the output gives us a confidence interval.  We will discuss this shortly.
+
+### Hypothesis Testing for the Mean
+
+Below we give more insight to hypothesis testing.  But example 4.5.1 gives a good example.  If we assume that a sample size of 10 is sufficient to use the central limit theorem, a questionable assumption without more support, then to test
+
+$$H_{0}: \mu = 5$$
+$$H_{A}: \mu < 5$$
+
+By the Central Limit Theorem, the sample mean is 
+
+$$\bar{X}\dot{\sim} \mbox{Norm}\left(\mu,{\sqrt{\sigma^{2}  \over n}}\right)$$  
+
+This is more difficult than the last example since we don't know $\sigma$.  To simplify understanding, our author assumes we know $\sigma$.  In practice this is often not the case but could be if we had historical data.  Later in the chapter we will remove this assumption.
+
+We can calculate the p-value as given the null is true. $\mu = 5$, then we want the probability of our data or more extreme.
+
+```{r}
+pnorm(4.96,5,0.05/sqrt(10))
+```
+
+We may want to know the power of this test.  A tool to help us understand power comes from the `TeachingDemos` package.  Use the command `run.power.examp(hscale=1.5, vscale=1.5, wait=FALSE)` to experiment.
+
+#### Confidence Intervals  
+
+The idea of confidence intervals is to make use of the idea that if the variance is known then the distribution of $\bar{X}$ will be, at least approximately:  
+
+$$\bar{X}\dot{\sim} \mbox{Norm}\left(\mu,{\sigma \over \sqrt{n}}\right)$$  
+
+Going back to example 4.5.1, this means that
+
+$$\bar{X}\dot{\sim} \mbox{Norm}\left(\mu,{0.05 \over \sqrt{10}}\right)$$ 
+
+A plot of this distribution is
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of n",ylab="Density",col="red",ylim=c(0,30),xaxt="n")
+segments(5,0,5,4,lty=2)
+text(5.003,4,expression(mu))
+```
+
+For a normal we know that 95% of the possible value will fall within $\pm$ 1.96 standard deviations.  
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of n",ylab="Density",col="red",ylim=c(0,30),xaxt="n")
+segments(5,0,5,4,lty=2)
+text(5.003,4,expression(mu))
+segments(qnorm(.025,5,.05/sqrt(10)),0,qnorm(.025,5,.05/sqrt(10)),5)
+text(4.96,6,substitute(paste(mu," - 1.96", sigma,"/",sqrt(n))))
+segments(qnorm(.975,5,.05/sqrt(10)),0,qnorm(.975,5,.05/sqrt(10)),5)
+text(5.03,6,substitute(paste(mu," + 1.96", sigma,"/",sqrt(n))))
+```  
+
+What a confidence interval does is invert this.  It centers the distribution on the observed sample mean with the hope that the true mean is captured in an interval.  
+
+For our example, the standard deviation was 0.05 and the sample size was 10. Let's pretend that the true mean, unknown to us, is 5.  Thus the sampling distribution of the mean would be
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of n",ylab="Density",col="red",ylim=c(0,30))
+```
+
+Our observed sample mean was 4.96.  If we center the distribution on this value we hope that the true unknown population mean is capture in an interval around the value of 4.96.
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of 10",ylab="Density",col="red",ylim=c(0,30))
+lines(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),4.96,.05/sqrt(10)),col="blue")
+segments(5,0,5,4,lty=2)
+text(5.003,4,expression(mu))
+segments(qnorm(.025,4.96,.05/sqrt(10)),0,qnorm(.025,4.96,.05/sqrt(10)),5)
+text(4.92,6,substitute(paste("4.96 - 1.96 * .05/",sqrt(10))))
+segments(qnorm(.975,4.96,.05/sqrt(10)),0,qnorm(.975,4.96,.05/sqrt(10)),5)
+text(4.99,6,substitute(paste("4.96 + 1.96 * .05/",sqrt(10))))
+```  
+
+Our 95% confidence interval in this case is
+
+```{r}
+qnorm(.025,4.96,.05/sqrt(10))
+qnorm(.975,4.96,.05/sqrt(10))
+```
+
+or equivalently
+
+```{r}
+4.96-qnorm(.975)*.05/sqrt(10)
+4.96+qnorm(.975)*.05/sqrt(10)
+```
+
+The discussion at the bottom of page 202 and top of 203 is important.  Once data is used a confidence interval has no random value and thus we cannot use the word probability.  Instead we use the word confidence to describe the coverage of the process.  That is in our example, if we were to repeat the experiment many times, get 10 weights and calculate the 95% confidence interval, 95% of these intervals will capture the true unknown mean.  We know nothing about our one particular interval.  
+
+Note that we can also change the coverage of the interval.  In the extreme a 100% confidence interval will be over the entire domain and a 0% confidence interval will be the point estimate.
+
+Figure 4.13 in the book illustrates the idea of coverage.
+
+#### Link Between Confidence Intervals and Hypothesis Testing  
+
+If my confidence interval does not include the value of the mean under the null hypothesis, then I reject the null hypothesis.  It is that simple.  One-sided confidence intervals and their relationship to hypothesis testing is a little tricky.  Think about it.
+
+
+### Hypothesis Testing Explained in Depth  
+
+Let's first start with hypothesis testing.  To make things even easier I will use only simple hypothesis of the form:
+
+$$H_{0}: \mu = \mu_{0}$$
+$$H_{A}: \mu = \mu_{A}$$
+
+This is often not done in practice but it aids in understanding hypothesis testing.  To make this concrete lets use example 4.5.1 from the book and modify it to have simple hypotheses.
+
+#### Example 4.5.1 Modified  
+
+A manufacturer claims that its 5-pound free weights have a mean weight of 5 pounds with a standard deviation of 0.05 pounds.  You believe they have a mean weight of 4.94 pounds.  You decided to purchase 10 of these weights and measure them.  
+
+Before we continue with this let's setup the hypothesis test 
+
+$$H_{0}: \mu = 5.0$$
+$$H_{A}: \mu = 4.94$$
+
+We will use $\bar{X}$ as the test statistic to test this hypothesis.  If $H_{0}$ is true, then  
+$$\bar{X}\dot{\sim}\mbox{Norm}\left(5.0,{0.05 \over \sqrt{10}}\right)$$
+
+A plot of this will look like
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of 10",ylab="Density",col="red",ylim=c(0,30))
+```  
+
+If we use $\alpha$ the level of significance or probability of a Type I error to be 0.05, we can setup a rejection region.  Remember that a Type I error occurs when we reject given that the null hypothesis is true.  We calculate this rejection region as follows:  
+
+```{r}
+qnorm(.05,5,.05/sqrt(10))
+```  
+
+Thus our plot
+
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of 10",ylab="Density",col="red",ylim=c(0,30))
+abline(v=qnorm(.05,5,.05/sqrt(10)))
+text(4.95,27,"Reject")
+text(5,27,"Fail to Reject")
+``` 
+
+Now since we know the value of $\mu$ under the alternative hypothesis, we can calculate $\beta$ the probability of a Type II error or its complement power.  In the plot, if $H_{A}$ were true we would have the following
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of 10",ylab="Density",col="red",ylim=c(0,30))
+abline(v=qnorm(.05,5,.05/sqrt(10)))
+lines(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),4.94,.05/sqrt(10)),col="blue")
+text(4.95,27,"Reject")
+text(5,27,"Fail to Reject")
+text(5.06,28,"Red - Null is True",col="red")
+text(5.06,26,"Blue - Altenative is True",col="blue")
+``` 
+
+The probability of a Type II error is the probability we fail to reject, given the alternative is true.  In R we calculate this as
+```{r}
+1-pnorm(4.973993,4.94,.05/sqrt(10))
+```  
+
+So the power, the probability we reject given the alternative is true is  
+
+```{r}
+pnorm(4.973993,4.94,.05/sqrt(10))
+```  
+
+Now that we have setup our test, we collect data.  Here is the data for the weights of the 10 free weights
+
+```{r echo=FALSE,results='hide'}
+set.seed(2016)
+Less25Data<-round(rnorm(10,4.96,.05),1)
+Less25Data[10]<-5.2
+```  
+
+```{r}
+Less25Data
+mean(Less25Data)
+```  
+Our observed sample mean, $\bar{x}$ is 4.96.  In the plot, we have
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of 10",ylab="Density",col="red",ylim=c(0,30))
+abline(v=qnorm(.05,5,.05/sqrt(10)))
+lines(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),4.94,.05/sqrt(10)),col="blue")
+text(4.95,27,"Reject")
+text(5,27,"Fail to Reject")
+text(5.06,28,"Red - Null is True",col="red")
+text(5.06,26,"Blue - Altenative is True",col="blue")
+segments(4.96,0,4.96,17,lwd=2,lty=2)
+text(4.96,17.5,"4.96")
+```
+
+Thus we reject.  We could also calculate the p-value, the probability of the data or more extreme given that the null hypothesis is true.
+
+```{r}
+pnorm(4.96,5,.05/sqrt(10))
+```  
+
+Since the p-value is less than $\alpha$ we reject the null in favor of the alternative.  That is based on our data, a sample of ten weights, if the true mean weight were 5 pounds, the probability of observing the sample mean of 4.96 or less is .006, thus we reject that the mean weight is 5 pounds in favor of the hypothesis that the mean weight is 4.94 pounds.  
+
+Now let's see what happens when we change some of the conditions of the problem.   
+
+1.  First we will change $\alpha$ to 0.10.  Here is the plot
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(10)),type="l",xlab="Mean Weight of Sample of 10",ylab="Density",col="red",ylim=c(0,30))
+abline(v=qnorm(.1,5,.05/sqrt(10)))
+lines(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),4.94,.05/sqrt(10)),col="blue")
+text(4.95,27,"Reject")
+text(5,27,"Fail to Reject")
+text(5.06,28,"Red - Null is True",col="red")
+text(5.06,26,"Blue - Altenative is True",col="blue")
+```
+
+The power of this test is
+
+```{r}
+qnorm(.1,5,.05/sqrt(10))
+pnorm(4.979737,4.94,.05/sqrt(10))
+```  
+
+Keeping everything the same, increasing $\alpha$ decreases $\beta$ or equivalently increases power.
+
+2.  Change sample size, but leave $\alpha$ at 0.05.  Here is the plot for a sample size of 20.
+
+```{r echo=FALSE}
+plot(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),5,.05/sqrt(20)),type="l",xlab="Mean Weight of Sample of 20",ylab="Density",col="red",ylim=c(0,40))
+abline(v=qnorm(.05,5,.05/sqrt(20)))
+lines(seq(4.9,5.1,.001),dnorm(seq(4.9,5.1,.001),4.94,.05/sqrt(20)),col="blue")
+text(4.97,37,"Reject")
+text(5,37,"Fail to Reject")
+text(5.06,28,"Red - Null is True",col="red")
+text(5.06,26,"Blue - Altenative is True",col="blue")
+```  
+
+Here the power changed to
+
+```{r}
+qnorm(.1,5,.05/sqrt(20))
+pnorm(4.985672,4.94,.05/sqrt(20))
+```  
+
+And the p-value, assuming that the sample mean still stayed at 4.96, is 
+
+```{r}
+pnorm(4.96,5,.05/sqrt(20))
+```    
+
+
+3.  It should be obvious what happens if we change the value of the alternative hypothesis keeping everything else the same.
+
+In practice we use a complex alternative hypothesis such as
+$$H_{A}: \mu \neq \mu_{0}$$
+or
+$$H_{A}: \mu < \mu_{0}$$
+
+All the ideas are the same except that we don't know the value of $\mu$ under the alternative hypothesis and thus can't calculate power.  What is done in practice is to specify a practical difference in means between the null and alternative hypothesis.  That is, you need a subject matter expert to answer the question "How much would the mean have to differ from the null value for to matter?"  Then what is done is that power is specified, typically 0.8 or greater, and a sample size calculated.
+
+The example 4.5.1 in the book show how to calculate the p-value for a two-sided test of means with a known variance.  It also gives a nice summary of the possible interpretations of the results.  
+
+## Estimating Variance  {#L22}
+
+### Objectives
+
+1. Know the assumptions for hypotheses tests of the mean and associated confidence intervals for both known and unknown variance and interpret the results of these tests or confidence intervals  
+2. Know the link between and the important properties of the Chi-square, t, z, and F distributions. Know how these distributions relate to the sample variance  
+3. Know and apply the rules of thumb for inferences about the mean
+
+### Sample Variance  
+
+The first idea of this lesson is that the sample variance is an unbiased estimator of population variance.  The book shows this from a theoretical approach.  We will do it using simulation in R.
+
+I will pick a Beta distribution with parameters $\alpha$=5 and $\beta$=2, but you can select any other distribution.  Here is a plot
+
+```{r echo=FALSE}
+plot(seq(0,1,.01),dbeta(seq(0,1,.01),5,2),type="l",xlab="X",ylab="Density",main="Beta pdf with parameters 5 and 2")
+```
+
+From theory we know the variance of a Beta is 
+
+$${\alpha \beta \over (\alpha + \beta)^{2}(\alpha + \beta +1)}$$
+
+or for our specific problem  
+
+```{r}
+(5*2)/((5+2)^2*(5+2+1))
+```  
+
+Let's take a sample of size 10 from this distribution and find the sample variance (set the seed for reproducibility)
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(2020)
+```
+
+```{r}
+var(rbeta(10,5,2))
+``` 
+
+Now let's get the sampling distribution of the sample variance for this distribution using simulation
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(2020)
+```
+
+```{r}
+sampdata<-replicate(10000,var(rbeta(10,5,2)))
+```  
+
+A plot of the data
+
+```{r eval=FALSE}
+library(fastR)
+```
+
+
+```{r}
+densityplot(sampdata)
+```
+
+The mean of this is
+```{r}
+mean(sampdata)
+```  
+
+Which is close to the true population variance.  Thus is seems reasonable that the sample variance is an unbiased estimator.
+
+Note that dividing by $n$ instead of $n-1$ leads to a biased estimator.
+
+```{r results='hide',echo=FALSE,message=FALSE}
+set.seed(2020)
+```
+
+```{r cache=TRUE}
+sampdata2<-replicate(10000,var(rbeta(10,5,2))*(.9))
+mean(sampdata2)
+```  
+
+You can change the sample size to convince yourself that it is a consistent estimator.  Also note that sample standard deviation is a biased estimator of population standard deviation.
+
+### Inference for Variance  
+
+Remember to perform statistical inference we need an estimator of the population parameter and its distribution. 
+
+If the parent population is Normal, $X_{i}\overset{iid}{\sim}\mbox{Norm}(\mu,\sigma)$ then sample variance has a chi-squared distribution.  This allows us to make inference about variance.  Formally
+$${(n-1)S^{2} \over \sigma ^{2}} \sim Chisq(n-1) \mbox{ or } \chi^{2}(n-1)$$
+
+To see what a chi-squared distribution looks like, plot it
+```{r}
+plot(seq(0,30,.01),dchisq(seq(0,30,.01),9),type="l",
+     xlab="X",ylab="Density",main="Chi-square with 9 degrees of freedom")
+```  
+
+Using the example from last class
+
+```{r echo=FALSE,results='hide'}
+set.seed(2016)
+Less25Data<-round(rnorm(10,4.96,.05),1)
+Less25Data[10]<-5.2
+```
+
+```{r}
+Less25Data
+```
+
+If we believe the parent population is Normal, then we could calculate a 95% confidence interval for the variance as follows
+$$qchisq(.025,9) \leq {(n-1)S^{2} \over \sigma ^{2}} \leq qchisq(.975,9)$$
+or
+$${(n-1)S^{2} \over qchisq(.975,9)} \leq \sigma ^{2} \leq {(n-1)S^{2} \over qchisq(.025,9)}$$
+
+For our problem, the limits are
+```{r}
+9*var(Less25Data)/qchisq(.975,9)
+9*var(Less25Data)/qchisq(.025,9)
+```  
+
+### Inference for Mean when Population Variance is Unknown  
+
+Next, let's look at inference of the mean where the variance is unknown.  In this case, the test statistic is
+$$T= {\bar{X} - \mu \over {S \over \sqrt{n}}}$$
+This sampling distribution is called a t-distribution and is a ratio of a standard normal and chi-squared.  It has one parameter, the degrees of freedom which is $n-1$.  
+
+The assumptions of this test are that the sample is iid from a normal distribution.
+
+The t-distribution is similar to the normal except that it has more density in the tails and center.
+
+We could test the hypothesis from last lesson assuming we don't know the variance.  Let the test be
+
+$$H_{0}: \mu = 5.0$$
+$$H_{A}: \mu \neq 5.0$$
+
+and again the data is
+```{r}
+Less25Data
+mean(Less25Data)
+var(Less25Data)
+```  
+
+The test statistic is
+```{r}
+(Less25teststat<-(mean(Less25Data)-5)/sqrt(var(Less25Data)/10))
+```
+
+The p-value is 
+
+```{r}
+2*pt(Less25teststat,9)
+```  
+
+We could generate a 95% confidence interval as well.  Since we know that
+$$T= {\bar{X} - \mu \over {S \over \sqrt{n}}} \sim t(n-1)$$
+we get
+$$\bar{x}\pm t_{(.025,9)}{s \over \sqrt{n}}$$
+In R
+```{r}
+mean(Less25Data)+c(1,-1)*qt(.025,9)*sqrt(var(Less25Data)/length(Less25Data))
+```
+
+Of course there is a function in R that does this all for us
+```{r}
+t.test(Less25Data,mu=5)
+```
+
+The most important section of the lesson is the ideas of robustness and rules of thumb.  Read these.
+
+#### Practice  
+
+Try 4.29, 4.39
+
+## Two Additional Tests  {#L23}
+
+### Objectives
+
+1. Construct and interpret Wald, Score, Wilson, and Clopper-Pearson confidence intervals for a proportion 
+2. Conduct and interpret a paired hypothesis test using t-test, sign test, and confidence intervals 
+3. Know the assumptions of the paired t-test
+
+#### Confidence Intervals for Proportions  
+
+In Chapter 2 we made hypothesis tests about $\pi$ the proportions of successes in a binomial trial.  In this lesson we will generate confidence intervals.
+
+To put things in context we will use an example.  In game 7 of the 2014 World Series, the National League champion San Francisco Giants' pitcher Madison Bumgarner threw 50 strikes in 68 pitches.  Let's use this data to estimate his true unknown proportion of strikes. 
+
+The first interval uses the normal approximation to the binomial.  The confidence interval then is
+$$\hat{\pi} \pm z_{\alpha /2}\sqrt{ {\hat{\pi}(1-\hat{\pi}) \over n}}$$
+
+In R, the limits of the confidence interval are: 
+```{r}
+(phat<-50/68)
+phat+c(1,-1)*qnorm(.025)*sqrt(phat*(1-phat)/68)
+```
+
+If I wanted to get fancy, I could write my own function in r;
+
+```{r}
+wald.ci=function(x,n,conf.level=.95,alternative = c("two.sided", "less", "greater")){
+  DNAME <- deparse(substitute(x))
+  DNAME <- paste(DNAME, "successes and", deparse(substitute(n)),"trials")
+  alternative <- match.arg(alternative)
+  CONFINT <- switch(alternative,
+                    two.sided = x/n +
+                      c(-1,1)*qnorm(1-(1-conf.level)/2)*sqrt(x/n*(1-x/n)/n),
+                    less = c(-Inf, x/n+qnorm(conf.level)*sqrt(x/n*(1-x/n)/n)),
+                    greater = c(x/n-qnorm(conf.level)*sqrt(x/n*(1-x/n)/n), Inf)
+  )
+  attr(CONFINT,"conf.level")<-conf.level
+  structure(list(conf.int=CONFINT,data.name=DNAME),class="htest")
+}
+```
+
+```{r}
+wald.ci(50,68)
+```
+
+The score interval works by inverting the hypothesis test
+```{r}
+(phat+qnorm(.025)^2/(2*68)+c(1,-1)*qnorm(.025)*sqrt(phat*(1-phat)/68+qnorm(.025)^2/(4*68^2)))/(1+qnorm(.025)^2/(68))
+```  
+
+This is also what we get from
+```{r}
+prop.test(50,68,correct=FALSE)
+```  
+
+The Wilson is a plus 4 and we get as follows
+```{r}
+(phat<-52/72)
+phat+c(1,-1)*qnorm(.025)*sqrt(phat*(1-phat)/72)
+```  
+
+The Clopper-Pearson comes from looking at a beta distribution.  Here is some code
+
+```{r}
+CPCI<-function(x, n, alternative = c("two.sided", "upper", "lower"),conf.level = 0.95, ... ){
+  alternative <- match.arg(alternative)
+  phat <- (x)/(n)
+  out <- list(method="Clopper-Pearson Confidence Interval")
+  class(out) <- 'htest'
+  out$parameter <- c("Sample size"=n,"Number of Successes" = x)
+  out$conf.int <- switch(alternative,
+        two.sided = c(qbeta((1-conf.level)/2,x,n-x+1),qbeta(1-(1-conf.level)/2,x+1,n-x)),
+        upper = c(0, qbeta(conf.level,x+1,n-x)),
+        lower = c(qbeta(1-conf.level,x,n-x+1), 1)
+                         )
+  attr(out$conf.int, "conf.level") <- conf.level
+  out$statistic <- phat
+  out$data.name <- "Data entered as summary numbers"
+  names(out$statistic) <- "Estimated probability of success"
+
+  return(out)
+}
+```
+
+```{r}
+CPCI(50,68)
+```
+
+But this is what `binom.test` returns
+
+```{r}
+binom.test(50,68)
+```  
+
+The book mentions that the best comprise in terms of coverage is the score interval.
+
+#### Paired Tests
+
+```{r eval=FALSE}
+library(fastR)
+library(MASS)
+```
+
+```{r message=FALSE,echo=FALSE}
+Shoe<-data.frame(Boy=rep(1:10,2),Wear=c(shoes$A,shoes$B),Material=rep(c("A","B"),each=10))
+```  
+
+Suppose I want to test the wear of a material on the sole of a shoe.  I put the shoes on 20 boys.  Here is the data
+
+```{r}
+Shoe
+```
+
+If I simply look at the two materials it does not appear there is much of a difference
+```{r}
+bwplot(Wear~Material,Shoe)
+```
+
+This is because there is so much variability in wear from boy to boy and this variance masks the difference in the materials.  Thus the experiments put each type of material on each of the shoes for the boys.  Thus one shoe had type A and the other type B.  This is called a blocked design or paired design.  Now I look at the difference in wear within the boys.  This data looks like
+
+```{r}
+Shoe[1:10,2]-Shoe[11:20,2]
+bwplot(~Shoe[1:10,2]-Shoe[11:20,2],xlab="Difference in Shoe Wear (A-B)")
+```
+
+The hypothesis test is
+
+$$H_{0}: D = 0$$
+$$H_{A}: D \neq 0$$
+where $D$ is the difference.  If the differences are iid and normal, then I can use a t-test on this data.
+
+First we could get the data in wide format
+
+```{r}
+Shoe2<-reshape(Shoe,v.names="Wear",direction="wide",idvar="Boy",timevar="Material")
+```
+
+```{r}
+t.test(Shoe[1:10,2]-Shoe[11:20,2])
+t.test(Shoe2["Wear.A"]-Shoe2["Wear.B"])
+t.test(diff(Shoe[,2],lag=10))
+```
+
+or
+
+```{r}
+t.test(Wear~Material,data=Shoe,paired=T)
+```
+We conclude that there is a difference in the mean differential wear on the materials.
+
+#### Signed test
+
+If the assumption that the differences are normal is not reasonable, we could use the sign test.  This test makes on assumptions about the distribution other than it is continuous.  The idea is that if the two materials came from the same distribution, then half the time one should be larger than the other.  Thus the hypothesis is
+
+$$H_{0}: \pi = 0.5$$
+$$H_{A}: \pi \neq 0.5$$
+
+I can test this with the binomial `binom.test`.
+
+```{r}
+Shoe[1:10,2]>Shoe[11:20,2]
+sum(Shoe[1:10,2]>Shoe[11:20,2])
+binom.test(sum(Shoe[1:10,2]>Shoe[11:20,2]),10)
+```
+
+So we fail to reject that there is a difference.  Because of the small sample size, the fewer assumptions makes this test have less power.
+
+In the case of ties, most people exclude that observation.  Here is my function to do this.
+
+```{r}
+sign.test=function(x, y = NULL, md = 0, alternative =  c("two.sided", "less", "greater"), conf.level = 0.95){
+  if(is.null(y)) y=rep(md,length(x))
+  if(sum(which(x==y))!=0){
+    xx=x
+    yy=y
+    x=xx[-1*which(xx==yy)]
+    y=yy[-1*which(xx==yy)]
+  }
+  ans=binom.test(sum(x>y),length(x),alternative=alternative,conf.level=conf.level)
+  ans$method="Sign Test"
+  return(ans)
+}
+```
+
+```{r}
+sign.test(Shoe[1:10,2],Shoe[11:20,2])
+```  
+
+## Permutations Tests  {#L24}
+
+### Objectives
+
+1. Create a test statistic and calculate empirical p-values in R  
+2. Conduct permutation tests in R
+
+### Introduction  
+
+This is one of the most important sections of this course as it gives us an idea how the use of technology is altering the way statistical inference is done.  In this section we will learn how to perform statistical inference using a computer thus removing the need to know exact sampling distributions.
+
+This is our first departure from a traditional statistics course and an introduction to computer-intensive methods.
+
+### Review  
+
+Let's start with a review of the paired t-test.  We have two methods that measure the strength of a material.  Since the variation in strength may vary greatly from sample to sample, we test both methods on each sample.  Here is the data
+
+```{r}
+Less28.Strength.Data<-data.frame(Method1=c(38.25,31.68,26.24,41.29,44.81,46.37,35.42,38.41,42.68,46.71,29.20,30.76),Method2=c(38.27,31.71,26.22,41.33,44.80,46.39,35.46,38.39,42.72,46.76,29.18,30.79))
+head(Less28.Strength.Data)
+```  
+
+A longer form of this data is on the course web site in a file called Less.csv.
+
+```{r echo=FALSE,results='hide'}
+set.seed(2015)
+(Less28Class<-rbind(Less28.Strength.Data,cbind(Method1=round(rnorm(12,37.65167,7),2),Method2=round(rnorm(12,37.66833,7),2))))
+#write.csv(Less28Class,file="Less.csv")
+```  
+
+We can change the format of the data using `reshape` library of `stack`
+
+```{r}
+(Lesson28StrengthLongForm<-stack(Less28.Strength.Data))
+```  
+
+A plot of the data:
+```{r}
+boxplot(values~ind,data=Lesson28StrengthLongForm,main="Strength Measured with Two Different Methods")
+```  
+
+Again, the sample to sample variation is so large that it is hard to see a difference in means.  If we look at the differences within sample we get:
+
+```{r}
+(Lesson28Strength<-transform(Less28.Strength.Data,Diff=Method2-Method1))
+boxplot(Lesson28Strength$Diff,ylim=c(-.05,.05))
+```  
+
+Now the t-test.  The following are all equivalent:
+
+```{r}
+t.test(Lesson28Strength$Diff)
+t.test(Lesson28Strength$Method2,Lesson28Strength$Method1,paired=T)
+t.test(values~ind,data=Lesson28StrengthLongForm,paired=T)
+```   
+
+The p-value is on the margin of being significant.  More data would be needed for this problem to detect a difference.  
+
+The sample is so small that it will be hard to check the normality assumption.  As a reference here is the qq-plot:
+
+```{r eval=FALSE}
+library(fastR)
+```  
+
+```{r}
+xqqmath(Lesson28Strength$Diff)
+```  
+
+
+If we are not comfortable with the normality assumption, we could use the sign test we learned about from last lesson.  If the null hypothesis were true, the number of positive difference would be equal to the number of negative differences.  The result of the sign test is:  
+
+
+```{r}
+binom.test( sum(Lesson28Strength$Diff>0),length(Lesson28Strength$Diff))
+```  
+
+Again, you can see this test does not have much power because we took a continuous variable and made it binary.
+
+####  Permutation Test  
+
+The idea of the permutation test is that if we have the null hypothesis and a test statistics, we could simulate the sampling distribution.  Even though the strength data is small, we will try the permutation method for this problem.
+
+Under the null hypothesis, there is no difference between the measured strength of either method.  Thus the test statistics is the sum of the difference.  If there were no difference in the methods, then the difference could either be positive of negative.  Thus our permutation test would be to randomly switch the sign on the differences.  
+
+First we will get the observed value of the test statistic.
+
+```{r}
+(Les28teststat<-sum(Lesson28Strength$Diff))
+```  
+
+As an example of one permutation, we get another value of the test statistic
+
+```{r}
+set.seed(1024)
+sum(Lesson28Strength$Diff*sample(c(-1,1),12,replace=TRUE))
+```  
+
+Now we will repeat the process many times, say 10000. 
+
+```{r}
+Less28teststat.sample.dist<-replicate(10000,sum(Lesson28Strength$Diff*sample(c(-1,1),12,replace=TRUE)))
+```
+
+Here is a plot of the sampling distribution of the test statistic.
+
+```{r}
+densityplot(Less28teststat.sample.dist)
+```  
+
+Or using a "fancy" histogram
+
+```{r}
+histogram(Less28teststat.sample.dist,breaks=seq(-.4,.4,.02), xlim=c(-.5, .5),
+groups=(Les28teststat>Less28teststat.sample.dist)&(-Les28teststat<Less28teststat.sample.dist), pch=16, cex=.8)
+```  
+
+Now we can calculate the simulated p-value.  
+
+```{r}
+sum(abs(Less28teststat.sample.dist)>=Les28teststat)/10000
+```
+
+The p-value is close to the paired t-test and much smaller than the sign test.
+
+In class, we came up with a test statistic of the difference of means for the two methods.  This is tricky to code but here was our attempt.
+
+```{r}
+temp.data<-Less28.Strength.Data
+results<-rep(0,10000)
+for (j in 1:10000){
+for (i in 1:12){
+temp<-sample(t(Less28.Strength.Data[i,]),2)
+temp.data[i,1]<-temp[1]
+temp.data[i,2]<-temp[2]
+}
+results[j]<-diff(apply(temp.data,2,mean))
+}
+sum(abs(results)>diff(apply(Less28.Strength.Data,2,mean)))/10000
+```
+
+Notice that this p-value is a little smaller but still close to the others.  Which is better?  The best way to answer is the one that is the most powerful.  Unfortunately, we do not have the tools to answer this question mathematically.  We could do some simulations to gain insight.
+
+### Another Example  
+
+Let's try another problem.  In the `fastR` package there is a data set called `batting`.  This is baseball data from the years 2000 to 2005.  If we assume that this data is representative of the future, a big leap, we can use it to conduct a hypothesis test.  We want to answer the question of whether there is a difference in the home runs between the American League and National League.  One way to answer this is to compare the average number of home runs.  Thus the hypothesis test would be
+
+$$H_{0}: \mu_{AL}=\mu_{NL}$$
+$$H_{a}: \mu_{AL} \neq \mu_{NL}$$
+
+We could answer this with two-sample t-test even though we have not learned about this.
+
+First we need to subset and clean the data.  
+
+```{r}
+mybatting<-batting[,c("HR","league")]
+head(mybatting)
+str(mybatting)
+mybatting$league<-as.character(mybatting$league)
+```  
+
+If we learned about the two-sample t-test, we could perform the test as follows:
+
+```{r}
+t.test(HR~league,data=mybatting)
+```  
+
+We can generate our own permutation test.  The test statistic is the difference in means between the two leagues.
+
+```{r}
+with(mybatting,tapply(HR,league,mean))
+(teststat<-with(mybatting,abs(diff(tapply(HR,league,mean)))))
+```
+
+Now we can simulate the distribution of the test statistic.  
+
+```{r results='hide',echo=FALSE}
+set.seed(9574)
+```
+
+```{r cache=TRUE}
+simans<-with(mybatting,replicate(10000,abs(diff(tapply(HR,sample(league),mean)))))
+sum(simans>=teststat)/10000
+```  
+
+```{r}
+ histogram(simans,n=25, xlim=c(0, .5),groups=simans >= teststat, pch=16, cex=.8)
+```  
+
+This is close to the two-sample t-test.
+
+Of course with the permutation test, we could use different test statistics.  Suppose instead of mean we look at a difference of the 90th-percentile.
+
+I will write a function to find the 90th-percentile.
+
+```{r}
+myquantile<-function(x){quantile(x,probs=.9)}
+```  
+```{r}
+with(mybatting,tapply(HR,league,myquantile))
+(teststat2<-with(mybatting,abs(diff(tapply(HR,league,myquantile)))))
+```
+
+Now we can simulate the distribution of the test statistic.  
+
+```{r results='hide', echo=FALSE}
+set.seed(3856)
+```
+
+```{r cache=TRUE}
+simans2<-with(mybatting,replicate(10000,abs(diff(tapply(HR,sample(league),myquantile)))))
+sum(simans2>=teststat2)/10000
+```
+
+This is marginally significant.  Interesting result but probably not a good test as there are not many unique values.  
+
+```{r}
+unique(simans2)
+```  
+
+### Test of the Median  
+
+Instead of testing a hypothesis about the mean, you may want to test a hypothesis about the median.  This is easily done using the idea of a permutation test.
+
+To keep things simple, suppose the null hypothesis is that the median strength measurement for method 1 is 40.  This means that 50% of the data values should be above 40.  We could use the binomial test.  We first subtract 40 from each value and then determine the number that are positive.
+
+```{r}
+sum((Less28.Strength.Data$Method1-40)>0)
+binom.test(sum((Less28.Strength.Data$Method1-40)>0),length(Less28.Strength.Data$Method1))
+```
+
+Thus we fail to reject.
+     

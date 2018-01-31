@@ -1,0 +1,431 @@
+# Summarizing Data {#Chpt1}
+
+
+The first chapter is completed in three lessons. The first lesson is an introduction to the course.  We make sure that R is installed correctly.  We cover the syllabus and expectations for the course.  The next two lessons break chapter one into two parts, univariate and multivariate data.  What follows are the lesson plans.
+
+## Admin and Course Introduction {#L1}
+
+### Objectives
+
+1. Introduce the course  
+2. Understand classroom expectations  
+3. Use R for some basic computations
+
+Material discussed in class:
+
+Why stats and probability? 
+
+Math 377 course and purpose
+
+Look at syllabus and due dates
+
+### In Class Work
+
+Load and use swirl
+
+Demo R
+
+Load a library and explain installing versus loading:
+
+```{r eval=FALSE}
+library(fastR)
+```
+
+Look at the structure of a dataframe.
+
+```{r}
+str(students)
+```
+
+Create a simple plot and comments.
+
+```{r}
+bwplot(Grad~HSGPA,students)
+# This is a great plot
+```
+
+
+## Summarizing Univariate Data {#Les2}
+
+### Objectives
+
+1. Create univariate summaries, both numerical and graphical
+2. Understand and use data structures (e.g. str, head, $)
+3. Learn definitions of new terms such as mean, median, standard deviation, and p-quantile.
+
+
+### Intro Material
+
+This class is based on empirical deductive reasoning.  We have a question or conjecture and then we collect data and see if it supports or refutes the conjecture.  Often we have only a sample from a population and thus must you probability to help in the decision.  
+
+With the development of powerful computers, we are now also able to perform empirical inductive reasoning.  This is what occurs in the areas of data mining and machine learning.  Math 378 will emphasize these ideas.
+
+Data is a the heart of both methods.
+
+### Data Collection  
+
+We don't really have a hypothesis at this point just an observation that this class of Math 377 has some tall people in it.  Let's collect the data and summarize.
+
+It is often easier to enter data in an CSV, comma separated values, in Excel.  We will then read the data into a data frame in R.  This is done using the import tab in RStudio.
+
+Open a new RMarkdown file to store our work.
+
+Now that we have the data and before we start, let's practice some of the ideas in Sections 1.1 and 1.2 of the book.
+
+### Background
+
+Load libraries.
+
+```{r eval=FALSE}
+library('fastR')
+library(Hmisc)
+library(lattice)
+```
+
+Look at available data sets. Use the command.
+
+```
+data()
+```
+
+Let's use the data set students in the fastR package.  Before we start, let's get a feel for the data.  
+
+The `str` function gives the structure of the data
+
+```{r}
+str(students)
+```
+
+To look at the first few rows
+
+```{r}
+head(students)
+```  
+
+If you want a nice output when you knit into an html or pdf file
+
+```{r}
+knitr::kable(
+head(students)
+)
+```
+
+```{r}
+summary(students)
+```
+
+You can also use the help menu to find out more about the data, `?students`
+
+Some basic summaries of the data.  Since `Grad` is discrete we summarize with a table.
+
+```{r}
+table(students$Grad)
+```
+
+The variable `HSGPA` is more like a continuous variable.  
+
+```{r}
+mean(students$HSGPA,na.rm=TRUE)
+median(students$HSGPA,na.rm=TRUE)
+quantile(students$HSGPA,na.rm = TRUE)
+```
+
+The calculation of quantiles can be confusing, but the book does a nice job explaining how it is done.  We can also get help on the function using `?quantile`.
+
+Notice that if we did remove missing values, we would get an `NA`.
+
+```{r}
+mean(students$HSGPA)
+```
+
+For dispersion, we can summarize with variance and standard deviation.
+
+
+```{r}
+sd(~GradGPA,data=students,na.rm=T)
+sd(students$GradGPA,na.rm=T)
+var(students$GradGPA,na.rm=T)
+```  
+
+A useful function in the mosaic package is favstats.
+
+```{r}
+favstats(~HSGPA,data=students)
+```
+
+Notice we used the R formula notation discussed in the book.
+
+Breaking it down by year group.
+
+```{r}
+favstats(HSGPA~Cohort,data=students)
+```  
+
+```{r}
+summary(HSGPA~Grad,data=students,fun=favstats)
+```
+
+
+Visual summaries.  The command `hist` is in the base package while `histogram` is in lattice.
+
+```{r}
+hist(students$HSGPA)
+```
+
+With a title.
+
+```{r}
+hist(students$HSGPA,main="High School GPA")
+```
+
+The command `histogram` has more options.
+
+```{r}
+histogram(students$HSGPA)
+```
+
+```{r}
+histogram(students$HSGPA,type="count")
+```
+
+A panel display to show histograms next to each other.
+
+```{r}
+histogram(~HSGPA|factor(Cohort),data=students)
+```  
+
+Another type of plot is the box and whiskers plot.  
+
+From the base package.
+
+```{r}
+boxplot(students$HSGPA)
+```
+
+And from lattice.
+
+```{r}
+bwplot(~HSGPA,students)
+```  
+
+```{r}
+bwplot(~HSGPA|factor(Cohort),students)
+```
+
+```{r}
+bwplot(HSGPA~factor(Cohort),students)
+```
+
+Histograms are notoriously sensitive to the parameters used to build them such as number of bins and location of bins.  A better method is to use a density plot.
+
+```{r}
+plot(density(students$HSGPA,na.rm=T))
+```
+
+And for interest, another variable.
+
+```{r}
+bwplot(GradGPA~factor(Cohort),students)
+```
+
+Now you investigate the height data we took in class.
+
+
+```{r}
+Lesson2_Data <- read.csv("Lesson2_Height.csv")
+```
+
+```{r}
+str(Lesson2_Data)
+```
+
+```{r}
+summary(Lesson2_Data)
+```
+
+```{r}
+bwplot(~Height,Lesson2_Data)
+```
+
+```{r}
+bwplot(Height~Gender,Lesson2_Data)
+```
+
+```{r}
+summary(Height~Gender,data=Lesson2_Data,fun=favstats)
+```
+
+## Summarizing Multivariate Data {#L3}
+
+### Objectives
+
+1. Understand model notation by using in R
+2. Distinguish between variable types (nominal, ordinal, and continuous) and give examples
+3. Develop a framework and use to create numeric and visual summaries of bivariate data
+4. Explain lurking variable
+
+
+### Ideas from last lesson
+
+In \@ref(Les2) we discussed the idea of symmetry. Symmetry and the idea on equality of mean and median depend on definition of symmetric.  Some basic definitions of symmetry are simply that the mean and median are equal.  However, page 22 of the book has a different definition of symmetry.  This second definition is more accurate and will be easier to understand when we introduce probability density functions.
+
+Using the second definition, if a distribution is symmetric, then the mean and median are equal.  However, if the mean and median are equal, then the distribution does not have to be symmetric.
+
+Consider the following data set:
+
+```{r}
+Les3_ex<-c(-2,4,5,8,10)
+```
+
+```{r}
+summary(Les3_ex)
+```
+
+From last class, what would be the difference between
+```
+bwplot(Height~Gender,Lesson2_Data)
+```
+and
+```
+bwplot(~Height|Gender,Lesson2_Data)
+```
+
+Is class year qualitative or quantitative?
+
+Homework 1.10 Try it.
+
+### Bivariate Data
+
+Load libraries
+
+
+```{r eval=FALSE}
+library('fastR')
+library(Hmisc)
+library(lattice)
+library(vcd)
+```
+
+Bivariate data means that we have two variables.  There are three possibilities, in the next chapter will cover the idea of counting but here we are sampling with replacement and order does not matter.  We could have two qualitative variables, one qualitative and one quantitative, and finally two quantitative.
+
+Qualitative variables are often the most difficult to look at.  Last lesson we looked at one variable being qualitative and the other being quantitative.  We created side-by-side plots and summary statistics by categories of the qualitative variable.
+
+Now, let's look at two qualitative variables.  Use the data set airlineArrival for this analysis.
+
+```{r}
+str(airlineArrival)
+```
+
+Summarize in a table
+
+```{r}
+xtabs(~Result+Airline,data=airlineArrival)
+```  
+
+Often you can do things several ways in R
+
+```{r}
+table(airlineArrival[,2:3])
+table(airlineArrival$Result,airlineArrival$Airline)
+```
+
+If we want proportion, we can use
+
+```{r}
+prop.table(table(airlineArrival[,2:3]),2)
+```  
+
+Why not the following?
+
+```{r}
+prop.table(table(airlineArrival[,2:3])) #not what we want
+```
+
+In this problem we can look at the variable result depending on the airline.  Thus we summarize the data differently than if both variables were thought of being independent.  We will see this more in chapter 4.
+
+There is a plot method called `mosiac`.  Be careful using this because it uses areas and we are not good at visually comparing areas, thus avoid pie charts.  The function is in the `vcd` package. 
+
+```
+require(vcd)
+mosaic(~Result+Airline,airlineArrival) # This is the wrong plot why?
+```
+Better plot is  
+
+```{r}
+mosaic(Result~Airline,airlineArrival)
+```
+
+Looks like AmericaWest is the better airline because it has a higher proportion of the plans arrive on time.  But wait.
+
+Let's break it down by airport.
+
+```{r}
+structable(~Result+Airline+Airport,airlineArrival)
+```
+
+This is too hard to read, so look at this result:
+
+```{r}
+prop.table(table(airlineArrival),c(1,3))
+```
+
+
+It looks like for every airport, Alaska has a better on time rate than AmericaWest.  How come AmericaWest has the overall better on time rate?
+
+See this site for another example of [Simpson's Paradox](http://vudlab.com/simpsons/) and the idea of a lurking variable.
+
+The following is a plot but I don't like it as much as a table.
+
+```{r}
+mosaic(Result~Airline+Airport,airlineArrival)
+```
+
+Bivariate with both quantitative leads to the familiar scatterplot.  The book's example on the iris data set is good. 
+
+In that case they add a third qualitative variable and use color via the groups option to visualize.
+
+Some more examples
+
+```{r}
+names(students)
+table(students$Cohort,students$Grad)
+xtabs(~Cohort+Grad,students)
+```
+
+```{r}
+histogram(~GradGPA|factor(Cohort),students)
+```
+
+```{r}
+bwplot(~GradGPA|factor(Cohort),students)
+bwplot(GradGPA~factor(Cohort),students)
+```  
+
+```{r}
+xyplot(GradGPA~HSGPA,students)
+xyplot(GradGPA~HSGPA,students,main="Lesson 3 Example")
+xyplot(GradGPA~HSGPA,group=Cohort,students,main="Lesson 3 Example",auto.key=T)
+xyplot(GradGPA~HSGPA|Cohort,students,main="Lesson 3 Example")
+xyplot(GradGPA~HSGPA|factor(Cohort),students,main="Lesson 3 Example")
+plot(students$HSGPA,students$GradGPA)
+```
+
+Another plotting program that is one of the most popular is ggplot.
+
+```{r eval=FALSE}
+require(ggplot2)
+```
+
+```{r}
+qplot(HSGPA,GradGPA,data=students)
+```
+
+The example from the book.  
+
+```{r}
+xtabs(~Defendant+Penalty,deathPenalty)
+prop.table(xtabs(~Defendant+Penalty,deathPenalty),2)
+xtabs(~Defendant+Victim+Penalty,deathPenalty)
+```
+
+

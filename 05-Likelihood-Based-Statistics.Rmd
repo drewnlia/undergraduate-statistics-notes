@@ -1,0 +1,914 @@
+# Likelihood-Based Statistics {#Chpt5}
+
+This is a difficult chapter for students.  Even though it is only seven sections, they are difficult.  We only teach from sections 5.1, 5.2, 5.4, and 5.5.  This was done based on trying to introduce linear regression as well as students struggling with the other sections.
+
+You could drop the material from Chapter 6 and spend more time on Chapter 5.
+
+## Maximum Likelihood Estimators  {#L25}
+
+### Objectives
+
+1.	Find maximum likelihood estimators and estimates both analytically and numerically  
+2.	Know the assumptions and find probabilities from a multinomial distribution
+
+There are a couple of videos that I made several years ago on maximum likelihood estimators that may help you.  The links are:  
+[Part 1](https://www.youtube.com/watch?v=Y17eACMRw2Y)  
+[Part 2](https://www.youtube.com/watch?v=46C5-g7W6fE)
+
+### Introduction  
+
+The second method we will use to estimate parameters is called maximum likelihood.  The first method was called method of moments and the idea there was that sample moments should be close to population moments.  We are matching moments from the population distribution and sample distribution.  In maximum likelihood estimation the idea is what value of the parameter make the data most likely?  We are finding parameters that make the data most likely.  Again, just as in the method of moments, we need a model, that is a distribution.  We will use the pmf or pdf for this type of estimation.  
+
+As a simple example of the maximum likelihood idea, let's consider a discrete case.  Suppose the lab that performs urinalysis has 10 samples from Base X and found 3 positive results.  They also have a second sample of 10 from Base Y and found 5 positive samples.  Unfortunately, the technician has mixed up the samples and now does not know which came from Base X and which came from Base Y.  The test is expensive so you decide to test two samples from one of the groups.  You find one sample positive and one negative.  Do you believe it is from Base X or Base Y?
+
+Since this is a sampling without replacement scheme, you realize that a hypergeometric will help you.  If the sample came from Base X, the probability of getting one positive result and one negative result is:
+$${\left( \begin{array}{c} 3 \\ 1 \end{array} \right) \left( \begin{array}{c} 7 \\ 1 \end{array} \right) \over \left( \begin{array}{c} 10 \\ 2 \end{array} \right)}$$
+This is because we have three positives and want to select one, seven negatives and want to select one all divided by the number of ways to select two from ten.  This value is
+
+```{r}
+(3*7)/45
+dhyper(1,3,7,2)
+```  
+
+If the two tested samples came from Base Y then we would have 
+
+$${\left( \begin{array}{c} 5 \\ 1 \end{array} \right) \left( \begin{array}{c} 5 \\ 1 \end{array} \right) \over \left( \begin{array}{c} 10 \\ 2 \end{array} \right)}$$
+
+```{r}
+(5*5)/45
+dhyper(1,5,5,2)
+```  
+
+Thus we would conclude that the samples came from Base Y because this choice maximizes the probability.  This is the idea of maximum likelihood. 
+
+In more detail:  
+
+If
+$$X_{1},X_{2},X_{3},...,X_{n} \overset{iid}{\sim} f(X|\theta)$$
+where $f(X|\theta)$ is the pdf or pmf with $\theta$ the parameter(s), then, since the random variables are independent, the joint pdf or pmf is
+$$f(X_{1},X_{2},X_{3},...,X_{n}|\theta)= f(X_{1}|\theta)f(X_{2}|\theta)f(X_{3}|\theta)..f(X_{n}|\theta)=\Pi_{i=1}^{n}f(X_{i}|\theta)$$
+
+If we change our view of this formula, we get the likelihood function.  We consider the data known and the parameter unknown.  Thus the likelihood function is:
+$$L(\theta \vert X_{i})=\Pi_{i=1}^{n}f(X_{i}\vert \theta)$$
+
+The idea of maximum likelihood estimation is to find the value of $\theta$ that maximizes $L(\theta)$ for the given data.  The difficulty is that finding a global maximum is not always easy.  If the function is continuous in the parameter, we may try using calculus but we still need to check boundary conditions.  The question of optimization is important and a field of study in of itself.
+
+Note: Since the likelihood function often involves products and exponents it is often easier to maximize the log of the likelihood.  This is because the log function is a monotonic increasing function.  That is, if $x_{1}>x_{2}$ then $log(x_{1})>log(x_{2})$.  Thus
+$$log(L(\theta))=l(\theta)=log\left( \Pi_{i=1}^{n}f(X_{i}|\theta)  \right)=\sum_{i=1}^{n}log(f(X_{i}|\theta))$$
+
+### Example:  
+
+Suppose we have a discrete random variable with the following probability mass function:
+$$
+\begin{array}{c|c|c|c|c} 
+x & 0 & 1 & 2 & 3 \\ \hline \\ f(x|\theta) & {2 \theta \over 3} & {\theta \over 3} & {2 (1 - \theta) \over 3} & {(1- \theta) \over 3}
+\end{array} 
+$$
+for $0 \leq \theta \leq 1$.
+
+Find the method of moments estimator for this problem.
+
+$$E(X)=0*\left( {2 \theta \over 3} \right) +1*\left( { \theta \over 3} \right)+2*\left( {2 (1- \theta) \over 3} \right)+3*\left( {(1 - \theta ) \over 3} \right)=\bar{X}$$
+
+simplifying
+$$\hat{\theta} +4(1- \hat{\theta})+3(1- \hat{\theta})=3\bar{X}$$
+$$-6\hat{\theta}=3\bar{X}-7$$
+$$\hat{\theta}={(7-3\bar{X}) \over 6}$$
+
+The maximum likelihood estimate is derived by finding the likelihood function and then maximizing with respect to $\theta$.  The likelihood function is
+$$L(\theta)= \left( {\left(X_{0}+X_{1}+X_{2}+X_{3} \right)! \over X_{0}!X_{1}!X_{2}!X_{3}!} \right) \left( {2 \theta \over 3} \right)^{X_{0}}\left( { \theta \over 3} \right)^{X_{1}}\left( {2 (1- \theta) \over 3} \right)^{X_{2}}\left( {(1 - \theta ) \over 3} \right)^{X_{3}}$$
+where $X_{0}$ is the number of zero values in the data. 
+
+This is a multinomial because  
+1. The random process is repeated n times,  
+2. Each trial has 4 possible outcomes,  
+3. The probability of each outcome stays constant from trial to trial, and  
+4. The outcome of each trial is independent of the others.  
+
+The binomial is a special case of the multinomial.  
+
+It will be easier to maximize the log-likelihood, notice we drop the first term since it does not involve $\theta$.
+
+$$l(\theta)=X_{0}log(2/3)+X_{0}log(\theta)+X_{1}log(1/3)+X_{1}log(\theta)+X_{2}log(2/3)+X_{2}log(1-\theta)+X_{3}log(1/3)+X_{3}log(1-\theta)$$
+
+Since the likelihood is a continuous function of $\theta$, we will use calculus to find the maximum.
+$${\partial l \over \partial \theta} = {X_{0} \over \theta}+{X_{1} \over \theta}-{X_{2} \over (1- \theta)}-{X_{3} \over (1-\theta)}=0$$
+$$(X_{0}+X_{1})(1-\theta)=(X_{2}+X_{3})(\theta)$$
+$$\hat{\theta}={ (X_{0}+X_{1}) \over (X_{0}+X_{1}+X_{2}+X_{3}) }$$
+
+At the endpoints, the likelihood function is zero and the likelihood function is non-negative, so we found a maximum.  
+
+### Data  
+
+Now suppose we observe the following data:  
+
+(3,0,2,1,3,2,1,0,2,1)
+
+The summary of the data is:
+
+```{r}
+(Less31Data<-c(3,0,2,1,3,2,1,0,2,1))
+(TabLess31Data<-table(Less31Data))
+(Thetahat<-(TabLess31Data[1]+TabLess31Data[2])/sum(TabLess31Data))
+```  
+
+Thus our maximum likelihood estimate of $\theta$ is 0.5 from this data.
+
+We could have used R and done everything numerically.
+
+```{r eval=FALSE}
+library(fastR)
+```  
+
+```{r}
+loglik<-function(theta,x){
+    (x[1]+x[2])*log(theta)+(x[3]+x[4])*log(1-theta)
+}
+nlmax(loglik,p=.25,x=TabLess31Data)
+```  
+
+A plot of the log-likelihood revels that the function is flat for a wide range of $\theta$ values.
+
+```{r}
+plot(seq(0,1,.01),loglik(seq(0,1,.01),TabLess31Data),
+     type="l",xlab=expression(theta),ylab="log-likelihood")
+abline(v=.5)
+```
+
+Just for interest, let's plot the likelihood.  We will drop the terms that don't have $\theta$ in them as there are only constants.
+
+```{r}
+lik<-function(theta,x){
+    (2*theta/3)^x[1]*(theta/3)^x[2]*((2/3)*(1-theta))^x[3]*((1/3)*(1-theta))^x[4]
+    }
+```
+
+
+```{r}
+plot(seq(0,1,.01),lik(seq(0,1,.01),TabLess31Data),
+     type="l",xlab=expression(theta),ylab="Likelihood")
+abline(v=.5)
+```
+As a comparison, our method of moments estimate is
+
+```{r}
+-((3*mean(Less31Data)-7)/6)
+```
+
+### Practice
+
+The angle $\theta$ at which electrons are emitted in muon decay has the distribution  
+$$f(x|\alpha)={(1+\alpha x) \over 2}$$
+with $-1 \leq x \leq 1$ and $-1 \leq \alpha \leq 1$ with $x=cos \theta$ and $\alpha$ related to polarization.
+
+1. Find the method of moments estimator for $\alpha$.  
+2. Find the maximum likelihood estimator for $\alpha$.
+
+## Likelihood Ratio Tests {#LRT} 
+
+### Objective   
+
+Find and evaluate likelihood ratio tests, both analytically and numerically.  
+
+### Introduction  
+
+In the last chapter we found computational methods to conduct hypothesis testing.  We used empirical p-values if we had a distribution and permutation methods if our null hypothesis was equality of two methods.  Prior to the modern advance of computers, we needed analytic methods to conduct general hypothesis testing.  The method developed is introduced in this section and is called the likelihood ratio test.  Note that computational methods also aid likelihood ratio tests as we often have to perform non-linear optimization.  The likelihood ration test gives us a test statistic that we can use in our empirical p-value methods.  As you may remember, we just came up with test statistics last chapter without any formal reasoning.  The likelihood ratio test statistic tends to be more powerful than other test statistics and in this sense is best.
+
+Warning: The later portion of this section of the book gets involved and detailed.  There is also substantial code.  The important idea here is to show the power of the likelihood ratio test.  It can be used to test fairly complicated hypothesis tests.  It is worth the time to at least try to follow the main idea in the author's example of the Yellowstone eruption data.
+
+### Review
+
+From last class we had the problem
+
+$$
+\begin{array}{c|c|c|c|c} 
+x & 0 & 1 & 2 & 3 \\ \hline \\ f(x|\theta) & {2 \theta \over 3} & {\theta \over 3} & {2 (1 - \theta) \over 3} & {(1- \theta) \over 3}
+\end{array} 
+$$
+for $0 \leq \theta \leq 1$.
+
+We found the maximum likelihood estimator to be
+$$\hat{\theta}={ (X_{0}+X_{1}) \over (X_{0}+X_{1}+X_{2}+X_{3}) }$$ 
+
+The reason that maximum likelihood estimators are so popular is that asymptotically the maximum likelihood estimator will be unbiased and consistent.  In addition, it will be approximately normal.  Finally, the maximum likelihood estimator is invariant.  That is, if $\hat{\theta}$ is an maximum likelihood estimator of $\theta$, then for any function $\tau(\theta)$, the maximum likelihood estimator of $\tau(\theta)$, denoted $\widehat{\tau(\theta)}$, is $\tau(\hat{\theta})$.  That is convenient.  
+
+Back to our problem, the maximum likelihood estimator of ${2 \theta \over 3}$ is ${2 \hat{\theta} \over 3}$.
+
+### Hypothesis Testing  
+
+
+```{r eval=FALSE}
+library(fastR)
+```
+
+```{r echo=FALSE,results='hide'}
+set.seed(4537)
+Less32<-as.vector(rmultinom(1,20,c(1/3,1/6,1/3,1/6)))
+Less32Data<-sample(rep(c(0,1,2,3),Less32))
+```  
+
+Suppose we collected a sample of size 20 and we think the model above is appropriate, in fact we believe that $\theta$ is 0.5.  Thus we want to perform a hypothesis test of the following:
+$$H_{0}: \theta = 0.5$$
+$$H_{a}: \theta \neq 0.5$$
+
+Next we need to develop a test statistic.  In the next section, we will use a likelihood ratio test, but for this section let's use an empirical p-value from the last chapter.  
+
+We know that the maximum likelihood estimator is 
+
+$$\hat{\theta}={ (X_{0}+X_{1}) \over (X_{0}+X_{1}+X_{2}+X_{3}) }$$ 
+
+so I will use a test statistic of
+
+$$\theta_{0}-\hat{\theta}=0.5-\hat{\theta}$$ 
+
+I just made this one up, but it seems reasonable that if the null hypothesis is true, then maximum likelihood estimator should be close to 0.5.
+
+Now we collect data, here it is
+
+```{r}
+Less32Data
+```
+
+In table form, it is
+```{r}
+table(Less32Data)
+```   
+The maximum likelihood estimate is:
+```{r}
+Less32tab<-table(Less32Data)
+(Less32tab[1]+Less32tab[2])/sum(Less32tab)
+```  
+
+The test statistic is
+
+```{r}
+(Less32teststat<-.5-(Less32tab[1]+Less32tab[2])/sum(Less32tab))
+```
+
+If the null is true, then we would have a multinomial distribution with probabilities of 1/3, 1/6, 1/3, 1/6.  We will sample from this distribution and calculate the test statistic.  
+
+```{r results='hide',echo=FALSE}
+set.seed(6529)
+```
+
+```{r}
+teststat<-apply(rmultinom(10000,20,c(1/3,1/6,1/3,1/6)),2,function(x)(.5-(x[1]+x[2])/sum(x)))
+```  
+
+A plot of the values
+
+```{r}
+histogram(teststat)
+```  
+
+It looks normal.  The empirical p-value is
+```{r}
+sum(abs(teststat)>=Less32teststat)/10000
+```  
+
+The fastR package has a function, `statTally` that makes this process a little easier.
+
+```{r results='hide',echo=FALSE}
+set.seed(6529)
+```
+
+```{r}
+rdata<-rmultinom(10000,20,c(1/3,1/6,1/3,1/6))
+mystat<-function(x){
+    .5-(x[1]+x[2])/sum(x)
+}
+mystat(Less32tab)
+statTally(Less32tab,rdata,mystat,q = c(.01,.05,.1,0.5, 0.9, 0.95),alt="two.sided")
+```   
+
+
+### Likelihood Ratio Test  
+
+The idea behind the likelihood ratio test is that for a test statistic we use a ratio of the likelihood under the null hypothesis to the likelihood using the maximum likelihood estimate.  The idea is that if the null hypothesis is true, then the ratio of these two likelihoods should be close to one.  This test statistic is advantageous because the asymptotic distribution is known and the test tends to be more powerful than other test statistics.  
+
+Continuing with our problem from above.  The hypothesis test is
+$$H_{0}: \theta = 0.5$$
+$$H_{a}: \theta \neq 0.5$$
+The likelihood ratio, our test statistic, is
+$$\lambda={L(\theta_{0}) \over L(\hat{\theta})}$$
+where  $\theta_{0}=0.5$ and $\hat{\theta}=0.45$
+
+The likelihood function is
+$$L(\theta)= \left( {\left(X_{0}+X_{1}+X_{2}+X_{3} \right)! \over X_{0}!X_{1}!X_{2}!X_{3}!} \right) \left( {2 \theta \over 3} \right)^{X_{0}}\left( { \theta \over 3} \right)^{X_{1}}\left( {2 (1- \theta) \over 3} \right)^{X_{2}}\left( {(1 - \theta ) \over 3} \right)^{X_{3}}$$
+
+We will write a function in R to calculate the likelihood, note we made use of equation 5.3 of the text:
+
+```{r}
+like<-function(x,theta){
+    choose(sum(x),x[1])*choose(sum(x)-x[1],x[2])*choose(sum(x)-x[1]-x[2],x[3])*(2*theta/3)^(x[1])*(theta/3)^(x[2])*(2*(1-theta)/3)^(x[3])*((1-theta)/3)^(x[4])
+}
+```
+
+We know that $-2ln(\lambda) \sim \chi^{2}(1)$
+
+The degrees of freedom comes from that under the unrestricted model there is one parameter that needs to be estimated, $\theta$, and under the null no parameters.
+
+Our p-value is
+
+```{r}
+1-pchisq(-2*log(like(Less32tab,.5)/like(Less32tab,.45)),1)
+```  
+
+That is we fall to reject the null hypothesis.
+
+### Practice
+
+Let $X$ be the time to failure of a computer in years, an exponential model.  
+
+1. Find the maximum likelihood estimator of $\lambda$.  
+
+2.Using a likelihood ratio test, test the hypothesis
+ 
+$$H_{0}: \lambda = 10$$
+$$H_{a}: \lambda \neq 10$$
+
+for the data
+
+```{r results='hide',echo=FALSE}
+set.seed(1693)
+```
+
+```{r echo=FALSE,results='hide'}
+(lesson32a<-rexp(7,10))
+```
+
+```{r}
+lesson32a
+```
+
+## Goodness of Fit Testing  {#L27}
+
+### Objectives  
+
+
+1. Setup and conduct a goodness of fit test using both the Pearson chi-squared statistic and the likelihood ratio test.  This includes binning and collapsing cells in an appropriate manner  
+2.  Give a bound on the p-value from a Pearson chi-squared or likelihood ratio statistics  
+3.  Generate empirical p-values for the Pearson chi-squared or likelihood ratio statistics
+
+### Introduction  
+
+In the estimation problem, either method of moments or maximum likelihood, we needed a model, a parent population distribution, to derive our results.  Earlier we had talked about using q-q plots and density estimation to help with the problem of model selection but now we will do it as a hypothesis test.  The problem we are trying to solve is to verify that the assumed model is correct.  We will do this as a hypothesis test, but in advance be warned that this method has many potential problems.  
+
+In this section, we are testing the idea that the data comes a specified probability model.  To do this, we bin the data.  We make it discrete.  In the case of a multinomial problem, this is already done for us.  For continuous data, we have to make it discrete by selecting bins.  The choice of number of bins and bin size, similar to histograms, is subjective and does have an impact on the results.  There are some heuristics to guide but these are often just best guesses.  
+
+### Review
+
+```{r eval=FALSE}
+library(lattice)
+```  
+
+```{r echo=FALSE,results='hide'}
+set.seed(4537)
+Less32<-as.vector(rmultinom(1,20,c(1/3,1/6,1/3,1/6)))
+Less32Data<-sample(rep(c(0,1,2,3),Less32))
+``` 
+
+Continuing with the previous problem where we had in \@ref(LRT)
+
+
+$$
+\begin{array}{c|c|c|c|c} 
+x & 0 & 1 & 2 & 3 \\ \hline \\ f(x|\theta) & {2 \theta \over 3} & {\theta \over 3} & {2 (1 - \theta) \over 3} & {(1- \theta) \over 3}
+\end{array} 
+$$
+for $0 \leq \theta \leq 1$.
+
+We found the maximum likelihood estimator to be
+$$\hat{\theta}={ (X_{0}+X_{1}) \over (X_{0}+X_{1}+X_{2}+X_{3}) }$$ 
+
+Next we performed a likelihood ratio test of he hypothesis
+$$H_{0}: \theta = 0.5$$
+$$H_{a}: \theta \neq 0.5$$
+
+The likelihood ratio, our test statistic, is
+$$\lambda={L(\theta_{0}) \over L(\hat{\theta})}$$
+where  $\theta_{0}=0.5$ and $\hat{\theta}=0.45$.  This is because for our data  
+
+```{r}
+table(Less32Data)
+```   
+
+the maximum likelihood estimate is 0.45.
+
+The likelihood function is
+$$L(\theta)= \left( {\left(X_{0}+X_{1}+X_{2}+X_{3} \right)! \over X_{0}!X_{1}!X_{2}!X_{3}!} \right) \left( {2 \theta \over 3} \right)^{X_{0}}\left( { \theta \over 3} \right)^{X_{1}}\left( {2 (1- \theta) \over 3} \right)^{X_{2}}\left( {(1 - \theta ) \over 3} \right)^{X_{3}}$$
+
+We know that $-2ln(\lambda) \sim \chi^{2}(1)$
+
+The degrees of freedom are determined by counting the free parameters under the unrestricted model, in this case one $\theta$, and the number of free parameters under the null, no free parameters.
+
+Our p-value was 0.6545
+
+The obvious question at this point is whether the probability mass function specified above is the correct model.
+
+### Goodness of Fit Test  
+
+
+#### Hueristic Test  
+
+We want to test the idea that our data comes from the distribution
+
+$$
+\begin{array}{c|c|c|c|c} 
+x & 0 & 1 & 2 & 3 \\ \hline \\ f(x|\theta) & {2 \theta \over 3} & {\theta \over 3} & {2 (1 - \theta) \over 3} & {(1- \theta) \over 3}
+\end{array} 
+$$
+for $0 \leq \theta \leq 1$.
+
+To proceed we need to know if we also have a hypothesized value for $\theta$ as this will impact our test statistic.  We will attack the problem in both cases so to start let's assume that we also believe that $\theta = 0.5$.  Thus we want to test if our data comes from the distribution
+
+$$
+\begin{array}{c|c|c|c|c} 
+x & 0 & 1 & 2 & 3 \\ \hline \\ f(x|\theta) & {1 \over 3} & {1 \over 6} & {1 \over 3} & {1 \over 6}
+\end{array} 
+$$
+
+Next we need a test statistic.  Again, just making one up, if the null hypothesis were true and the data came from the distribution above, the number of 0's should equal the number of 2's.  My test statistic is the difference between the number of 0's and 2's.
+
+Since I don't know the distribution of this test statistic, I will use an empirical p-value.  We will generate random samples from a multinomial and calculate the test statistic.
+
+```{r echo=FALSE,results='hide'}
+set.seed(4508)
+```  
+
+```{r cache=TRUE}
+teststat<-apply(rmultinom(10000,20,c(1/3,1/6,1/3,1/6)),2,function(x)(x[1]-x[3]))
+```  
+
+A plot of the values
+
+```{r}
+histogram(teststat)
+```  
+
+This is our data  
+
+```{r}
+Less32Data
+table(Less32Data)
+```
+
+The observed value of the test statistic is
+
+```{r}
+table(Less32Data)[1]-table(Less32Data)[3]
+```  
+
+And our empirical p-value is 
+
+```{r}
+sum(abs(teststat)>=1)/10000
+```  
+
+Thus we have no reason to reject the hypothesis that our data comes the distribution above.  We do have to worry about the Type II error which could be extremely high for this test.
+
+### Improved Test  
+
+The test we developed above does not use all the information in the cells.  An improved test statistic would use all four cells.  To do this consider what the expected cell count would be in each cell if the null hypothesis were true.  In other words, if the distribution were really
+
+
+$$
+\begin{array}{c|c|c|c|c} 
+x & 0 & 1 & 2 & 3 \\ \hline \\ f(x|\theta) & {1 \over 3} & {1 \over 6} & {1 \over 3} & {1 \over 6}
+\end{array} 
+$$
+
+We would expect $20* \left( {1 \over 3} \right)$ or ${20 \over 3}$ zeros in the first cell.  Similar calculations can be done for the other cells.  We call these values the expected cell counts.  We could come up with several test statistics that use all the cells, such as
+$$\sum_{i=1}^{n}|o_{i}-e_{i}|$$
+$$\sum_{i=1}^{n}(o_{i}-e_{i})^{2}$$
+$$\sum_{i=1}^{n}{(o_{i}-e_{i})^{2} \over e_{i}}$$
+
+where $o_{i}$ is the observed cell count and $e_{i}$ is the expected cell count under the null hypothesis.  
+
+The problem again is knowing the distribution of these test statistics.  We could use empirical p-values such as we did above.  However, the last test statistics is called the Pearson chi-squared statistics and asymptotically has a chi-squared distribution with $c-1$ degrees of freedom, where $c$ is the number of cells.  
+
+First let's calculate an empirical p-value using the Pearson chi-squared statistic and then compare it with the calculated value from the asymptotic distribution.
+
+```{r cache=TRUE}
+(e<-20*c(1/3,1/6,1/3,1/6))
+set.seed(8913)
+teststat<-apply(rmultinom(10000,20,c(1/3,1/6,1/3,1/6)),2,function(x)(sum((x-e)^2/e)))
+obsstat<-sum((table(Less32Data)-e)^2/e)
+sum(teststat>=obsstat)/10000
+```
+
+The calculated value is 
+```{r}
+1-pchisq(obsstat,3)
+```  
+
+Both of these are close to each other.  The power of this test is higher than the previous heuristic test statistic we used.
+
+#### Likelihood Ratio Goodness of Fit Test  
+
+We could also test the hypothesis using a likelihood ratio test.  The hypothesis would be
+$$H_{0}: (\pi = (1/3,1/6,1/3,1/6))$$
+$$H_{a}: \pi_{i} \geq 0 \mbox{ and } \sum_{i} \pi_{i}=1$$
+
+Where $\pi_{i}$ are the cell probabilities.  The likelihood ratio test is
+
+$$\lambda = {L(H_{0}) \over L(H_{a})}$$
+
+Under the alternative, we would maximize the likelihood by estimating each of the cell probabilities of a multinomial.  This is a constrained optimization problem as the cell probabilities must add up to one.  The maximum likelihood estimators of the cell probabilities are
+
+$${o_{i} \over n}$$
+
+Here $o_{i}$ is what we have been calling $n_{i}$ in previous sections.
+
+Thus the likelihood ratio is
+
+$$\lambda =\left( {\left( {1 \over 3} \right)  \over \left( {o_{0} \over n}\right) } \right)^{o_{0}}\left( {\left( {1 \over 6} \right)  \over \left( {o_{1} \over n}\right) } \right)^{o_{1}} \left( {\left( {1 \over 3} \right)  \over \left( {o_{2} \over n}\right) } \right)^{o_{2}}\left( {\left( {1 \over 6} \right)  \over \left( {o_{3} \over n}\right) } \right)^{o_{3}}$$
+
+The notation is a little different in that most books would use $o_{1}$ for the first cell but we are using $o_{0}$ since the first cell is the number of zeros.  
+
+Note that $e_{i}=n*\pi_{i}$ so the likelihood statistic could be written
+
+$$\lambda =\left( { e_{0}  \over o_{0}} \right)^{o_{0}}\left( { e_{1}  \over o_{1}} \right)^{o_{1}}\left( { e_{2}  \over o_{2}} \right)^{o_{2}}\left( { e_{3}  \over o_{3}} \right)^{o_{3}}$$
+
+The distribution of $-2log \lambda$ is known to be a chi-squared with 3 degrees of freedom.
+$$-2log(\lambda)=2 \sum_{i}o_{i}log \left({ o_{i}  \over e_{i}} \right) $$
+
+```{r}
+2*sum(table(Less32Data)*log(table(Less32Data)/e))
+1-pchisq(2*sum(table(Less32Data)*log(table(Less32Data)/e)),3)
+```  
+
+This is similar to the Pearson chi-squared test.  
+
+### $\theta$ Unknown  
+
+In this case we have to estimate $\theta$ using maximum likelihood.  Thus under the null hypothesis, the estimated cell probabilities are 
+```{r}
+c(2*.45/3,.45/3,2*(1-.45)/3,(1-.45)/3)
+```
+
+The likelihood ratio test is
+
+```{r}
+(e2<-20*c(2*.45/3,.45/3,2*(1-.45)/3,(1-.45)/3))
+2*sum(table(Less32Data)*log(table(Less32Data)/e2))
+1-pchisq(2*sum(table(Less32Data)*log(table(Less32Data)/e2)),2)
+```  
+
+There are 2 degrees of freedom because we have three free parameters in the alternative hypothesis and one free parameter in the null hypothesis.  
+
+Using a Pearson chi-squared statistic, we get
+
+```{r}
+(teststat2<-sum((table(Less32Data)-e2)^2/e2))
+1-pchisq(teststat2,2)
+```  
+
+This p-value tends to be anti-conservative and thus too small.  Some people like to be conservative and use 3 degrees of freedom.
+
+```{r}
+1-pchisq(teststat2,3)
+```  
+
+In this case it does not change our conclusion.
+
+### Practice 
+
+Try testing a complex hypothesis such as for the problem we have been working, test:
+
+$$H_{0}: \pi_{0}=\pi_{2} \mbox{ and } \pi_{1}=\pi_{3}$$
+$$H_{0}: \pi_{0}\neq \pi_{2} \mbox{ or } \pi_{1}\neq \pi_{3}$$
+
+Try testing a goodness of fit for a continuous distribution.  Test that the following data comes from an exponential distribution.
+
+```{r echo=FALSE,results='hide'}
+set.seed(1693)
+(lesson32a<-rexp(7,10))
+```
+
+```{r}
+lesson32a
+```  
+
+### Solution
+
+First, seven data points is small and thus we are off to a weak start.  We don't want empty cells and would like at least 4 or 5 values per cell.  This data does not support it so we will make our best attempt but we should already suspect that this test will not have much power.
+
+Our null hypothesis is that the data comes from an exponential distribution.  The alternative is that it does not.  This is a large set of alternatives and thus another reason to believe we will not have much power.
+
+Let's bin the data.  Since we only have 7 data points, I will pick three bins.
+
+```{r}
+cutpoints<-c(0,.1,.2,Inf)
+bin.data<-cut(lesson32a,cutpoints)
+```
+
+Notice that since the domain of an exponential is all non-negative real numbers, we used infinite in our bins.
+
+Our estimate of $\theta$ is ${1 \over \bar{x}}$
+
+```{r}
+mle<-1/mean(lesson32a)
+```
+
+Now to find the expected number of values in each cell, we need the probability of being in the cell from an exponential.
+
+```{r}
+e<-rep(0,3)
+e[1]<-pexp(cutpoints[2],mle)*7
+e[2]<-(pexp(cutpoints[3],mle)-pexp(cutpoints[2],mle))*7
+e[3]<-(1-pexp(cutpoints[3],mle))*7
+```
+
+Now the table of values
+
+```{r}
+o<-table(bin.data)
+cbind(o=o,e=e)
+```
+
+The likelihood ratio test is
+
+```{r}
+(lrt<-2*sum(o*log(o/e)))
+```
+
+The degrees of freedom are tricky.  Under the unrestricted model, we have estimated 2 two parameters.  Under the null we have estimated 1.  This is anti-conservative to use 2-1 or 1 degree of freedom.  It makes the p-value too small.  So some people just use 2 degrees of freedom.  We will check both.
+
+```{r}
+1-pchisq(lrt,2)
+1-pchisq(lrt,1)
+```
+
+In both cases we fail to reject but the test does not have much power.
+
+If we used Pearson's test statistic we get:
+
+```{r}
+pearson<-sum((o-e)^2/e)
+1-pchisq(pearson,2)
+1-pchisq(pearson,1)
+```
+
+### Practice  
+
+Problem 5.21 in the book.
+
+## Two-way Tables  {#L28}
+
+### Objective
+
+Conduct and interpret hypothesis test for two-way tables
+
+### Background  
+
+We are going to move towards looking at two random variables.  The tools we have developed for parameter estimation and hypothesis testing will apply in this scenario as well.
+
+```{r eval=FALSE}
+library(fastR)
+```  
+
+```{r echo=FALSE,results='hide'}
+set.seed(4537)
+Less32<-as.vector(rmultinom(1,20,c(1/3,1/6,1/3,1/6)))
+Less32Data<-sample(rep(c(0,1,2,3),Less32))
+``` 
+
+### Review  
+
+To review, let's make a more complicated hypothesis test for a univariate case and review the key ideas.
+
+We want to test the following complex hypothesis:
+
+$$H_{0}: \pi_{0}=\pi_{2} \mbox{ and } \pi_{1}=\pi_{3}$$
+$$H_{0}: \pi_{0}\neq \pi_{2} \mbox{ or } \pi_{1}\neq \pi_{3}$$
+
+Again, for this problem the data is:
+
+```{r}
+(Less32tab<-table(Less32Data))
+```  
+
+The model for the distribution is
+
+$$
+\begin{array}{c|c|c|c|c} 
+x & 0 & 1 & 2 & 3 \\ \hline \\ f(x|\theta) & \pi_{0} & \pi_{1} & \pi_{2} & \pi_{3}
+\end{array} 
+$$
+for $0 \leq \theta \leq 1$.
+
+
+Now that the hypotheses are specified, we need to calculate the expected cell counts.  Under the null we need to calculate the maximum likelihood estimate.  Remember that the likelihood function is  
+
+$$L(H_{0})= \left( {\left(X_{0}+X_{1}+X_{2}+X_{3} \right)! \over X_{0}!X_{1}!X_{2}!X_{3}!} \right) \left( \pi_{0} \right)^{X_{0}} \left( \pi_{1} \right)^{X_{1}}\left( \pi_{2} \right)^{X_{2}}\left( \pi_{3} \right)^{X_{3}}$$
+
+Under the null hypothesis and also to keep the notation simple, use $\alpha$ to denote $\pi_{0}$ and $\pi_{2}$ and $\beta$ to denote $\pi_{1}$ and $\pi_{3}$ so the likelihood function is
+
+$$L(H_{0})= \left( {\left(X_{0}+X_{1}+X_{2}+X_{3} \right)! \over X_{0}!X_{1}!X_{2}!X_{3}!} \right) \left( \alpha \right)^{X_{0}} \left( \beta \right)^{X_{1}}\left( \alpha \right)^{X_{2}}\left( \beta \right)^{X_{3}}$$
+
+For our data this becomes
+
+$$L(H_{0})= K \left( \alpha \right)^{8} \left( \beta \right)^{1}\left( \alpha \right)^{7}\left( \beta \right)^{4}$$
+
+Where $K$ is the factorial which is simply a constant with respect to $\alpha$ and $\beta$.
+
+We know that $2 \alpha + 2 \beta = 1$ so the likelihood becomes
+
+$$L(H_{0})= K \left( \alpha \right)^{15} \left( 1/2 - \alpha \right)^{5}$$
+
+and then
+
+$$l(H_{0})= log(L(H_{0}))=log(K)+15log(\alpha)+5log( 1/2 - \alpha )$$
+
+We used a Lagrange multiplier indirectly by replacing $\beta$ with $1/2 - \alpha$.
+
+Maximizing by taking the derivative, setting equal to zero, and solving yields
+
+$$\hat{\alpha}={15 \over 40}$$
+$$\hat{\beta}={5 \over 40}$$
+
+The expected cell counts are
+
+```{r}
+e<-20*rep(c(15/40,5/40),2)
+```  
+
+Next we can use either a Pearson chi-squared statistic or likelihood ratio statistic to calculate the p-value.  Using the Pearson chi-squared, we get:
+
+```{r}
+1-pchisq(sum(((Less32tab-e)^2)/e),2)
+```  
+
+and using the likelihood ration test statistic, we get: 
+
+```{r}
+1-pchisq(2*sum(Less32tab*log(Less32tab/e)),2)
+```  
+
+There are two degrees of freedom because there are 3 free parameters under the alternative, remember the probabilities sum to one, and only one free parameter in the null hypothesis, again because $2 \alpha + 2 \beta = 1$.
+
+These p-values are anti-conservative but since we fail to reject there is no need to find the conservative p-value.
+
+The conservative p-values would be
+
+
+```{r}
+1-pchisq(sum(((Less32tab-e)^2)/e),3)
+```  
+
+
+```{r}
+1-pchisq(2*sum(Less32tab*log(Less32tab/e)),3)
+```  
+
+R also has a built-in function that does this for us but it is not that much of an advantage.
+
+```{r}
+chisq.test(Less32tab,p=e,rescale.p=TRUE)
+```
+
+
+### Introduction to RxC Tables
+
+For the final material in this area we will examine likelihood based statistics for use on R x C tables, we have two random variables with R rows and C columns.  We typically have discrete random variables and we want to know if there is a relationship between them.  Before looking into hypothesis testing, it is important to discuss the different methods to collect data.
+
+Consider the scenario where the State of Massachusetts is interested in the relationship between seat-belt use (yes or no) and outcome of crash (fatality, non-fatality).  They summarize the data in a 2x2 table with outcome of crash in the columns.  Now let’s look at different ways to collect the data.
+
+1.  The state police catalog all accidents on the turnpike for the next year classifying each by seat-belt use and result of crash.  The total sample size is random and each cell represents a Poisson random variable.  We will not analyze this type of data in this course.
+
+2.  The state police randomly sample 100 police reports of crashes on the turnpike and classify each.  This is a cross-sectional study with the total sample size fixed but each row and column is random.  Each cell is a random variable from a multinomial distribution and typically we would want to test if the two variables are independent.
+
+3.  Suppose police records for accidents involving fatalities were filed separately from the others.  The researchers randomly sample 50 records form accidents with fatalities and 50 records from accidents without fatalities.  This is a retrospective study where fatality is the dependent variable and has fixed size.  Each column, the variable of seat-belt use, associated with fatality are independent binomials and we could test if they are equal.  That is the probability of seat-belt use is equal for both fatalities and non-fatalities.
+
+4.  We could fix the row totals.  Suppose non-use of seat belts is rare so we sample 20 records without seat belts and 20 with seat belts.  This is a prospective study and we could test for independent binomials.  Most prospective studies apply the treatment and then observe the outcome.  Obviously in this scenario, we would not require drivers to drive without seat belts.
+
+### Example  
+
+Kennedy Assassination: 900 people were polled by Fox News in 2003 and asked their political affiliation and thoughts on whether the President Kennedy assassination was a conspiracy.  This is a cross-sectional study.  The data is as follows
+
+```{r}
+Kennedy=rbind(Dem=c(42,309,31),Rep=c(64,246,46),Other=c(20,115,27))
+colnames(Kennedy)=c("Know All Facts","Some Facts Withheld","Not Sure")
+Kennedy
+```  
+
+The hypothesis test is
+
+$H_{0}: \mbox{Party Affiliation is independent of Conspiracy Views}$  
+
+$H_{a}: \mbox{Not Independent}$  
+
+Some notation, let $o_{ij}$ be the observed cell count in the cell in row $i$ and column $i$; $n_{i}=\sum_{j}o_{ij}$ is the row total of row $i$; $n_{j}=\sum_{i}o_{ij}$ is the column total of column $j$; the total observations $n=\sum_{i}\sum_{j}o_{ij}$; $\hat{\pi}_{ij}=n_{ij}/n$ is the estimated probability of cell $ij$ or similarly the estimated joint probability $P(X=i,Y=j)$;and $\hat{\pi}_{j}=\sum_{i}n_{ij}/n=n_{j}/n$ is the estimated marginal probability $P(Y=j)$.
+
+If the variables are independent, then $e_{ij}=n*\hat{\pi}_{i}*\hat{\pi}_{j}$.  This comes from the null hypothesis that assumes independence and thus that joint probabilities are the product of marginal probabilities as well maximum likelihood estimation of marginal probabilities using the constraint that the sum of the column or row marginal probabilities are one.
+
+We now can generate a Pearson chi-squared or likelihood ratio test.  First we calculate the expected cell counts under the null hypothesis.
+
+```{r}
+(row.sum<-apply(Kennedy,1,sum))
+(col.sum<-apply(Kennedy,2,sum))
+sum(Kennedy)
+(e<-outer(row.sum,col.sum)/900)
+```
+
+The Pearson chi-squared test is
+
+```{r}
+1-pchisq(sum((Kennedy-e)^2/e),4)
+```  
+
+And the likelihood ratio test is
+
+```{r}
+1-pchisq(2*sum(Kennedy*log(Kennedy/e)),4)
+```
+
+There are four degrees of freedom because under the null hypothesis we are estimating the marginal probabilities.  There are three marginal probabilities for the rows but there are only two that are free since the sum of the probabilities must be one.  The same for the columns.  Thus we are estimating 4 parameters under the null.  Under the alternative there are nine cell probabilities but again only eight are free.  The difference between 8 and 4 is 4.  In general for a table of size I x J, under the null there are (I-1)+(J-1) free parameters and under the alternative there are IJ-1 free parameters.  Thus (IJ - 1)-(I-1)-(J-1)=(I-1)(J-1) degrees of freedom.
+
+Of course R has a command to automatic this for us.
+
+```{r}
+chisq.test(Kennedy)
+```
+
+We can also examine the expected and observed counts using the `xchisq` function in the `fastR` package.
+
+```{r}
+xchisq.test(Kennedy)
+```  
+
+Notice that fewer democrats are not sure and more republicans are sure we know all the facts than expected under independence.  These are the primary reasons for the rejection of the null hypothesis.  
+
+Using the package `vcd` we can visualize the results.
+
+```{r eval=FALSE}
+library(vcd)
+```  
+
+```{r}
+mosaic(Kennedy,shade=T)
+```
+
+From this visual analysis, the republicans that claim we know all the facts are the significant reason for rejection of the null hypothesis.  
+
+
+### Second Example  
+
+Consider a study where a researcher is interested in how different wards vote for an issue.  The researcher selects 200 people at random from each ward and asks if the will vote for or against the ballot measure.  The data are:
+
+```{r}
+BillA=rbind(Ward1=c(76,124),Ward2=c(53,147),Ward3=c(59,141),Ward4=c(48,152))
+colnames(BillA)=c("In Favor","Not in Favor")
+BillA
+```
+
+The hypotheses are:
+
+$H_{0}: \pi_{1}=\pi_{2}=\pi_{3}=\pi_{4}$  
+
+$H_{a}: \mbox{At least one different}$
+
+where $\pi_{i}$ is the proportion in Ward $i$ in favor of the measure.  
+
+Next we need to calculate the expected cell counts.  If the probabilities are equal, then the estimate of proportion in favor is $\sum_{i}{o_{i1} \over n}$ or ${236 \over 800}$.  Thus the expected cell counts in favor are $200*{236 \over 800}$ or 59.
+
+
+The Pearson chi-squared test is 
+
+```{r}
+(e2<-cbind(rep(59,4),rep(141,4)))
+(sum((BillA-e2)^2/e2))
+1-pchisq((sum((BillA-e2)^2/e2)),3)
+```
+
+There are three degrees of freedom because under the alternative there are 4 free parameters and under the null only one.  
+
+Or using R
+
+```{r}
+chisq.test(BillA)
+xchisq.test(BillA)
+mosaic(BillA,shade=T)
+prop.test(BillA[,1],rep(200,4))
+pairwise.prop.test(BillA[,1],rep(200,4),p.adju="fdr")
+```
+
+It appears that Ward 1 has a higher proportion in favor of the measure.  The last command does a two-sample proportion test to determine which ward is different.  There is also a correction since we are doing 6 tests.  Again, the results support that Ward 1 is different from Ward 2 and Ward 4.
+
+Note that if did not pay attention to the data collection and ran the problem as if both the row and column total were random, we would get the same result. 
+
+```{r}
+(row.sum<-apply(BillA,1,sum))
+(col.sum<-apply(BillA,2,sum))
+sum(BillA)
+(e3<-outer(row.sum,col.sum)/800)
+```
+
+with the p-value
+
+```{r}
+1-pchisq(sum((BillA-e3)^2/e3),3)
+```
+
+The answer is the same.  A nice coincidence.  

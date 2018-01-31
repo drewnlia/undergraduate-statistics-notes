@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Notes for Teaching an Undergraduate Statistics Using fastR</title>
+  <meta name="description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Notes for Teaching an Undergraduate Statistics Using fastR" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book." />
+  <meta name="github-repo" content="BawCOS/undergraduate-statistics-notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Notes for Teaching an Undergraduate Statistics Using fastR" />
+  
+  <meta name="twitter:description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book." />
+  
+
+<meta name="author" content="Bradley Warner">
+
+
+<meta name="date" content="2018-01-30">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="L7.html">
+<link rel="next" href="L9.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Notes for Stats Course</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="who-is-this-book-for.html"><a href="who-is-this-book-for.html"><i class="fa fa-check"></i><b>0.1</b> Who is this book for?</a></li>
+<li class="chapter" data-level="0.2" data-path="book-structure-and-how-to-use-it.html"><a href="book-structure-and-how-to-use-it.html"><i class="fa fa-check"></i><b>0.2</b> Book Structure and How to Use It</a></li>
+<li class="chapter" data-level="0.3" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>0.3</b> Prerequisites</a></li>
+<li class="chapter" data-level="0.4" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>0.4</b> Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="Chpt1.html"><a href="Chpt1.html"><i class="fa fa-check"></i><b>1</b> Summarizing Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="L1.html"><a href="L1.html"><i class="fa fa-check"></i><b>1.1</b> Admin and Course Introduction</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="L1.html"><a href="L1.html#objectives"><i class="fa fa-check"></i><b>1.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.1.2" data-path="L1.html"><a href="L1.html#in-class-work"><i class="fa fa-check"></i><b>1.1.2</b> In Class Work</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="Les2.html"><a href="Les2.html"><i class="fa fa-check"></i><b>1.2</b> Summarizing Univariate Data</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="Les2.html"><a href="Les2.html#objectives-1"><i class="fa fa-check"></i><b>1.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.2.2" data-path="Les2.html"><a href="Les2.html#intro-material"><i class="fa fa-check"></i><b>1.2.2</b> Intro Material</a></li>
+<li class="chapter" data-level="1.2.3" data-path="Les2.html"><a href="Les2.html#data-collection"><i class="fa fa-check"></i><b>1.2.3</b> Data Collection</a></li>
+<li class="chapter" data-level="1.2.4" data-path="Les2.html"><a href="Les2.html#background"><i class="fa fa-check"></i><b>1.2.4</b> Background</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="L3.html"><a href="L3.html"><i class="fa fa-check"></i><b>1.3</b> Summarizing Multivariate Data</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="L3.html"><a href="L3.html#objectives-2"><i class="fa fa-check"></i><b>1.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.3.2" data-path="L3.html"><a href="L3.html#ideas-from-last-lesson"><i class="fa fa-check"></i><b>1.3.2</b> Ideas from last lesson</a></li>
+<li class="chapter" data-level="1.3.3" data-path="L3.html"><a href="L3.html#bivariate-data"><i class="fa fa-check"></i><b>1.3.3</b> Bivariate Data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Chpt2.html"><a href="Chpt2.html"><i class="fa fa-check"></i><b>2</b> Probability and Random Variables</a><ul>
+<li class="chapter" data-level="2.1" data-path="L4.html"><a href="L4.html"><i class="fa fa-check"></i><b>2.1</b> Random Variables</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="L4.html"><a href="L4.html#objectives-3"><i class="fa fa-check"></i><b>2.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.1.2" data-path="L4.html"><a href="L4.html#teminology"><i class="fa fa-check"></i><b>2.1.2</b> Teminology</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="L5.html"><a href="L5.html"><i class="fa fa-check"></i><b>2.2</b> Probability Rules</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="L5.html"><a href="L5.html#objectives-4"><i class="fa fa-check"></i><b>2.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.2.2" data-path="L5.html"><a href="L5.html#probability-general"><i class="fa fa-check"></i><b>2.2.2</b> Probability: General</a></li>
+<li class="chapter" data-level="2.2.3" data-path="L5.html"><a href="L5.html#counting"><i class="fa fa-check"></i><b>2.2.3</b> Counting</a></li>
+<li class="chapter" data-level="2.2.4" data-path="L5.html"><a href="L5.html#probability-equally-likely-events"><i class="fa fa-check"></i><b>2.2.4</b> Probability: Equally Likely Events</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="L6.html"><a href="L6.html"><i class="fa fa-check"></i><b>2.3</b> Inclusion-Exclusion, Conditional Probability</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="L6.html"><a href="L6.html#objectives-5"><i class="fa fa-check"></i><b>2.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.3.2" data-path="L6.html"><a href="L6.html#definitions"><i class="fa fa-check"></i><b>2.3.2</b> Definitions</a></li>
+<li class="chapter" data-level="2.3.3" data-path="L6.html"><a href="L6.html#problems"><i class="fa fa-check"></i><b>2.3.3</b> Problems</a></li>
+<li class="chapter" data-level="2.3.4" data-path="L6.html"><a href="L6.html#bayes-rule"><i class="fa fa-check"></i><b>2.3.4</b> Bayes Rule</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="L7.html"><a href="L7.html"><i class="fa fa-check"></i><b>2.4</b> Discrete Distributions</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="L7.html"><a href="L7.html#objectives-6"><i class="fa fa-check"></i><b>2.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.4.2" data-path="L7.html"><a href="L7.html#definitions-1"><i class="fa fa-check"></i><b>2.4.2</b> Definitions</a></li>
+<li class="chapter" data-level="2.4.3" data-path="L7.html"><a href="L7.html#practice"><i class="fa fa-check"></i><b>2.4.3</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="L8.html"><a href="L8.html"><i class="fa fa-check"></i><b>2.5</b> Introduction to Hypothesis Testing</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="L8.html"><a href="L8.html#objectives-7"><i class="fa fa-check"></i><b>2.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.5.2" data-path="L8.html"><a href="L8.html#hypotheses-testing"><i class="fa fa-check"></i><b>2.5.2</b> Hypotheses Testing</a></li>
+<li class="chapter" data-level="2.5.3" data-path="L8.html"><a href="L8.html#more-terms---errors"><i class="fa fa-check"></i><b>2.5.3</b> More terms - Errors</a></li>
+<li class="chapter" data-level="2.5.4" data-path="L8.html"><a href="L8.html#sample-size"><i class="fa fa-check"></i><b>2.5.4</b> Sample Size</a></li>
+<li class="chapter" data-level="2.5.5" data-path="L8.html"><a href="L8.html#complex-hypothesis"><i class="fa fa-check"></i><b>2.5.5</b> Complex Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="L9.html"><a href="L9.html"><i class="fa fa-check"></i><b>2.6</b> Mean and Variance of Discrete Random Variable</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="L9.html"><a href="L9.html#objectives-8"><i class="fa fa-check"></i><b>2.6.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.6.2" data-path="L9.html"><a href="L9.html#review"><i class="fa fa-check"></i><b>2.6.2</b> Review</a></li>
+<li class="chapter" data-level="2.6.3" data-path="L9.html"><a href="L9.html#problem"><i class="fa fa-check"></i><b>2.6.3</b> Problem</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="L10.html"><a href="L10.html"><i class="fa fa-check"></i><b>2.7</b> Discrete Joint Distributions</a><ul>
+<li class="chapter" data-level="2.7.1" data-path="L10.html"><a href="L10.html#objectives-9"><i class="fa fa-check"></i><b>2.7.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.7.2" data-path="L10.html"><a href="L10.html#example"><i class="fa fa-check"></i><b>2.7.2</b> Example</a></li>
+<li class="chapter" data-level="2.7.3" data-path="L10.html"><a href="L10.html#problem-1"><i class="fa fa-check"></i><b>2.7.3</b> Problem 1</a></li>
+<li class="chapter" data-level="2.7.4" data-path="L10.html"><a href="L10.html#problem-2"><i class="fa fa-check"></i><b>2.7.4</b> Problem 2</a></li>
+<li class="chapter" data-level="2.7.5" data-path="L10.html"><a href="L10.html#other"><i class="fa fa-check"></i><b>2.7.5</b> Other</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="L11.html"><a href="L11.html"><i class="fa fa-check"></i><b>2.8</b> Other Discrete Distributions</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="L11.html"><a href="L11.html#objectives-10"><i class="fa fa-check"></i><b>2.8.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.8.2" data-path="L11.html"><a href="L11.html#distributions"><i class="fa fa-check"></i><b>2.8.2</b> Distributions</a></li>
+<li class="chapter" data-level="2.8.3" data-path="L11.html"><a href="L11.html#examples"><i class="fa fa-check"></i><b>2.8.3</b> Examples</a></li>
+<li class="chapter" data-level="2.8.4" data-path="L11.html"><a href="L11.html#fishers-exact-test"><i class="fa fa-check"></i><b>2.8.4</b> Fisher’s Exact Test</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Chpt3.html"><a href="Chpt3.html"><i class="fa fa-check"></i><b>3</b> Continuous Distributions</a><ul>
+<li class="chapter" data-level="3.1" data-path="L12.html"><a href="L12.html"><i class="fa fa-check"></i><b>3.1</b> Uniform and Exponential Distribution</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="L12.html"><a href="L12.html#objectives-11"><i class="fa fa-check"></i><b>3.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.1.2" data-path="L12.html"><a href="L12.html#probability-density-function"><i class="fa fa-check"></i><b>3.1.2</b> Probability Density Function</a></li>
+<li class="chapter" data-level="3.1.3" data-path="L12.html"><a href="L12.html#work-problem-3.1a-including-finding-cdf."><i class="fa fa-check"></i><b>3.1.3</b> Work problem 3.1a including finding cdf.</a></li>
+<li class="chapter" data-level="3.1.4" data-path="L12.html"><a href="L12.html#transformation-problem"><i class="fa fa-check"></i><b>3.1.4</b> Transformation Problem</a></li>
+<li class="chapter" data-level="3.1.5" data-path="L12.html"><a href="L12.html#named-continuous-random-variables-uniform-and-exponential"><i class="fa fa-check"></i><b>3.1.5</b> Named Continuous Random Variables: Uniform and Exponential</a></li>
+<li class="chapter" data-level="3.1.6" data-path="L12.html"><a href="L12.html#additional-homework-problems"><i class="fa fa-check"></i><b>3.1.6</b> Additional Homework Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="L13.html"><a href="L13.html"><i class="fa fa-check"></i><b>3.2</b> Moments</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="L13.html"><a href="L13.html#objectives-12"><i class="fa fa-check"></i><b>3.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.2.2" data-path="L13.html"><a href="L13.html#review-1"><i class="fa fa-check"></i><b>3.2.2</b> Review</a></li>
+<li class="chapter" data-level="3.2.3" data-path="L13.html"><a href="L13.html#definitions-2"><i class="fa fa-check"></i><b>3.2.3</b> Definitions</a></li>
+<li class="chapter" data-level="3.2.4" data-path="L13.html"><a href="L13.html#practice-1"><i class="fa fa-check"></i><b>3.2.4</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="L14.html"><a href="L14.html"><i class="fa fa-check"></i><b>3.3</b> Generating Functions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="L14.html"><a href="L14.html#objectives-13"><i class="fa fa-check"></i><b>3.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.3.2" data-path="L14.html"><a href="L14.html#review-2"><i class="fa fa-check"></i><b>3.3.2</b> Review</a></li>
+<li class="chapter" data-level="3.3.3" data-path="L14.html"><a href="L14.html#moment-generating-functions"><i class="fa fa-check"></i><b>3.3.3</b> Moment Generating Functions</a></li>
+<li class="chapter" data-level="3.3.4" data-path="L14.html"><a href="L14.html#practice-2"><i class="fa fa-check"></i><b>3.3.4</b> Practice</a></li>
+<li class="chapter" data-level="3.3.5" data-path="L14.html"><a href="L14.html#transformations"><i class="fa fa-check"></i><b>3.3.5</b> Transformations</a></li>
+<li class="chapter" data-level="3.3.6" data-path="L14.html"><a href="L14.html#practice-3"><i class="fa fa-check"></i><b>3.3.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="L15.html"><a href="L15.html"><i class="fa fa-check"></i><b>3.4</b> Important Continous Distributions</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="L15.html"><a href="L15.html#objectives-14"><i class="fa fa-check"></i><b>3.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.4.2" data-path="L15.html"><a href="L15.html#normal"><i class="fa fa-check"></i><b>3.4.2</b> Normal</a></li>
+<li class="chapter" data-level="3.4.3" data-path="L15.html"><a href="L15.html#gamma"><i class="fa fa-check"></i><b>3.4.3</b> Gamma</a></li>
+<li class="chapter" data-level="3.4.4" data-path="L15.html"><a href="L15.html#weibull"><i class="fa fa-check"></i><b>3.4.4</b> Weibull</a></li>
+<li class="chapter" data-level="3.4.5" data-path="L15.html"><a href="L15.html#beta"><i class="fa fa-check"></i><b>3.4.5</b> Beta</a></li>
+<li class="chapter" data-level="3.4.6" data-path="L15.html"><a href="L15.html#problems-1"><i class="fa fa-check"></i><b>3.4.6</b> Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="L16.html"><a href="L16.html"><i class="fa fa-check"></i><b>3.5</b> Plots of Distributions</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="L16.html"><a href="L16.html#objectives-15"><i class="fa fa-check"></i><b>3.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.5.2" data-path="L16.html"><a href="L16.html#review-3"><i class="fa fa-check"></i><b>3.5.2</b> Review</a></li>
+<li class="chapter" data-level="3.5.3" data-path="L16.html"><a href="L16.html#background-1"><i class="fa fa-check"></i><b>3.5.3</b> Background</a></li>
+<li class="chapter" data-level="3.5.4" data-path="L16.html"><a href="L16.html#density-estimation"><i class="fa fa-check"></i><b>3.5.4</b> Density Estimation</a></li>
+<li class="chapter" data-level="3.5.5" data-path="L16.html"><a href="L16.html#practice-4"><i class="fa fa-check"></i><b>3.5.5</b> Practice</a></li>
+<li class="chapter" data-level="3.5.6" data-path="L16.html"><a href="L16.html#q-q-plots"><i class="fa fa-check"></i><b>3.5.6</b> Q-Q Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="L17.html"><a href="L17.html"><i class="fa fa-check"></i><b>3.6</b> Continuous Joint Distributions</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="L17.html"><a href="L17.html#objectives-16"><i class="fa fa-check"></i><b>3.6.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.6.2" data-path="L17.html"><a href="L17.html#background-2"><i class="fa fa-check"></i><b>3.6.2</b> Background</a></li>
+<li class="chapter" data-level="3.6.3" data-path="L17.html"><a href="L17.html#practice-5"><i class="fa fa-check"></i><b>3.6.3</b> Practice</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="Chpt4.html"><a href="Chpt4.html"><i class="fa fa-check"></i><b>4</b> Parameter Estimation and Testing</a><ul>
+<li class="chapter" data-level="4.1" data-path="L18.html"><a href="L18.html"><i class="fa fa-check"></i><b>4.1</b> Method of Moments</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="L18.html"><a href="L18.html#objectives-17"><i class="fa fa-check"></i><b>4.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.1.2" data-path="L18.html"><a href="L18.html#introduction"><i class="fa fa-check"></i><b>4.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.1.3" data-path="L18.html"><a href="L18.html#method-of-moment-estimates"><i class="fa fa-check"></i><b>4.1.3</b> Method of Moment Estimates</a></li>
+<li class="chapter" data-level="4.1.4" data-path="L18.html"><a href="L18.html#example-1"><i class="fa fa-check"></i><b>4.1.4</b> Example</a></li>
+<li class="chapter" data-level="4.1.5" data-path="L18.html"><a href="L18.html#practice-6"><i class="fa fa-check"></i><b>4.1.5</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="L19.html"><a href="L19.html"><i class="fa fa-check"></i><b>4.2</b> Estimates and Estimators</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="L19.html"><a href="L19.html#objectives-18"><i class="fa fa-check"></i><b>4.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.2.2" data-path="L19.html"><a href="L19.html#background-3"><i class="fa fa-check"></i><b>4.2.2</b> Background</a></li>
+<li class="chapter" data-level="4.2.3" data-path="L19.html"><a href="L19.html#estimator-as-a-random-variable"><i class="fa fa-check"></i><b>4.2.3</b> Estimator as a Random Variable</a></li>
+<li class="chapter" data-level="4.2.4" data-path="L19.html"><a href="L19.html#properties-of-estimators"><i class="fa fa-check"></i><b>4.2.4</b> Properties of Estimators</a></li>
+<li class="chapter" data-level="4.2.5" data-path="L19.html"><a href="L19.html#chebyshevs-inequality"><i class="fa fa-check"></i><b>4.2.5</b> Chebyshev’s Inequality</a></li>
+<li class="chapter" data-level="4.2.6" data-path="L19.html"><a href="L19.html#practice-7"><i class="fa fa-check"></i><b>4.2.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="L20.html"><a href="L20.html"><i class="fa fa-check"></i><b>4.3</b> Limit Theorems</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="L20.html"><a href="L20.html#objectives-19"><i class="fa fa-check"></i><b>4.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.3.2" data-path="L20.html"><a href="L20.html#introduction-1"><i class="fa fa-check"></i><b>4.3.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.3.3" data-path="L20.html"><a href="L20.html#parent-population-is-normal"><i class="fa fa-check"></i><b>4.3.3</b> Parent Population is Normal</a></li>
+<li class="chapter" data-level="4.3.4" data-path="L20.html"><a href="L20.html#parent-population-is-not-normal"><i class="fa fa-check"></i><b>4.3.4</b> Parent Population is not Normal</a></li>
+<li class="chapter" data-level="4.3.5" data-path="L20.html"><a href="L20.html#more-examples-of-the-clt"><i class="fa fa-check"></i><b>4.3.5</b> More examples of the CLT</a></li>
+<li class="chapter" data-level="4.3.6" data-path="L20.html"><a href="L20.html#continuity-correction"><i class="fa fa-check"></i><b>4.3.6</b> Continuity Correction</a></li>
+<li class="chapter" data-level="4.3.7" data-path="L20.html"><a href="L20.html#practice-8"><i class="fa fa-check"></i><b>4.3.7</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="L21.html"><a href="L21.html"><i class="fa fa-check"></i><b>4.4</b> Inference for Mean (Variance Known)</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="L21.html"><a href="L21.html#objectives-20"><i class="fa fa-check"></i><b>4.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.4.2" data-path="L21.html"><a href="L21.html#background-4"><i class="fa fa-check"></i><b>4.4.2</b> Background</a></li>
+<li class="chapter" data-level="4.4.3" data-path="L21.html"><a href="L21.html#problem-3"><i class="fa fa-check"></i><b>4.4.3</b> Problem</a></li>
+<li class="chapter" data-level="4.4.4" data-path="L21.html"><a href="L21.html#hypothesis-testing-for-the-mean"><i class="fa fa-check"></i><b>4.4.4</b> Hypothesis Testing for the Mean</a></li>
+<li class="chapter" data-level="4.4.5" data-path="L21.html"><a href="L21.html#hypothesis-testing-explained-in-depth"><i class="fa fa-check"></i><b>4.4.5</b> Hypothesis Testing Explained in Depth</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="L22.html"><a href="L22.html"><i class="fa fa-check"></i><b>4.5</b> Estimating Variance</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="L22.html"><a href="L22.html#objectives-21"><i class="fa fa-check"></i><b>4.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.5.2" data-path="L22.html"><a href="L22.html#sample-variance"><i class="fa fa-check"></i><b>4.5.2</b> Sample Variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="L22.html"><a href="L22.html#inference-for-variance"><i class="fa fa-check"></i><b>4.5.3</b> Inference for Variance</a></li>
+<li class="chapter" data-level="4.5.4" data-path="L22.html"><a href="L22.html#inference-for-mean-when-population-variance-is-unknown"><i class="fa fa-check"></i><b>4.5.4</b> Inference for Mean when Population Variance is Unknown</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="L23.html"><a href="L23.html"><i class="fa fa-check"></i><b>4.6</b> Two Additional Tests</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="L23.html"><a href="L23.html#objectives-22"><i class="fa fa-check"></i><b>4.6.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="L24.html"><a href="L24.html"><i class="fa fa-check"></i><b>4.7</b> Permutations Tests</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="L24.html"><a href="L24.html#objectives-23"><i class="fa fa-check"></i><b>4.7.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.7.2" data-path="L24.html"><a href="L24.html#introduction-2"><i class="fa fa-check"></i><b>4.7.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.7.3" data-path="L24.html"><a href="L24.html#review-4"><i class="fa fa-check"></i><b>4.7.3</b> Review</a></li>
+<li class="chapter" data-level="4.7.4" data-path="L24.html"><a href="L24.html#another-example"><i class="fa fa-check"></i><b>4.7.4</b> Another Example</a></li>
+<li class="chapter" data-level="4.7.5" data-path="L24.html"><a href="L24.html#test-of-the-median"><i class="fa fa-check"></i><b>4.7.5</b> Test of the Median</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="Chpt5.html"><a href="Chpt5.html"><i class="fa fa-check"></i><b>5</b> Likelihood-Based Statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="L25.html"><a href="L25.html"><i class="fa fa-check"></i><b>5.1</b> Maximum Likelihood Estimators</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="L25.html"><a href="L25.html#objectives-24"><i class="fa fa-check"></i><b>5.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="5.1.2" data-path="L25.html"><a href="L25.html#introduction-3"><i class="fa fa-check"></i><b>5.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.1.3" data-path="L25.html"><a href="L25.html#example-2"><i class="fa fa-check"></i><b>5.1.3</b> Example:</a></li>
+<li class="chapter" data-level="5.1.4" data-path="L25.html"><a href="L25.html#data"><i class="fa fa-check"></i><b>5.1.4</b> Data</a></li>
+<li class="chapter" data-level="5.1.5" data-path="L25.html"><a href="L25.html#practice-10"><i class="fa fa-check"></i><b>5.1.5</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="LRT.html"><a href="LRT.html"><i class="fa fa-check"></i><b>5.2</b> Likelihood Ratio Tests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="LRT.html"><a href="LRT.html#objective"><i class="fa fa-check"></i><b>5.2.1</b> Objective</a></li>
+<li class="chapter" data-level="5.2.2" data-path="LRT.html"><a href="LRT.html#introduction-4"><i class="fa fa-check"></i><b>5.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.2.3" data-path="LRT.html"><a href="LRT.html#review-5"><i class="fa fa-check"></i><b>5.2.3</b> Review</a></li>
+<li class="chapter" data-level="5.2.4" data-path="LRT.html"><a href="LRT.html#hypothesis-testing"><i class="fa fa-check"></i><b>5.2.4</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="5.2.5" data-path="LRT.html"><a href="LRT.html#likelihood-ratio-test"><i class="fa fa-check"></i><b>5.2.5</b> Likelihood Ratio Test</a></li>
+<li class="chapter" data-level="5.2.6" data-path="LRT.html"><a href="LRT.html#practice-11"><i class="fa fa-check"></i><b>5.2.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="L27.html"><a href="L27.html"><i class="fa fa-check"></i><b>5.3</b> Goodness of Fit Testing</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="L27.html"><a href="L27.html#objectives-25"><i class="fa fa-check"></i><b>5.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="5.3.2" data-path="L27.html"><a href="L27.html#introduction-5"><i class="fa fa-check"></i><b>5.3.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.3.3" data-path="L27.html"><a href="L27.html#review-6"><i class="fa fa-check"></i><b>5.3.3</b> Review</a></li>
+<li class="chapter" data-level="5.3.4" data-path="L27.html"><a href="L27.html#goodness-of-fit-test"><i class="fa fa-check"></i><b>5.3.4</b> Goodness of Fit Test</a></li>
+<li class="chapter" data-level="5.3.5" data-path="L27.html"><a href="L27.html#improved-test"><i class="fa fa-check"></i><b>5.3.5</b> Improved Test</a></li>
+<li class="chapter" data-level="5.3.6" data-path="L27.html"><a href="L27.html#theta-unknown"><i class="fa fa-check"></i><b>5.3.6</b> <span class="math inline">\(\theta\)</span> Unknown</a></li>
+<li class="chapter" data-level="5.3.7" data-path="L27.html"><a href="L27.html#practice-12"><i class="fa fa-check"></i><b>5.3.7</b> Practice</a></li>
+<li class="chapter" data-level="5.3.8" data-path="L27.html"><a href="L27.html#solution"><i class="fa fa-check"></i><b>5.3.8</b> Solution</a></li>
+<li class="chapter" data-level="5.3.9" data-path="L27.html"><a href="L27.html#practice-13"><i class="fa fa-check"></i><b>5.3.9</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="L28.html"><a href="L28.html"><i class="fa fa-check"></i><b>5.4</b> Two-way Tables</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="L28.html"><a href="L28.html#objective-1"><i class="fa fa-check"></i><b>5.4.1</b> Objective</a></li>
+<li class="chapter" data-level="5.4.2" data-path="L28.html"><a href="L28.html#background-5"><i class="fa fa-check"></i><b>5.4.2</b> Background</a></li>
+<li class="chapter" data-level="5.4.3" data-path="L28.html"><a href="L28.html#review-7"><i class="fa fa-check"></i><b>5.4.3</b> Review</a></li>
+<li class="chapter" data-level="5.4.4" data-path="L28.html"><a href="L28.html#introduction-to-rxc-tables"><i class="fa fa-check"></i><b>5.4.4</b> Introduction to RxC Tables</a></li>
+<li class="chapter" data-level="5.4.5" data-path="L28.html"><a href="L28.html#example-3"><i class="fa fa-check"></i><b>5.4.5</b> Example</a></li>
+<li class="chapter" data-level="5.4.6" data-path="L28.html"><a href="L28.html#second-example"><i class="fa fa-check"></i><b>5.4.6</b> Second Example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="Chpt6.html"><a href="Chpt6.html"><i class="fa fa-check"></i><b>6</b> Introduction to Linear Models</a><ul>
+<li class="chapter" data-level="6.1" data-path="L29.html"><a href="L29.html"><i class="fa fa-check"></i><b>6.1</b> Introduction to Linear Models</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="L29.html"><a href="L29.html#objectives-26"><i class="fa fa-check"></i><b>6.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.1.2" data-path="L29.html"><a href="L29.html#linear-regression"><i class="fa fa-check"></i><b>6.1.2</b> Linear Regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="L29.html"><a href="L29.html#examples-1"><i class="fa fa-check"></i><b>6.1.3</b> Examples</a></li>
+<li class="chapter" data-level="6.1.4" data-path="L29.html"><a href="L29.html#least-squares"><i class="fa fa-check"></i><b>6.1.4</b> Least Squares</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="L30.html"><a href="L30.html"><i class="fa fa-check"></i><b>6.2</b> Simple Linear Regression</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="L30.html"><a href="L30.html#objectives-27"><i class="fa fa-check"></i><b>6.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.2.2" data-path="L30.html"><a href="L30.html#review-8"><i class="fa fa-check"></i><b>6.2.2</b> Review</a></li>
+<li class="chapter" data-level="6.2.3" data-path="L30.html"><a href="L30.html#estimating-parameters"><i class="fa fa-check"></i><b>6.2.3</b> Estimating parameters</a></li>
+<li class="chapter" data-level="6.2.4" data-path="L30.html"><a href="L30.html#in-r"><i class="fa fa-check"></i><b>6.2.4</b> In R</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="L31.html"><a href="L31.html"><i class="fa fa-check"></i><b>6.3</b> Inference for Simple Linear Regression</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="L31.html"><a href="L31.html#objectives-28"><i class="fa fa-check"></i><b>6.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.3.2" data-path="L31.html"><a href="L31.html#inference-for-regression-model-slope"><i class="fa fa-check"></i><b>6.3.2</b> Inference for Regression Model Slope</a></li>
+<li class="chapter" data-level="6.3.3" data-path="L31.html"><a href="L31.html#inference-for-regression-model-predicted-values"><i class="fa fa-check"></i><b>6.3.3</b> Inference for Regression Model Predicted Values</a></li>
+<li class="chapter" data-level="6.3.4" data-path="L31.html"><a href="L31.html#anova"><i class="fa fa-check"></i><b>6.3.4</b> ANOVA</a></li>
+<li class="chapter" data-level="6.3.5" data-path="L31.html"><a href="L31.html#example-4"><i class="fa fa-check"></i><b>6.3.5</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="L32.html"><a href="L32.html"><i class="fa fa-check"></i><b>6.4</b> Regression Diagnosics</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="L32.html"><a href="L32.html#objective-2"><i class="fa fa-check"></i><b>6.4.1</b> Objective</a></li>
+<li class="chapter" data-level="6.4.2" data-path="L32.html"><a href="L32.html#review-9"><i class="fa fa-check"></i><b>6.4.2</b> Review</a></li>
+<li class="chapter" data-level="6.4.3" data-path="L32.html"><a href="L32.html#assumptions-about-the-errors"><i class="fa fa-check"></i><b>6.4.3</b> Assumptions about the Errors</a></li>
+<li class="chapter" data-level="6.4.4" data-path="L32.html"><a href="L32.html#outliers-leverage-and-influence"><i class="fa fa-check"></i><b>6.4.4</b> Outliers, Leverage, and Influence</a></li>
+<li class="chapter" data-level="6.4.5" data-path="L32.html"><a href="L32.html#example-5"><i class="fa fa-check"></i><b>6.4.5</b> Example</a></li>
+</ul></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="AppA.html"><a href="AppA.html"><i class="fa fa-check"></i><b>A</b> Syllabus</a></li>
+<li class="chapter" data-level="B" data-path="AppB.html"><a href="AppB.html"><i class="fa fa-check"></i><b>B</b> Project</a><ul>
+<li class="chapter" data-level="B.0.1" data-path="AppB.html"><a href="AppB.html#introduction-6"><i class="fa fa-check"></i><b>B.0.1</b> Introduction</a></li>
+<li class="chapter" data-level="B.0.2" data-path="AppB.html"><a href="AppB.html#deliverables"><i class="fa fa-check"></i><b>B.0.2</b> Deliverables</a></li>
+<li class="chapter" data-level="B.0.3" data-path="AppB.html"><a href="AppB.html#components"><i class="fa fa-check"></i><b>B.0.3</b> Components</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/BawCOS/undergraduate-statistics-notes" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes for Teaching an Undergraduate Statistics Using fastR</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="L8" class="section level2">
+<h2><span class="header-section-number">2.5</span> Introduction to Hypothesis Testing</h2>
+<div id="objectives-7" class="section level3">
+<h3><span class="header-section-number">2.5.1</span> Objectives</h3>
+<ol style="list-style-type: decimal">
+<li>Correctly use all new terminology and definitions to include: statistic, test statistic, p-value, Type I error, Type II error, power, null hypothesis, and alternative hypothesis<br />
+</li>
+<li>Conduct a statistical hypothesis test using the four steps introduced in the book<br />
+</li>
+<li>Conduct a power analysis</li>
+</ol>
+</div>
+<div id="hypotheses-testing" class="section level3">
+<h3><span class="header-section-number">2.5.2</span> Hypotheses Testing</h3>
+<p>Hypothesis testing is difficult to understand and requires thought and practice. The examples in the book are good and detailed. I am going to simplify the example here to help learn the definitions, but you must then wrestle with the examples in the book. I am going to use a simple hypothesis where as the book is using a complex.</p>
+<p>I am going to generate a random sample from a binomial where the number of trials is 100. The probability of success is either .45 or .5 and your job is empirically test which value you think I used based on the data. First let’s practice the command <code>rbinom</code>. To get sample I could do the following commands, I set the seed to make sure I can repeat the results.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(temp&lt;-<span class="kw">rbinom</span>(<span class="dv">100</span>,<span class="dv">1</span>,.<span class="dv">45</span>))</code></pre></div>
+<pre><code>##   [1] 0 0 0 0 0 0 1 0 1 0 0 1 1 1 1 1 0 1 1 1 0 1 0 0 1 0 0 1 1 0 0 1 0 0 0
+##  [36] 1 0 0 1 0 1 1 1 1 1 0 1 0 0 1 0 0 0 1 1 1 0 1 0 0 0 0 1 0 0 0 1 1 0 0
+##  [71] 0 0 1 0 0 0 1 0 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 1 0 1 0 0 1 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(temp)</code></pre></div>
+<pre><code>## [1] 41</code></pre>
+<p>Note: A success is a 1 and a failure is a 0.</p>
+<p>Thus in this random process, I had 41 successes out of 100 trials. This is a binomial because each trial is independent, the probability of success is constant, the trial are fixed, and each trial has two outcomes.</p>
+<p>I could have also done</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rbinom</span>(<span class="dv">1</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 38</code></pre>
+<p>For interest what would <code>rbinom(10,100,.45)</code> give you?</p>
+<p>I will generate a sample with the probability of success as either .45 or .50. You must decide which you think it is.</p>
+<div id="step-1-state-the-null-and-alternative-hypotheses" class="section level4">
+<h4><span class="header-section-number">2.5.2.1</span> Step 1: State the null and alternative hypotheses</h4>
+<p>State the null and alternative hypothesis. In practice, the alternative is set to the condition that you want to demonstrate. This is similar to a criminal trial where you are the prosecutor and you want to show that the accused is guilty. The null is that the accused is innocent and the alternative is that they are guilty.</p>
+<p>For this artificial problem, it is not clear what the alternative should be. Thus we will select the alternative as the probability of success is 0.5. The hypotheses are:</p>
+<p><span class="math display">\[H_{o}: \pi = 0.45 \]</span> <span class="math display">\[H_{a}: \pi = 0.50 \]</span></p>
+<p>Here <span class="math inline">\(\pi\)</span> is the unknown population parameter probability of success.</p>
+</div>
+<div id="step-2-calculate-a-test-statistic" class="section level4">
+<h4><span class="header-section-number">2.5.2.2</span> Step 2: Calculate a test statistic</h4>
+<p>We run 100 trials and get</p>
+<pre><code>## [1] 49</code></pre>
+<p>successes.</p>
+<p>The estimate of the probability of success <code>49/100</code> or <code>0.49</code>. We will learn more about these types of estimates. They are called point estimates.</p>
+<p>We could have many different test statistics and the choice is important for analysis. We will discuss properties later in the course. But two examples of test statistics are the proportion of success <code>0.49</code> and the number of success <code>49</code>. We will use the number of successes. The statistic is the number of successes, a random variable, and the test statistic is 49.</p>
+</div>
+<div id="step-3-compute-the-p-value" class="section level4">
+<h4><span class="header-section-number">2.5.2.3</span> Step 3: Compute the p-value</h4>
+<p>The definition of p-value is a conditional probability. Given that null hypothesis is true, what is the probability of the data or more extreme. The difficult part is what is meant by more extreme. Our statistic is the number of successes out of 100 trials. It is a binomial.</p>
+<p>Before we calculate the p-value, let’s think about how we could decide whether we believe that the data comes with the probability of success equal to <code>.45</code> or <code>0.50</code>. It seems that since <code>.49</code> is closer that we think it should be <code>0.50</code>. Let’s plot the probability mass function for each case.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="kw">dbinom</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="dv">100</span>,.<span class="dv">45</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Number of Successes&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Probability&quot;</span>)
+<span class="kw">points</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="kw">dbinom</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="dv">100</span>,.<span class="dv">5</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">col=</span><span class="dv">2</span>)
+<span class="kw">abline</span>(<span class="dt">v=</span><span class="dv">49</span>)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p>Notice the use of <code>dbinom</code> in this code.</p>
+<p>One way to decide is to pick a rejection region where the probability of that number of successes is higher under each different value of the probability of success. We can find these by creating a table.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prob_table&lt;-<span class="kw">rbind</span>(<span class="kw">dbinom</span>((<span class="dv">40</span><span class="op">:</span><span class="dv">60</span>),<span class="dv">100</span>,.<span class="dv">45</span>),<span class="kw">dbinom</span>((<span class="dv">40</span><span class="op">:</span><span class="dv">60</span>),<span class="dv">100</span>,.<span class="dv">5</span>))
+<span class="kw">colnames</span>(prob_table)&lt;-(<span class="dv">40</span><span class="op">:</span><span class="dv">60</span>)
+<span class="kw">row.names</span>(prob_table)&lt;-<span class="kw">c</span>(<span class="st">&quot;Prob = 0.45&quot;</span>,<span class="st">&quot;Prob = 0.50&quot;</span>)
+prob_table</code></pre></div>
+<pre><code>##                     40         41         42         43         44
+## Prob = 0.45 0.04880290 0.05843363 0.06716073 0.07411819 0.07855915
+## Prob = 0.50 0.01084387 0.01586907 0.02229227 0.03006864 0.03895256
+##                    45         46         47         48         49
+## Prob = 0.45 0.0799875 0.07824864 0.07355675 0.06645184 0.05769844
+## Prob = 0.50 0.0484743 0.05795840 0.06659050 0.07352701 0.07802866
+##                     50         51         52         53         54
+## Prob = 0.45 0.04815197 0.03862458 0.02977874 0.02206589 0.01571359
+## Prob = 0.50 0.07958924 0.07802866 0.07352701 0.06659050 0.05795840
+##                     55          56          57          58          59
+## Prob = 0.45 0.01075277 0.007069597 0.004465009 0.002708399 0.001577465
+## Prob = 0.50 0.04847430 0.038952560 0.030068643 0.022292270 0.015869073
+##                       60
+## Prob = 0.45 0.0008819463
+## Prob = 0.50 0.0108438667</code></pre>
+<p>Based on this table, if we have 47 or less successes, we should fail to reject that <span class="math inline">\(\pi = 0.45\)</span> while 48 or more means we reject <span class="math inline">\(H_{o}\)</span> in favor of <span class="math inline">\(H_{a}\)</span>. We use the fail to reject instead of accept just like we use not guilty instead of innocent. This idea of finding a cutpoint number is called the rejection region. Using the test statistic of <code>49</code>, which is greater than <code>47</code>, we would reject <span class="math inline">\(H_{o}: \pi = 0.45\)</span> in favor of <span class="math inline">\(H_{a}: \pi = 0.50\)</span>.</p>
+<p>Another, and more common, method to determine the rejection region is to find the quantile associated with a small probability. This probability is called the significance level and is usually set to <code>0.05</code>. It turns out it is the probability of rejecting when the null is true. In this case we want to find the number of successes such that having that value or more extreme leads to a probability of 0.05. Why 0.05? This is unusual enough that we think that if it happens we conclude the null is not true. It is a sort of empirical proof by contradiction. Since we will reject <span class="math inline">\(H_{o}: \pi = 0.45\)</span> in favor of <span class="math inline">\(H_{a}: \pi = 0.50\)</span> only if the number of success is larger than the rejection value, we want the 0.05 probability to be in the upper tail. Thus we can use <code>qbinom</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qbinom</span>(.<span class="dv">95</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 53</code></pre>
+<p>Just to check</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">52</span><span class="op">:</span><span class="dv">53</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 0.06617290 0.04410701</code></pre>
+<p>Since the distribution is discrete, we cannot find a quantile that will give us exactly 0.05 in the upper tail. We have a choice. If we reject when the number of successes is 53 or greater then percentile is 0.066. Likewise if we use 54 or greater, then the percentile is 0.044. I will go with the second because it is conservative. This choice has to do with a Type I error, which we will discuss shortly.</p>
+<p>Based on this rejection region and the data, we fail to reject <span class="math inline">\(H_{o}: \pi = 0.45\)</span> in favor of <span class="math inline">\(H_{a}: \pi = 0.50\)</span>.</p>
+<p>The p-value is a similar idea but takes the context of the problem out of the decision. Under the null hypothesis, the probability of success is <code>0.45</code>. To find the p-value, we calculate the probability of the data or more extreme under the null hypothesis. More extreme means further from the null and more towards the alternative. Thus for us we want to find <span class="math inline">\(P(X \geq 49)\)</span> which using R is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">48</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 0.2404266</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pbinom</span>(<span class="dv">48</span>,<span class="dv">100</span>,.<span class="dv">45</span>,<span class="dt">lower=</span><span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## [1] 0.2404266</code></pre>
+<p>Since this is larger than our significance level of 0.05, we fail to reject <span class="math inline">\(H_{o}: \pi = 0.45\)</span> in favor of <span class="math inline">\(H_{a}: \pi = 0.50\)</span>.</p>
+<p>Which test is better, one rejected and the other did not? It is beyond the scope of this course, but is based on the idea of finding uniformly most powerful tests.</p>
+</div>
+<div id="draw-a-conclusion" class="section level4">
+<h4><span class="header-section-number">2.5.2.4</span> Draw a conclusion</h4>
+<p>Based on our data of 49 successes in 100 tries, under the null that the probability of heads is <code>0.45</code> we found the probability of 49 or more heads is 0.2404 which is greater than 0.05. Thus we fail to reject <span class="math inline">\(H_{o}: \pi = 0.45\)</span> in favor of <span class="math inline">\(H_{a}: \pi = 0.50\)</span>.</p>
+</div>
+</div>
+<div id="more-terms---errors" class="section level3">
+<h3><span class="header-section-number">2.5.3</span> More terms - Errors</h3>
+<p>We can make two types of error. We can reject when the null is true. This is a type I error. The probability of this is the significance level, usually called <span class="math inline">\(\alpha\)</span>. Formally, the probability of a type I error is <code>P(reject|null hypothesis is true)</code>. We pick this value as part of the test design. This is why we put what we are trying to show in the alternative because we are trying to reject the null and we can control the type I error.</p>
+<p>The second type of error is called the type II error, yes these are poor names. Sometimes type I error is called a false positive, and type II a false negative. The type II error is when we fail to reject but the alternative is true. In practice this is difficult to calculate because the alternative is often a complex hypothesis and we don’t have a value for the parameter under the alternative. But because I chose a simple alternative, we can easily find the probability of a type II error. The probability of a type II error is <code>P(Fail to reject|Alternative hypothesis is true)</code>. Based on the work we did above, we reject when the number of successes is 54 or greater. The probability of a type II error thus is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pbinom</span>(<span class="dv">53</span>,<span class="dv">100</span>,.<span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] 0.7579408</code></pre>
+<p>For our problem, since we failed to reject, the probability of a type II error is large. Typically we want it at <code>0.2</code> or smaller. For this problem that means a larger sample size is required. The calculation of sample size should have been done prior to the test.</p>
+<p>The complement of a type II error is called power and it is the probability we reject given the alternative is true. Again, since we are setting up in the hopes of rejecting, power is a useful metric. For this problem, power is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">53</span>,<span class="dv">100</span>,.<span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] 0.2420592</code></pre>
+</div>
+<div id="sample-size" class="section level3">
+<h3><span class="header-section-number">2.5.4</span> Sample Size</h3>
+<p>Instead of 100 trials how many should we have done? Using an <span class="math inline">\(\alpha\)</span> of 0.05, this is my type II error and a power of at least 0.80. Let’s find the number. As a start, say the sample size is 200. Then the rejection region is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qbinom</span>(.<span class="dv">95</span>,<span class="dv">200</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 102</code></pre>
+<p>And the power is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">102</span>,<span class="dv">200</span>,.<span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] 0.3618855</code></pre>
+<p>We are going to need a large sample. Next let’s try 800 trials.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qbinom</span>(.<span class="dv">95</span>,<span class="dv">800</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 383</code></pre>
+<p>And the power is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">383</span>,<span class="dv">800</span>,.<span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] 0.8783484</code></pre>
+<p>That is more like it. I think we can write a function to help us.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">simple_sample_size&lt;-<span class="cf">function</span>(<span class="dt">n=</span><span class="dv">100</span>){<span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(<span class="kw">qbinom</span>(.<span class="dv">95</span>,n,.<span class="dv">45</span>),n,.<span class="dv">5</span>)}</code></pre></div>
+<p>Now for a range of values</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp&lt;-<span class="kw">sapply</span>((<span class="dv">600</span><span class="op">:</span><span class="dv">625</span>),simple_sample_size)
+<span class="kw">names</span>(temp)&lt;-(<span class="dv">600</span><span class="op">:</span><span class="dv">625</span>)
+temp    </code></pre></div>
+<pre><code>##       600       601       602       603       604       605       606 
+## 0.7810158 0.7685830 0.7806348 0.7922992 0.7802553 0.7919132 0.7798774 
+##       607       608       609       610       611       612       613 
+## 0.7915286 0.7795009 0.7911456 0.7791259 0.7907640 0.7787524 0.7903839 
+##       614       615       616       617       618       619       620 
+## 0.7783803 0.7900052 0.7780097 0.7896280 0.8008639 0.7892522 0.8004829 
+##       621       622       623       624       625 
+## 0.7888779 0.8001033 0.7885049 0.7997251 0.7881334</code></pre>
+<p>So it looks like around 618 trials would work for use. Let’s plot</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="kw">dbinom</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="dv">618</span>,.<span class="dv">45</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Number of Successes&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Probability&quot;</span>)
+<span class="kw">points</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="kw">dbinom</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="dv">618</span>,.<span class="dv">5</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">col=</span><span class="dv">2</span>)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+</div>
+<div id="complex-hypothesis" class="section level3">
+<h3><span class="header-section-number">2.5.5</span> Complex Hypothesis</h3>
+<p>The book goes through an example so we will keep it short here. Suppose our hypotheses were</p>
+<p><span class="math display">\[H_{o}:\pi=.45\]</span> <span class="math display">\[H_{o}:\pi\neq.45\]</span></p>
+<p>The alternative is complex because it takes on many values. This particular test is two-sided and is the most common. A one-sided test can only be done if apriori you have knowledge that the parameter will be on one side of the null hypothesized value.</p>
+<p>To conduct this test, we can use the function <code>binom.test</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">binom.test</span>(<span class="dv">49</span>,<span class="dv">100</span>,<span class="dt">p=</span>.<span class="dv">45</span>,<span class="dt">conf.level =</span> .<span class="dv">05</span>)</code></pre></div>
+<pre><code>## 
+## 
+## 
+## data:  49 out of 100
+## number of successes = 49, number of trials = 100, p-value = 0.4235
+## alternative hypothesis: true probability of success is not equal to 0.45
+## 5 percent confidence interval:
+##  0.4819244 0.4981442
+## sample estimates:
+## probability of success 
+##                   0.49</code></pre>
+<p>Again, we fail to reject.</p>
+<p>To find power, you need a specified difference or size of effect that you think is practically important, usually from a subject matter expert. Let’s say that expert wants to detect a difference of 0.05, this is called the effect size. We now need a value for the alternative. We could pick either 0.40 or 0.50. Let’s go with 0.50. You could do both and report the two power calculations back to the decision maker.</p>
+<p>Since it is a two-sided test, we need to split the significance level between both tails. Thus the critical values, the values that define the rejection region are.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qbinom</span>(.<span class="dv">975</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 55</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qbinom</span>(.<span class="dv">025</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 35</code></pre>
+<p>Again, since the distribution is discrete, it is unlikely that these values will give us the exact probabilities we want. Let’s check and decide what we want to use.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">54</span><span class="op">:</span><span class="dv">56</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 0.02839342 0.01764065 0.01057105</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pbinom</span>(<span class="dv">34</span><span class="op">:</span><span class="dv">36</span>,<span class="dv">100</span>,.<span class="dv">45</span>)</code></pre></div>
+<pre><code>## [1] 0.01663269 0.02723630 0.04290071</code></pre>
+<p>If we reject when we have 34 or fewer heads and 56 or greater heads then the probability of a type I error is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span>(<span class="kw">pbinom</span>(<span class="dv">55</span>,<span class="dv">100</span>,.<span class="dv">45</span>)<span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">34</span>,<span class="dv">100</span>,.<span class="dv">45</span>))</code></pre></div>
+<pre><code>## [1] 0.03427334</code></pre>
+<p>This is conservative and less that <code>0.05</code>. We could adjust a little</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span>(<span class="kw">pbinom</span>(<span class="dv">55</span>,<span class="dv">100</span>,.<span class="dv">45</span>)<span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">35</span>,<span class="dv">100</span>,.<span class="dv">45</span>))</code></pre></div>
+<pre><code>## [1] 0.04487694</code></pre>
+<p>It is up to you to decide. Let’s go with the second set. We reject if we have 35 or fewer or 56 and greater heads. Now to find power, we calculate the probability of rejecting given that the alternative is true, which we have selected as 0.05.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span>(<span class="kw">pbinom</span>(<span class="dv">55</span>,<span class="dv">100</span>,.<span class="dv">5</span>)<span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">35</span>,<span class="dv">100</span>,.<span class="dv">5</span>))</code></pre></div>
+<pre><code>## [1] 0.1373853</code></pre>
+<p>The power is small and thus to detect a difference of 0.05, we need a larger sample size than 100.</p>
+<p>For interest, let’s check the power if the alternative were 0.40.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span>(<span class="kw">pbinom</span>(<span class="dv">55</span>,<span class="dv">100</span>,.<span class="dv">4</span>)<span class="op">-</span><span class="kw">pbinom</span>(<span class="dv">35</span>,<span class="dv">100</span>,.<span class="dv">4</span>))</code></pre></div>
+<pre><code>## [1] 0.1803512</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="L7.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="L9.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/BawCOS/undergraduate-statistics-notes/edit/master/02-Probability-and-RV.Rmd",
+"text": "Edit"
+},
+"download": ["fastR-Notes.pdf", "fastR-Notes.epub"],
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

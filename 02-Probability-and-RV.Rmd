@@ -1,0 +1,1121 @@
+# Probability and Random Variables {#Chpt2}
+
+
+The second chapter is completed in eight lessons. Section 2.2 of the book has been historically difficult for the students so I have broken it into two lessons. Also in the first lesson, I have added material from section B of the book as some students are deficient in this knowledge.
+
+## Random Variables {#L4}
+
+### Objectives
+
+1. Know definitions introduced in the section, of particular importance is Random Variable
+2. Use set notation
+
+
+### Teminology
+
+Probability and randomness are difficult and deep philosophical questions.  We will make it easier by looking at repeatable random process.  A process has to have more than one possible outcome.
+
+Some new terms 
+
+Outcome  
+Event  
+Sample space
+Probability  
+Random Variable
+
+If set notation is new, read Appendix B.
+
+We can have deductive probabilities, mostly what we do in this class, and inductive empirical probabilities.
+
+Do Problem 2.1 
+
+Do Problem B-1
+
+Summation and product notation is difficult
+
+Do 1.10
+
+## Probability Rules {#L5}
+
+### Objectives
+
+1. Solve counting problems using bijection, multiplication, complement, division, and inclusion-exclusion rules  
+2. Use proper notation  
+3. Find probabilities using counting rules  
+
+
+### Probability: General
+
+We will be using the deductive notion of probability, theoretical probability, in this section.  That is, we make use of the axioms on page 31 and results derived from them.
+
+Technically, probability is a space, but we will make it easier by thinking of it as a function from the sample space to a real number in $[0,1]$.  Often the sample space is a random variable.
+
+The big issue for students when first working with probability is confusing the algebra of sets with the algebra of numbers.  So the following are all valid for some event $E$:
+
+$$ E \cup E^c  $$
+$$P(E \cup E^c)$$
+$$P(E)+P(E^c)=1$$
+
+So from the axioms, we get:
+$$E \cup E^c = S $$
+$$P(E \cup E^c)=P(S)$$
+because $E$ and $E^c$ are mutually exclusive:
+$$P(E)+P(E^c)=1$$
+$$P(E)=1-P(E^c)$$
+
+Notice that the following are nonsensical:
+$$P(E) \cup P(E^c)$$
+$$E + E^c$$
+
+### Counting
+
+We will be making indirect use of the bijection principle as we are always mapping from objects to numbers.  In addition, in using counting, we are making use of the equally likely rule.  This is an assumption and we must always be aware of the assumptions and whether they apply.
+
+In our counting problems we have to determine if we are sampling with replacement or not and whether order matters or not.  Determining if order matters is difficult and takes practice.  To set up these four possibilities we will use a simple case of 3 balls and 10 people, this is an example from the book.  All of these methods make use of the multiplication principle.
+
+**Problem 1:**  We have three different colored balls that we will give to 10 people.  A person can get more than one ball.  How many ways can we distribute the balls?
+
+We can think of the ten people as the numbers, this is the bijection rule.  Since each person can get more than one ball, we are sampling with replacement.  Since the balls are different colors, then order matters.  For example, if Billy gets the blue and green ball, and Sally gets the red ball.  This is different from Billy getting the red and blue, and Sally getting the green.  To solve this problem, we use the multiplication rule.  There are 10 choices of people to give the first ball to.  There are 10 for the second ball and 10 for the third.  Thus there are $10^3$ or $1000$ ways.
+
+**Problem 2:**  Same problem but now each person can get at most one ball.  In this case order matters but we sample without replacement.  Thus we have 10 choices for the first ball, 9 for the second, and 8 for the third.  This is called a permutation.  Let's write our own function for this.
+
+```{r}
+perm<-function(n,r){
+    result<-prod(n:(n-r+1))
+    return(result)
+}
+```
+
+For our problem
+
+```{r}
+perm(10,3)
+```
+
+The notation for a permutation is $_{n}P_{k}$ and the formula is 
+$${n! \over (n-k)!}$$
+
+Note that we must define 0!=1 to make this work.
+
+**Problem 3:** Let's do problem 2 but this time the balls are all the same color.  In this case the order does not matter.  To understand what to do, make the problem simpler and enumerate.  Let's say we have three people {Billy, Sally, Tommy} and two red balls.  If ordered mattered we could enumerate the permutations using tuples.  The first position represents ball 1 and the second ball 2.  Thus we have 6 possibilities:
+
+```{r}
+perm(3,2)
+```
+(Billy, Sally), (Billy, Tommy), (Sally, Tommy), (Sally, Billy), (Tommy, Sally), (Tommy, Billy).
+
+But since the balls are identical (Billy, Sally) is the same as (Sally, Billy).  So we need the division rule to remove redundant outcomes.  Each outcome has two possibilities thus we have 2! ways that are equivalent.  This is a combination and has the notation $_{n}C_{k}$ and the formulas:
+$$\left( {\begin{array}{c}n \\ k \end{array}} \right) = {n! \over (n-k)!k!}$$
+which is the permutation divided by $k!$.  
+
+R has the function `choose` to find the values for us.
+
+```{r}
+choose(10,3)
+```
+
+**Problem 4:**  Now this is a difficult one and that is when order does not matter and we sample with replacement.  This is the most difficult and is what is being done in Example 2.2.14 in the book.  Let's look at the simple case of three people and two identical balls.  We have the following results (Billy, Billy), (Billy, Sally), (Billy, Tommy), (Sally, Sally), (Sally, Tommy), and (Tommy, Tommy).  There are six ways to do this.  This is equivalent to solving the problem of finding the number of solutions to
+$$x_1 + x_2 + x_3 =3$$
+Where $x_1$ is the number of balls Billy is given, etc.  This is the bijection rule.  
+
+This problem is solved by thinking of vertical lines representing the numbers of balls someone is given and the plus signs between the vertical lines.  Thus one outcome is Billy receives all three balls.  This would be |||++.  If each person were given a ball, this would look like |+|+|.  Thus we have $k$ vertical lines and $n-1$ plus signs.  Using this bijection, the number of solutions is
+
+$$\left( {\begin{array}{c}n+k-1 \\ k \end{array}} \right) = {(n+k-1)! \over (n-1)!k!}$$
+
+For the problem with 3 people and 2 identical balls.
+```{r}
+choose((3+2-1),2)
+```
+
+And for the problem with 10 people and 3 identical balls.
+
+```{r}
+choose((10+3-1),3)
+```
+
+We can combine these ideas with the multiplication rule. The question of order is the most difficult part.  For example, if we roll two dice and record the values on the faces, how many possibilities are there?
+
+### Probability: Equally Likely Events 
+
+For equally likely events, we find the probability by dividing the number of ways of the event by the number of ways in the sample space.  
+
+Drawing five cards from a deck of cards, what is the probability that at least two cards have the same face value?
+
+The denominator is $_{52}C_{5}$
+
+```{r}
+choose(52,5)
+```
+
+For the numerator we will use the complement rule.  Thus we need to select 5 face card values of different values.  We select 5 face card values from 13 without replacement.  Order does not matter.  Then for each face value we have 4 suits.  Thus the numerator is:
+```{r}
+choose(13,5)*4^5
+```
+
+By the division rule, we have the probability as
+
+```{r}
+(choose(13,5)*4^5)/choose(52,5)
+```
+
+And the probability we want is
+
+```{r}
+1-(choose(13,5)*4^5)/choose(52,5)
+```
+
+How about the probability that all the cards come from the same suit, a flush?
+
+```{r}
+(choose(13,5)*choose(4,1))/choose(52,5)
+```
+
+Homework 2.6 and 2.7
+
+Note that
+$${_{13}P_{2}}= {_{13}C_{1}} * {_{12}C_{1}}$$
+
+## Inclusion-Exclusion, Conditional Probability {#L6}
+
+### Objectives
+
+1. Using definitions, calculate conditioning probabilities  
+2. Determine if events are independent, or if events are independent find joint probabilities  
+3. Use Bayes theorem to find conditional probabilities  
+
+
+### Definitions  
+
+Know these
+
+$$P(A \cup B)=P(A)+P(B)-P(A \cap B)$$
+Iff $A$ and $B$ are independent
+$$P(A \cap B)=P(A)P(B)$$
+or equivalently
+$$P(A|B)=P(A)$$
+If $A$ and $B$ are mutually exclusive
+$$P(A \cap B)=0$$
+Finally, conditional probability which takes practice to master and understand
+$$P(A|B)={P(A \cap B) \over P(B)}$$
+
+Other relationships can be derived from drawing Venn diagrams.  For example:
+$$P(A)=P((A \cap B) \cup (A \cap B^c))=P(A\cap B) + P(A \cap B^c)$$
+
+Independence is difficult to visualize on a Venn diagram since it is a ratio of areas and humans do not perceive difference in areas very well.
+
+In many problems we need to find $P(A \cap B)$.  There are many ways to do this but the most common using conditional probability.
+$$P(A \cap B)=P(A|B)P(B)=P(B|A)P(A)$$
+
+Another confusion is with the given part of the conditional probability.  The given event is not random, it did happen.  Thus the sample space is reduced, this is why division by the probability of the given event is happening.  The book does a nice example with Example 2.2.15.
+
+The second most common way to find $P(A \cap B)$ is with independence so that 
+$$P(A \cap B)=P(A)P(B)$$
+
+### Problems  
+
+1.  We shuffle a deck of cards and turn the top card over.  It is an Ace.  What is the probability the second card is an Ace?
+
+Let A - face value on first card is an Ace and B - face value on the second card is an Ace
+
+we want $P(B|A)$.  Given that the first card is an Ace we have 51 cards left and 3 are Aces.  
+
+2. We shuffle a deck of cards and turn the top cards over.  What is the probability we have two Aces?
+
+Let A - face value on first card is an Ace and B - face value on the second card is an Ace
+
+We want $P(A \cap B)$.  Using conditional probability
+
+$$P(A \cap B) =P(A)P(B|A)={4 \over 52}{3 \over 51}$$
+
+3.  We shuffle a deck of cards and set the first card to the side without revealing it.  What is the probability the second card is an Ace?
+
+Intuitively we know the answer is ${4 \over 52}$ but let's use our probability rules to find it.  
+
+Let A - face value on first card is an Ace and B - face value on the second card is an Ace
+
+We want $P(B)$
+
+Now 
+$$P(B)=P(A \cap B)+P(A^c \cap B)$$
+where now
+$$P(A \cap B)=P(B|A)P(A)={4 \over 52}{3 \over 51}$$
+and 
+$$P(A^c \cap B)=P(B|A^c)P(A^c)={48 \over 52}{4 \over 51}$$
+Finally
+$$P(B)=P(A \cap B)+P(A^c \cap B)={4 \over 52}{3 \over 51}+{48 \over 52}{4 \over 51}$$
+$$={4 \over 52}\left({3 \over 51}+{48 \over 51}\right)={4 \over 52}$$
+
+4. We shuffle a deck of cards and set the first card to the side without revealing it.  The second card is an Ace, what is the probability the first card is an Ace?  
+
+Let A - face value on first card is an Ace and B - face value on the second card is an Ace
+
+We want $P(A|B)$
+
+From the definition of conditional probability, we have
+
+$$P(A|B)={P(A \cap B) \over P(B)}={P(B|A)P(A) \over P(B)}={P(B|A)P(A) \over P(A \cap B)+P(A^c \cap B)}={P(B|A)P(A) \over P(B|A)P(A)+P(B|A^c)P(A^c)}$$
+
+This is Bayes Rule and comes from the definition of conditional probability.
+
+The answer is
+$$P(A|B)={{4 \over 52}{3 \over 51} \over {4 \over 52}{3 \over 51}+ {48 \over 52}{4 \over 51}}$$
+$$={{3 \over 51} \over {3 \over 51}+ {48 \over 51}}={3 \over 51}$$
+
+### Bayes Rule
+
+Look at Example 2.2.22
+
+Can do it as a tree.
+
+using numbers helps.  Suppose we have 100,000 people.  100 will be diseased and 99900 will be healthy.  Of those that are diseased, 2 will test negative and 98 positive.  Of those that are healthy, 999 will test positive and 97902 will test negative.  Now of those that test positive, how many will be diseased?
+$$P(D|+)={98 \over 98+999}=0.08933455$$
+
+Practice Exam Question
+
+My birthday is August 26, what is the probability at least one of my 23 cadets in class will have the same birthday?
+
+## Discrete Distributions {#L7}
+
+### Objectives
+
+1. Use, including proper notations, terms and definitions such as probability mass function, cumulative distribution functions, etc.  
+2. Solve probability problems, including the use of R, for binomial and negative binomial random variables.  
+3. Explain the assumptions of the binomial and negative binomial distributions.
+
+
+### Definitions
+
+Again, you must learn and know the definitions in this section.  The pmf and cdf are confusing to students when first learning but think of the pmf as a function that maps from the random variable to a probability.  We know that probabilities have to be in $[0,1]$ and the sum of all the probabilities must be 1.
+
+The cdf, cumulative distribution function is simply $P(X \leq x)$.  The capital notation is for a random variable and the lower for a value of the random variable.
+
+### Practice 
+
+You flip a coin two times where the probability of heads is 0.51.
+
+1. Write the sample space  
+2. Create a random variable for this scenario  
+3. Write the probability mass function
+4. Write the cdf  
+5. Use R to find  
+i. $P(X=2)$  
+ii. $P(X=0 \cup X=2)$  
+6.  Is this a binomial?  
+
+Do Problem 2.43
+
+## Introduction to Hypothesis Testing {#L8}
+
+### Objectives
+
+1. Correctly use all new terminology and definitions to include: statistic, test statistic, p-value, Type I error, Type II error, power, null hypothesis, and alternative hypothesis  
+2. Conduct a statistical hypothesis test using the four steps introduced in the book  
+3. Conduct a power analysis  
+
+
+### Hypotheses Testing  
+
+Hypothesis testing is difficult to understand and requires thought and practice.  The examples in the book are good and detailed.  I am going to simplify the example here to help learn the definitions, but you must then wrestle with the examples in the book.  I am going to use a simple hypothesis where as the book is using a complex.  
+
+I am going to generate a random sample from a binomial where the number of trials is 100.  The probability of success is either .45 or .5 and your job is empirically test which value you think I used based on the data.  First let's practice the command `rbinom`.  To get sample I could do the following commands, I set the seed to make sure I can repeat the results.
+
+```{r echo=FALSE, results='hide'}
+set.seed(2018)
+```  
+
+```{r}
+(temp<-rbinom(100,1,.45))
+sum(temp)
+```
+
+Note: A success is a 1 and a failure is a 0.  
+
+Thus in this random process, I had 41 successes out of 100 trials.  This is a binomial because each trial is independent, the probability of success is constant, the trial are fixed, and each trial has two outcomes.
+
+I could have also done
+
+```{r echo=FALSE, results='hide'}
+set.seed(2017)
+``` 
+
+```{r}
+rbinom(1,100,.45)
+```
+
+For interest what would `rbinom(10,100,.45)` give you?
+
+
+I will generate a sample with the probability of success as either .45 or .50.  You must decide which you think it is.
+
+#### Step 1: State the null and alternative hypotheses  
+
+State the null and alternative hypothesis.  In practice, the alternative is set to the condition that you want to demonstrate.  This is similar to a criminal trial where you are the prosecutor and you want to show that the accused is guilty.  The null is that the accused is innocent and the alternative is that they are guilty.  
+
+For this artificial problem, it is not clear what the alternative should be.  Thus we will select the alternative as the probability of success is 0.5.  The hypotheses are:
+
+$$H_{o}: \pi = 0.45 $$
+$$H_{a}: \pi = 0.50 $$
+
+Here $\pi$ is the unknown population parameter probability of success.
+
+#### Step 2: Calculate a test statistic   
+
+We run 100 trials and get
+
+```{r warning=FALSE,echo=FALSE,message=FALSE}
+set.seed(1979)
+rbinom(1,100,.5)
+```
+
+successes.  
+
+The estimate of the probability of success `49/100` or `0.49`.  We will learn more about these types of estimates.  They are called point estimates.
+
+We could have many different test statistics and the choice is important for analysis.  We will discuss properties later in the course.  But two examples of test statistics are the proportion of success `0.49` and the number of success `49`.  We will use the number of successes.  The statistic is the number of successes, a random variable, and the test statistic is 49.  
+
+#### Step 3: Compute the p-value  
+
+The definition of p-value is a conditional probability.  Given that null hypothesis is true, what is the probability of the data or more extreme.  The difficult part is what is meant by more extreme.  Our statistic is the number of successes out of 100 trials.  It is a binomial. 
+
+Before we calculate the p-value, let's think about how we could decide whether we believe that the data comes with the probability of success equal to `.45` or `0.50`.  It seems that since `.49` is closer that we think it should be `0.50`.  Let's plot the probability mass function for each case.
+
+```{r}
+plot((30:70),dbinom((30:70),100,.45),type="p",xlab="Number of Successes",ylab="Probability")
+points((30:70),dbinom((30:70),100,.5),type="p",col=2)
+abline(v=49)
+```
+
+Notice the use of `dbinom` in this code.
+
+One way to decide is to pick a rejection region where the probability of that number of successes is higher under each different value of the probability of success.  We can find these by creating a table.
+
+```{r}
+prob_table<-rbind(dbinom((40:60),100,.45),dbinom((40:60),100,.5))
+colnames(prob_table)<-(40:60)
+row.names(prob_table)<-c("Prob = 0.45","Prob = 0.50")
+prob_table
+```
+
+Based on this table, if we have 47 or less successes, we should fail to reject that $\pi = 0.45$ while 48 or more means we reject $H_{o}$ in favor of $H_{a}$.  We use the fail to reject instead of accept just like we use not guilty instead of innocent.  This idea of finding a cutpoint number is called the rejection region.  Using the test statistic of `49`, which is greater than `47`, we would reject $H_{o}: \pi = 0.45$ in favor of $H_{a}: \pi = 0.50$.
+
+Another, and more common, method to determine the rejection region is to find the quantile associated with a small probability.  This probability is called the significance level and is usually set to `0.05`.  It turns out it is the probability of rejecting when the null is true.  In this case we want to find the number of successes such that having that value or more extreme leads to a probability of 0.05.  Why 0.05?  This is unusual enough that we think that if it happens we conclude the null is not true.  It is a sort of empirical proof by contradiction.  Since we will reject $H_{o}: \pi = 0.45$ in favor of $H_{a}: \pi = 0.50$ only if the number of success is larger than the rejection value, we want the 0.05 probability to be in the upper tail.  Thus we can use `qbinom`.
+
+```{r}
+qbinom(.95,100,.45)
+```
+
+Just to check
+
+```{r}
+1-pbinom(52:53,100,.45)
+```
+
+Since the distribution is discrete, we cannot find a quantile that will give us exactly 0.05 in the upper tail.  We have a choice.  If we reject when the number of successes is 53 or greater then percentile is 0.066.  Likewise if we use 54 or greater, then the percentile is 0.044.  I will go with the second because it is conservative.  This choice has to do with a Type I error, which we will discuss shortly.
+
+Based on this rejection region and the data, we fail to reject $H_{o}: \pi = 0.45$ in favor of $H_{a}: \pi = 0.50$.
+
+The p-value is a similar idea but takes the context of the problem out of the decision.  Under the null hypothesis, the probability of success is `0.45`.  To find the p-value, we calculate the probability of the data or more extreme under the null hypothesis.  More extreme means further from the null and more towards the alternative.  Thus for us we want to find $P(X \geq 49)$ which using R is
+
+```{r}
+1-pbinom(48,100,.45)
+pbinom(48,100,.45,lower=FALSE)
+```
+
+Since this is larger than our significance level of 0.05, we fail to reject $H_{o}: \pi = 0.45$ in favor of $H_{a}: \pi = 0.50$.
+
+Which test is better, one rejected and the other did not?  It is beyond the scope of this course, but is based on the idea of finding uniformly most powerful tests.
+
+#### Draw a conclusion  
+
+Based on our data of 49 successes in 100 tries, under the null that the probability of heads is `0.45` we found the probability of 49 or more heads is 0.2404 which is greater than 0.05.  Thus we fail to reject $H_{o}: \pi = 0.45$ in favor of $H_{a}: \pi = 0.50$.
+
+### More terms - Errors 
+
+We can make two types of error.  We can reject when the null is true.  This is a type I error.  The probability of this is the significance level, usually called $\alpha$.  Formally, the probability of a type I error is `P(reject|null hypothesis is true)`.  We pick this value as part of the test design.  This is why we put what we are trying to show in the alternative because we are trying to reject the null and we can control the type I error.
+
+The second type of error is called the type II error, yes these are poor names.  Sometimes type I error is called a false positive, and type II a false negative.  The type II error is when we fail to reject but the alternative is true.  In practice this is difficult to calculate because the alternative is often a complex hypothesis and we don't have a value for the parameter under the alternative.  But because I chose a simple alternative, we can easily find the probability of a type II error.  The probability of a type II error is `P(Fail to reject|Alternative hypothesis is true)`.  Based on the work we did above, we reject when the number of successes is 54 or greater.  The probability of a type II error thus is 
+
+```{r}
+pbinom(53,100,.5)
+```
+
+For our problem, since we failed to reject, the probability of a type II error is large.  Typically we want it at `0.2` or smaller.  For this problem that means a larger sample size is required.  The calculation of sample size should have been done prior to the test.
+
+The complement of a type II error is called power and it is the probability we reject given the alternative is true.  Again, since we are setting up in the hopes of rejecting, power is a useful metric.  For this problem, power is
+
+```{r}
+1-pbinom(53,100,.5)
+```
+
+
+
+### Sample Size  
+
+Instead of 100 trials how many should we have done?  Using an $\alpha$ of 0.05, this is my type II error and a power of at least 0.80. Let's find the number.  As a start, say the sample size is 200.  Then the rejection region is
+
+```{r}
+qbinom(.95,200,.45)
+```
+
+And the power is 
+
+```{r}
+1-pbinom(102,200,.5)
+```
+
+We are going to need a large sample.  Next let's try 800 trials.
+
+```{r}
+qbinom(.95,800,.45)
+```
+
+And the power is 
+
+```{r}
+1-pbinom(383,800,.5)
+```
+
+That is more like it.  I think we can write a function to help us.
+
+```{r}
+simple_sample_size<-function(n=100){1-pbinom(qbinom(.95,n,.45),n,.5)}
+```
+
+Now for a range of values
+
+```{r}
+temp<-sapply((600:625),simple_sample_size)
+names(temp)<-(600:625)
+temp    
+```
+
+So it looks like around 618 trials would work for use.  Let's plot
+
+```{r}
+plot((249:329),dbinom((249:329),618,.45),type="p",xlab="Number of Successes",ylab="Probability")
+points((249:329),dbinom((249:329),618,.5),type="p",col=2)
+```  
+
+### Complex Hypothesis  
+
+The book goes through an example so we will keep it short here.  Suppose our hypotheses were
+
+$$H_{o}:\pi=.45$$
+$$H_{o}:\pi\neq.45$$
+
+The alternative is complex because it takes on many values.  This particular test is two-sided and is the most common.  A one-sided test can only be done if apriori you have knowledge that the parameter will be on one side of the null hypothesized value.  
+
+To conduct this test, we can use the function `binom.test`.
+
+```{r}
+binom.test(49,100,p=.45,conf.level = .05)
+```
+
+Again, we fail to reject.
+
+To find power, you need a specified difference or size of effect that you think is practically important, usually from a subject matter expert.  Let's say that expert wants to detect a difference of 0.05, this is called the effect size.  We now need a value for the alternative.  We could pick either 0.40 or 0.50.  Let's go with 0.50.  You could do both and report the two power calculations back to the decision maker.
+
+Since it is a two-sided test, we need to split the significance level between both tails.  Thus the critical values, the values that define the rejection region are.
+
+```{r}
+qbinom(.975,100,.45)
+qbinom(.025,100,.45)
+```
+
+Again, since the distribution is discrete, it is unlikely that these values will give us the exact probabilities we want.  Let's check and decide what we want to use.
+
+```{r}
+1-pbinom(54:56,100,.45)
+pbinom(34:36,100,.45)
+```
+
+If we reject when we have 34 or fewer heads and 56 or greater heads then the probability of a type I error is
+
+```{r}
+1-(pbinom(55,100,.45)-pbinom(34,100,.45))
+```
+
+This is conservative and less that `0.05`.  We could adjust a little
+
+```{r}
+1-(pbinom(55,100,.45)-pbinom(35,100,.45))
+```
+
+It is up to you to decide.  Let's go with the second set.  We reject if we have 35 or fewer or 56 and greater heads.  Now to find power, we calculate the probability of rejecting given that the alternative is true, which we have selected as 0.05.
+
+```{r}
+1-(pbinom(55,100,.5)-pbinom(35,100,.5))
+```
+
+The power is small and thus to detect a difference of 0.05, we need a larger sample size than 100.  
+
+For interest, let's check the power if the alternative were 0.40.
+
+
+```{r}
+1-(pbinom(55,100,.4)-pbinom(35,100,.4))
+```
+
+## Mean and Variance of Discrete Random Variable {#L9}
+
+
+### Objectives
+
+1. Know and use definitions and properties of E(X) and V(X)  
+2. Find the pmf of the transformation of a random variable  
+3. Know E(X) and V(X) for common distributions  
+
+
+### Review  
+
+Definitions you should know cold:
+
+p-value: Probability of the observed data or more extreme given the null hypothesis is true
+Level of significance ($\alpha$): The probability of rejecting given the null hypothesis is true  
+Power: The probability of rejecting given that the alternative hypothesis is true  
+$\beta$: 1 - Power, the probability of failing to reject given that the alternative hypothesis is true  
+
+#### Practice problems
+
+1. We are testing if a die is fair by rolling it 30 time and recording the number of times one appears.  The hypothesis is 
+$$H_{o}:\pi={1 \over 6}$$
+$$H_{a}:\pi \neq {1 \over 6}$$
+
+The test statistic is 2.  Using a significance level of $\alpha$ = 0.05. Find the power of the test using an alternative probability of success of 0.20.
+
+2. Let $X\sim Binom(15,.25)$
+Find $P(X=2)$,$P(X<7)$,$P(X\geq8)$, and $P(5<X\leq9)$
+
+### Problem  
+
+A random process flips a fair coin four times.  Find the pmf for the random variable $Z$ = the difference between the number of heads and the number of tails.  
+
+The values that z can take are -4, -2, 0, 2, and 4.  The pmf will be the same as the pmf for a binomial of four flips.  Thus
+```{r}
+dbinom(0:4,4,.5)
+```
+
+If I install the `MASS` library, I can make these fractions.
+
+```{r eval=FALSE}
+library(MASS)
+```
+
+```{r}
+fractions(dbinom(0:4,4,.5))
+```
+
+1. Find $E(Z)$  
+
+By definition $E(Z)=\sum_{z}zf(z)$
+
+```{r}
+seq(-4,4,2)*fractions(dbinom(0:4,4,.5))
+sum(seq(-4,4,2)*fractions(dbinom(0:4,4,.5)))
+```
+
+The expected value, the average value of the population, is zero.
+
+2. Now a transformation, let $Y=|Z|$.  Find the pmf of $Y$ and $E(Y)$.
+
+This is an important definition:
+
+Let $X$ be a random variable and $t:\mathbb{R}\rightarrow \mathbb{R}$, then $E(t(X))$ is $E(t(X))=\sum_{x}t(x)f(x)$
+
+The pmf is
+
+```{r}
+temp<-fractions(c(dbinom(2,4,.5),(dbinom(1,4,.5)+dbinom(3,4,.5)),dbinom(0,4,.5)+dbinom(0,4,.5)))
+names(temp)<-c(0,2,4)
+temp
+```
+
+The expected value is
+
+```{r}
+sum(c(0,2,4)*temp)
+```
+
+or
+```{r}
+fractions(sum(abs(seq(-4,4,2))*dbinom(0:4,4,.5)))
+```
+
+
+
+3. Find $E(Z^2)$
+
+The pmf is
+
+```{r}
+temp<-fractions(c(dbinom(2,4,.5),(dbinom(1,4,.5)+dbinom(3,4,.5)),dbinom(0,4,.5)+dbinom(0,4,.5)))
+names(temp)<-c(0,4,16)
+temp
+```
+
+The expected value is
+
+```{r}
+sum(c(0,4,16)*temp)
+```
+
+or
+```{r}
+fractions(sum((seq(-4,4,2)^2)*dbinom(0:4,4,.5)))
+```
+
+4. Variance is just an expected value and is defined as
+$$Var(X)=E((X-E(X))^2)$$
+where $E(X)$ is sometimes denoted as $\mu$
+
+by definition:
+$$E((X-E(X))^2)=E((X-\mu)^2)=\sum_{x}t(x)f(x)=\sum_{x}(x-\mu)^2f(x)$$
+
+find $Var(Z)$
+
+```{r}
+(seq(-4,4,2)-0)^2*fractions(dbinom(0:4,4,.5))
+sum((seq(-4,4,2)-0)^2*fractions(dbinom(0:4,4,.5)))
+```
+
+You can also find variance using
+$$Var(X)=E(X^2)-E(X)^2$$
+
+5. Other properties
+$$E(aX+b)=aE(X)+b$$
+$$Var(aX+b)=a^2Var(X)$$
+
+Do Homework problem 2.64
+
+## Discrete Joint Distributions {#L10}
+
+### Objectives
+
+1. Know and use definitions such as joint pmf, conditional distribution, marginal distribution, independence, covariance, and correlation coefficient  
+2. Find the various probability mass functions (joint, marginal, and conditional)  
+3. Know and use properties of E(X),V(X), and Cov(X,Y) for sums and products of random variables  
+
+
+### Example 
+
+Consider a contrived example of three random variables X, Y, and Z.  The following is the joint probability mass function
+
+```{r eval=FALSE}
+library(MASS)
+``` 
+
+```{r}
+fractions(Les10ex<-array(c(3/64,9/64,9/64,27/64,2/64,6/64,2/64,6/64),dim=c(2,2,2),dimnames = list(c(0,1),c(0,1),c(0,1))))
+```
+
+This might be easier to look at:
+
+```{r}
+Les10exa<-data.frame(X=c(rep(0,16),rep(1,48)),Y=c(0,0,0,rep(1,9),rep(c(0,1),each=2),rep(0,9),rep(1,27),rep(c(0,1),each=6)),Z=c(rep(0,12),rep(1,4),rep(0,36),rep(1,12)))
+```
+
+Now we have our pmf
+
+```{r}
+fractions(prop.table(table(Les10exa)))
+```
+
+Notice this is a pmf since each value is between 0 and 1 and the sum is 1.
+
+That is $\sum_{x,y,z}f_{XYZ}(x,y,z)=1$.
+
+```{r}
+sum(fractions(prop.table(table(Les10exa))))
+```
+
+### Problem 1    
+
+1. Find $P(X=1,Y=1,Z=1)$ which is $f_{XYZ}(1,1,1)$.  Notice that we are using a comma instead of the intersection symbol.  This is to make the notation easier.
+
+The answer is `6/64`.  This is a joint probability.
+
+2. Find the marginal pmf of X.
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1,sum))
+``` 
+
+3. Find $E(X)$
+
+```{r}
+sum(apply(fractions(prop.table(table(Les10exa))),1,sum)*c(0,1))
+```
+
+4. Find $f_{XY}(x,y)$.
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1:2,sum))
+```
+
+5. Are $X$ and $Y$ independent?
+
+We need to verify that $f_{XY}(x,y)=f_{X}(x)f_{Y}(y)$ for all $x$ and $y$.
+
+We need $f_{X}(x)$ and $f_{Y}(y)$
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1,sum))
+fractions(apply(prop.table(table(Les10exa)),2,sum))
+```
+
+We could multiply these one at a time or use an outer product to make it easier
+
+```{r}
+fractions(outer(apply(prop.table(table(Les10exa)),1,sum),apply(prop.table(table(Les10exa)),2,sum)))
+```
+
+The joint pmf is
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1:2,sum))
+```
+
+They are equal so $X$ and $Y$ are independent.
+
+5. How about $X$ and $Z$?
+
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1,sum))
+fractions(apply(prop.table(table(Les10exa)),3,sum))
+```
+
+
+```{r}
+fractions(outer(apply(prop.table(table(Les10exa)),1,sum),apply(prop.table(table(Les10exa)),3,sum)))
+```
+
+The joint pmf is
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),c(1,3),sum))
+```
+
+Thus $X$ and $Z$ are independent.
+
+6. How about $X$, $Y$, and $Z$?
+
+If they are independent, then $f_{XYZ}(x,y,z)=f_{X}(x)f_{Y}(y)f_{Z}(z)$ for all $x$, $y$, and $z$.
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1,sum))
+fractions(apply(prop.table(table(Les10exa)),2,sum))
+fractions(apply(prop.table(table(Les10exa)),3,sum))
+```
+
+The product of the marginals is
+```{r}
+fractions(outer(outer(apply(prop.table(table(Les10exa)),1,sum),apply(prop.table(table(Les10exa)),2,sum)),apply(prop.table(table(Les10exa)),3,sum)))
+```
+
+The joint pmf is
+
+```{r}
+fractions(prop.table(table(Les10exa)))
+```
+
+They are not independent.
+
+In this problem we have pairwise independence but not independence.
+
+7. Find $f_{X|Y=1}(x)$.  This is a conditional pmf.  
+
+From the definition of conditional probability
+$$f_{X|Y=1}(x)={f_{XY}(x,y) \over f_{Y}(y)}|_{y=1}={f_{XY}(x,1) \over f_{Y}(1)}$$
+
+The joint pmf of $X$ and $Y$ is  
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1:2,sum))
+```
+
+and the marginal of $Y$ is
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),2,sum))
+```
+
+Since $y=1$ we want the second column of the joint
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1:2,sum))[,2]
+```
+
+divided by the second element of the marginal
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),2,sum))[2]
+```
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1:2,sum))[,2]/fractions(apply(prop.table(table(Les10exa)),2,sum))[2]
+```
+
+Notice that since $X$ and $Y$ are independent, this is just the marginal of $X$
+
+```{r}
+fractions(apply(prop.table(table(Les10exa)),1,sum))
+```
+
+
+### Problem 2  
+
+Let do a problem where the random variables are not independent.
+
+
+
+```{r}
+Les10ex2<-data.frame(X=c(-1,0,0,1),Y=c(1,0,0,1))
+```
+
+Now we have our pmf
+
+```{r}
+fractions(prop.table(table(Les10ex2)))
+```
+
+1. Are $X$ and $Y$ independent?
+
+```{r}
+fractions(apply(prop.table(table(Les10ex2)),1,sum))
+fractions(apply(prop.table(table(Les10ex2)),2,sum))
+```
+
+```{r}
+fractions(outer(fractions(apply(prop.table(table(Les10ex2)),1,sum)),fractions(apply(prop.table(table(Les10ex2)),2,sum))))
+```
+
+This is not equal to the joint pmf, so they are not independent.
+
+2. Find Cov($X$,$Y$).
+
+By definition, this is $E[(X-E(X))(Y-E(Y))]$.
+
+Now $E(X)$=0 and $E(Y)$=1/2.
+
+Now we can find the covariance, we do not need to write the product when the joint probability is zero since the product will be zero.  Thus we have
+
+$$(-1-0)(1-1/2)(1/4)+(0-0)(0-1/2)(1/2)+(1-0)(1-1/2)(1/4)=0$$
+
+The covariance is zero even though $X$ and $Y$ are dependent.  That is because covariance measures a linear relationship.  The relationship here is purely quadratic with no linear component.
+
+3.  Find $E(XY)$  
+
+We need the pmf of $W=XY$.
+
+The random variable $W$ can take on the values $-1,0,1$ with probabilities of $1/4,1/2,1/4$.  Thus the expected value is $(1/4)(-1)+(1/2)(0)+(1/4)(1)=0$
+
+Notice that if random variables are independent, their covariance is zero.  The converse is not true.
+
+We have another formula for covariance
+
+$$Cov(X,Y)=E(XY)-E(X)E(Y)$$
+
+We also now have
+$$Var(X,Y)=Var(X)+Var(Y)+2Cov(X,Y)$$
+
+### Other  
+
+Make sure you know Thm 2.6.7, Lemma 2.6.13, and Lemma 2.6.14.
+
+```{r eval=FALSE}
+library(fastR)
+```
+
+For an example, let's use the airline data from a previous lessons.  Let's assume this is the pmf and not empirical data.
+
+```{r}
+prop.table(xtabs(~Airport+Airline+Result,airlineArrival))
+```
+
+Now you can do the same work of finding marginal pmf, checking for independence, finding conditional pmf, etc.
+
+For example, the joint pmf for Airline and Result is:
+
+```{r}
+apply(prop.table(xtabs(~Airport+Airline+Result,airlineArrival)),2:3,sum)
+```
+
+## Other Discrete Distributions {#L11}  
+
+### Objectives
+
+1. Know assumptions, parameters, E(X), V(X), and how to solve problems for Poisson and hypergeometric  
+2. Conduct hypothesis test using Fisher’s exact test  
+
+
+### Distributions  
+
+We have learned about the following distributions to this point:
+
+1. Binomial: $X$ the number of successes in n trials.  The parameter is probability of success and the nuisance parameter is the number of successes.  An example is the number of made free throws in 10 shots.    
+2. Negative Binomial: $Y$ the number of failures until s successes.  The parameter is probability of success and the nuisance parameter is number of successes.  Note that in the binomial, the number of successes is random and the trials are fixed.  In the negative binomial, the number of successes is fixed and the number of trials is random.  An example is the number of free throws until I make 10.  
+3.  Discrete Uniform.  This was not directly mentioned in the book but used in several examples and homework problems.  It is simply the case where each outcome has the same probability.  An example is the number on a rolled die.  
+
+Two new distributions are:
+
+4. Poisson: $X$ is the number of occurrences in a fixed interval.  The interval is fixed and is a measurement variable such as time or distance.  The number of occurrences are random.  An example is the number of people entering Chipotle in the next 45 minutes.  The parameter for the Poisson is $\lambda$ which is the average number of occurrences in the fixed interval.  It is key to use the interval given in the problem.    
+5.  Hypergeometric: $X$ is the number of successes in a sample of size k where the population has m successes and n failures.  An example is the number of girls on a 6 member team where we select from 7 girls and 5 boys.  The hypergeometric is similar to the binomial except that we sample without replacement.  Thus the probability of success is not constant and the trials are not independent.
+
+### Examples  
+
+On average, 45 cars enter the North Gate every hour.  What is the probability that less than 20 cars will enter in the next 15 minutes.
+
+The random variable is $Y$ the number of cars entering the North Gate in 15 minutes.  Thus $\lambda$ is the average number of cars entering the gate in 15 minutes.  It has the value of `45/4`.  The answer is 
+```{r}
+ppois(19,45/4)
+```
+
+The probability of exactly 20 cars in the next 15 minutes is
+
+```{r}
+dpois(20,45/4)
+```
+
+Changing the problem slightly, what is the probability of more than 30 cars in 45 minutes?  
+
+In this case $\lambda$ is `45(3/4)`
+
+```{r}
+1-ppois(30,45*3/4)
+```
+
+For a hypergeometric, what is the probability of a 5 card hand having exactly two Kings? 
+
+We are sampling without replacement.  We have two outcomes, King and not King.  In the population we have 4 Kings and 48 non-Kings.
+
+```{r}
+dhyper(x=2,m=4,n=48,k=5)
+```
+
+### Fisher's Exact Test  
+
+This test is used when we have two random variables each with two levels.  It is checking for an association between the variables.  In other words, it is checking for independence.  The test is exact because we can use the hypergeometric distribution to find probabilities.  We do not need approximations.  
+
+To illustrate the use of this test, I will work example 2.7.4 in different ways.  This example uses the hypergeometric distribution and the built-in function `fisher.test` that uses the hypergeometric distribution for hypothesis testing.  
+
+As a reminder, the hypergeometric involves k trials where each trial has two outcomes.  But in difference to the binomial, the hypergeometric has a finite population and samples without replacement, thus the probability of success is not constant and the trials are not independent.  A generic hypergeometric random variable is 
+
+`X = the number of successes in k trials where the population has m successes and n failures.`
+
+1.  For this problem, I will alter the null and alternative hypothesis:
+
+$H_o: \pi_{d}=\pi_{m}$   
+
+$H_a: \pi_{d} < \pi_{m}$ 
+
+Where $\pi_{d}$ is the proportion of dizygotic twins where both had convictions.  This hypothesis assumes that apriori we had information that indicated we thought dizygotic twins had a conviction percentage less than monozygotic.  Somewhat questionable, but we will continue.
+
+Next, enter the data into R:  
+
+```{r}
+convictions <- rbind(dizygotic=c(2,15), monozygotic=c(10,3))
+colnames(convictions) <- c('convicted','not convicted')
+convictions
+```
+
+Notice the marginal totals
+
+```{r}
+colSums(convictions)
+rowSums(convictions)
+```
+
+These values, marginals, are assumed to be fixed.  Testing the hypothesis we need to use one of the four cells from the table as a reference.  By convention, the upper left cell is used in the `fisher.test` test.  To find the p-value, we must find the probability of the data or more extreme given the null hypothesis is true.  Using the upper left hand cell, more extreme means 2 or less dizygotic twins both have convictions, look at the alternative again.  Assuming the null hypothesis being true, no difference between the dizygotic and monozygotic, means that we could trade entries in the cells.  This leads to our test statistic:
+
+`X = the number of dizygotic twins in 12 convicted twins where the population has 17 dizygotic twins and 13 monozygotic twins.`
+
+This is a hypergeometric and the p-value is
+
+$P(X \leq 2|H_{O} \: is \: true) =$
+
+```{r}
+phyper(2,17,13,12)
+```
+
+Since the p-value is much less than 0.05, based on the data, we reject the hypothesis that dizygotic and monozygotic twins have the same mutual conviction proportion in favor of the hypothesis that dizygotic twins have a smaller mutual conviction proportion at the 0.05 significance level.  
+
+Notice that I could have also used the following equivalent analysis
+
+`X = the number of convicted twins in 17 dizygotic twins where the population has 12 convicted twins and 18 not convicted twins.`
+
+This is a hypergeometric and the p-value is
+
+$P(X \leq 2|H_{O} \: is \: true) =$
+
+```{r}
+phyper(2,12,18,17)
+```  
+
+This is the same p-value.
+
+We could have also used the function `fisher.test` to get the p-value:
+
+```{r}
+fisher.test(convictions,alter="less")
+```  
+
+2. I could have had the table come in this form, since the ordering of columns and rows is arbitrary:
+
+```{r}
+convictions2 <- rbind(monozygotic=c(10,3),dizygotic=c(2,15))
+colnames(convictions2) <- c('convicted','not convicted')
+convictions2
+```
+
+Notice the marginal totals are the same:
+
+```{r}
+colSums(convictions2)
+rowSums(convictions2)
+```
+
+Again, the upper left hand cell is the reference cell and we have the same hypotheses.  To find the p-value for this arrangement the test statistic would be
+
+`X = the number of monozygotic twins in 12 convicted twins where the population has 17 dizygotic twins and 13 monozygotic twins.`
+
+$P(X \geq 10|H_{O} \: is \: true) =$
+
+```{r}
+1-phyper(9,13,17,12)
+```  
+
+This is the same p-value.  Using `fisher.test`
+
+```{r}
+fisher.test(convictions2,alter="greater")
+```  
+
+3.  You try.  For the following table, find the p-value for the 
+
+
+$H_o: \pi_{d}=\pi_{m}$   
+
+$H_a: \pi_{d} < \pi_{m}$ 
+
+Where $\pi_{d}$ is the proportion of dizygotic twins where both had convictions.  This hypothesis assumes that apriori we had information that indicated we thought dizygotic twins had a double conviction percentage less than monozygotic.  Somewhat questionable, but we will continue.
+
+```{r}
+convictions3 <- rbind(monozygotic=c(3,10),dizygotic=c(15,2))
+colnames(convictions3) <- c('not convicted','convicted')
+convictions3
+```
+
+Let `X = the number of monozygotic twins in 18 not convicted twins where the population has 17 dizygotic twins and 13 monozygotic twins.`
+
+
+```{r}
+phyper(3,13,17,18)
+```
+
+```{r}
+fisher.test(convictions3,alternative = 'less')
+```
+
+```{r results='hide',echo=FALSE}
+phyper(3,13,17,18)
+```

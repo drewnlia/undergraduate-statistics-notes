@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Notes for Teaching an Undergraduate Statistics Using fastR</title>
+  <meta name="description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Notes for Teaching an Undergraduate Statistics Using fastR" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book." />
+  <meta name="github-repo" content="BawCOS/undergraduate-statistics-notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Notes for Teaching an Undergraduate Statistics Using fastR" />
+  
+  <meta name="twitter:description" content="A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim. This is for a one semester course and does not use the entire book." />
+  
+
+<meta name="author" content="Bradley Warner">
+
+
+<meta name="date" content="2018-01-30">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="AppA.html">
+<link rel="next" href="references.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Notes for Stats Course</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="who-is-this-book-for.html"><a href="who-is-this-book-for.html"><i class="fa fa-check"></i><b>0.1</b> Who is this book for?</a></li>
+<li class="chapter" data-level="0.2" data-path="book-structure-and-how-to-use-it.html"><a href="book-structure-and-how-to-use-it.html"><i class="fa fa-check"></i><b>0.2</b> Book Structure and How to Use It</a></li>
+<li class="chapter" data-level="0.3" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>0.3</b> Prerequisites</a></li>
+<li class="chapter" data-level="0.4" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>0.4</b> Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="Chpt1.html"><a href="Chpt1.html"><i class="fa fa-check"></i><b>1</b> Summarizing Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="L1.html"><a href="L1.html"><i class="fa fa-check"></i><b>1.1</b> Admin and Course Introduction</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="L1.html"><a href="L1.html#objectives"><i class="fa fa-check"></i><b>1.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.1.2" data-path="L1.html"><a href="L1.html#in-class-work"><i class="fa fa-check"></i><b>1.1.2</b> In Class Work</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="Les2.html"><a href="Les2.html"><i class="fa fa-check"></i><b>1.2</b> Summarizing Univariate Data</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="Les2.html"><a href="Les2.html#objectives-1"><i class="fa fa-check"></i><b>1.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.2.2" data-path="Les2.html"><a href="Les2.html#intro-material"><i class="fa fa-check"></i><b>1.2.2</b> Intro Material</a></li>
+<li class="chapter" data-level="1.2.3" data-path="Les2.html"><a href="Les2.html#data-collection"><i class="fa fa-check"></i><b>1.2.3</b> Data Collection</a></li>
+<li class="chapter" data-level="1.2.4" data-path="Les2.html"><a href="Les2.html#background"><i class="fa fa-check"></i><b>1.2.4</b> Background</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="L3.html"><a href="L3.html"><i class="fa fa-check"></i><b>1.3</b> Summarizing Multivariate Data</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="L3.html"><a href="L3.html#objectives-2"><i class="fa fa-check"></i><b>1.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="1.3.2" data-path="L3.html"><a href="L3.html#ideas-from-last-lesson"><i class="fa fa-check"></i><b>1.3.2</b> Ideas from last lesson</a></li>
+<li class="chapter" data-level="1.3.3" data-path="L3.html"><a href="L3.html#bivariate-data"><i class="fa fa-check"></i><b>1.3.3</b> Bivariate Data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Chpt2.html"><a href="Chpt2.html"><i class="fa fa-check"></i><b>2</b> Probability and Random Variables</a><ul>
+<li class="chapter" data-level="2.1" data-path="L4.html"><a href="L4.html"><i class="fa fa-check"></i><b>2.1</b> Random Variables</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="L4.html"><a href="L4.html#objectives-3"><i class="fa fa-check"></i><b>2.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.1.2" data-path="L4.html"><a href="L4.html#teminology"><i class="fa fa-check"></i><b>2.1.2</b> Teminology</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="L5.html"><a href="L5.html"><i class="fa fa-check"></i><b>2.2</b> Probability Rules</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="L5.html"><a href="L5.html#objectives-4"><i class="fa fa-check"></i><b>2.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.2.2" data-path="L5.html"><a href="L5.html#probability-general"><i class="fa fa-check"></i><b>2.2.2</b> Probability: General</a></li>
+<li class="chapter" data-level="2.2.3" data-path="L5.html"><a href="L5.html#counting"><i class="fa fa-check"></i><b>2.2.3</b> Counting</a></li>
+<li class="chapter" data-level="2.2.4" data-path="L5.html"><a href="L5.html#probability-equally-likely-events"><i class="fa fa-check"></i><b>2.2.4</b> Probability: Equally Likely Events</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="L6.html"><a href="L6.html"><i class="fa fa-check"></i><b>2.3</b> Inclusion-Exclusion, Conditional Probability</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="L6.html"><a href="L6.html#objectives-5"><i class="fa fa-check"></i><b>2.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.3.2" data-path="L6.html"><a href="L6.html#definitions"><i class="fa fa-check"></i><b>2.3.2</b> Definitions</a></li>
+<li class="chapter" data-level="2.3.3" data-path="L6.html"><a href="L6.html#problems"><i class="fa fa-check"></i><b>2.3.3</b> Problems</a></li>
+<li class="chapter" data-level="2.3.4" data-path="L6.html"><a href="L6.html#bayes-rule"><i class="fa fa-check"></i><b>2.3.4</b> Bayes Rule</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="L7.html"><a href="L7.html"><i class="fa fa-check"></i><b>2.4</b> Discrete Distributions</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="L7.html"><a href="L7.html#objectives-6"><i class="fa fa-check"></i><b>2.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.4.2" data-path="L7.html"><a href="L7.html#definitions-1"><i class="fa fa-check"></i><b>2.4.2</b> Definitions</a></li>
+<li class="chapter" data-level="2.4.3" data-path="L7.html"><a href="L7.html#practice"><i class="fa fa-check"></i><b>2.4.3</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="L8.html"><a href="L8.html"><i class="fa fa-check"></i><b>2.5</b> Introduction to Hypothesis Testing</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="L8.html"><a href="L8.html#objectives-7"><i class="fa fa-check"></i><b>2.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.5.2" data-path="L8.html"><a href="L8.html#hypotheses-testing"><i class="fa fa-check"></i><b>2.5.2</b> Hypotheses Testing</a></li>
+<li class="chapter" data-level="2.5.3" data-path="L8.html"><a href="L8.html#more-terms---errors"><i class="fa fa-check"></i><b>2.5.3</b> More terms - Errors</a></li>
+<li class="chapter" data-level="2.5.4" data-path="L8.html"><a href="L8.html#sample-size"><i class="fa fa-check"></i><b>2.5.4</b> Sample Size</a></li>
+<li class="chapter" data-level="2.5.5" data-path="L8.html"><a href="L8.html#complex-hypothesis"><i class="fa fa-check"></i><b>2.5.5</b> Complex Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="L9.html"><a href="L9.html"><i class="fa fa-check"></i><b>2.6</b> Mean and Variance of Discrete Random Variable</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="L9.html"><a href="L9.html#objectives-8"><i class="fa fa-check"></i><b>2.6.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.6.2" data-path="L9.html"><a href="L9.html#review"><i class="fa fa-check"></i><b>2.6.2</b> Review</a></li>
+<li class="chapter" data-level="2.6.3" data-path="L9.html"><a href="L9.html#problem"><i class="fa fa-check"></i><b>2.6.3</b> Problem</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="L10.html"><a href="L10.html"><i class="fa fa-check"></i><b>2.7</b> Discrete Joint Distributions</a><ul>
+<li class="chapter" data-level="2.7.1" data-path="L10.html"><a href="L10.html#objectives-9"><i class="fa fa-check"></i><b>2.7.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.7.2" data-path="L10.html"><a href="L10.html#example"><i class="fa fa-check"></i><b>2.7.2</b> Example</a></li>
+<li class="chapter" data-level="2.7.3" data-path="L10.html"><a href="L10.html#problem-1"><i class="fa fa-check"></i><b>2.7.3</b> Problem 1</a></li>
+<li class="chapter" data-level="2.7.4" data-path="L10.html"><a href="L10.html#problem-2"><i class="fa fa-check"></i><b>2.7.4</b> Problem 2</a></li>
+<li class="chapter" data-level="2.7.5" data-path="L10.html"><a href="L10.html#other"><i class="fa fa-check"></i><b>2.7.5</b> Other</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="L11.html"><a href="L11.html"><i class="fa fa-check"></i><b>2.8</b> Other Discrete Distributions</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="L11.html"><a href="L11.html#objectives-10"><i class="fa fa-check"></i><b>2.8.1</b> Objectives</a></li>
+<li class="chapter" data-level="2.8.2" data-path="L11.html"><a href="L11.html#distributions"><i class="fa fa-check"></i><b>2.8.2</b> Distributions</a></li>
+<li class="chapter" data-level="2.8.3" data-path="L11.html"><a href="L11.html#examples"><i class="fa fa-check"></i><b>2.8.3</b> Examples</a></li>
+<li class="chapter" data-level="2.8.4" data-path="L11.html"><a href="L11.html#fishers-exact-test"><i class="fa fa-check"></i><b>2.8.4</b> Fisher’s Exact Test</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Chpt3.html"><a href="Chpt3.html"><i class="fa fa-check"></i><b>3</b> Continuous Distributions</a><ul>
+<li class="chapter" data-level="3.1" data-path="L12.html"><a href="L12.html"><i class="fa fa-check"></i><b>3.1</b> Uniform and Exponential Distribution</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="L12.html"><a href="L12.html#objectives-11"><i class="fa fa-check"></i><b>3.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.1.2" data-path="L12.html"><a href="L12.html#probability-density-function"><i class="fa fa-check"></i><b>3.1.2</b> Probability Density Function</a></li>
+<li class="chapter" data-level="3.1.3" data-path="L12.html"><a href="L12.html#work-problem-3.1a-including-finding-cdf."><i class="fa fa-check"></i><b>3.1.3</b> Work problem 3.1a including finding cdf.</a></li>
+<li class="chapter" data-level="3.1.4" data-path="L12.html"><a href="L12.html#transformation-problem"><i class="fa fa-check"></i><b>3.1.4</b> Transformation Problem</a></li>
+<li class="chapter" data-level="3.1.5" data-path="L12.html"><a href="L12.html#named-continuous-random-variables-uniform-and-exponential"><i class="fa fa-check"></i><b>3.1.5</b> Named Continuous Random Variables: Uniform and Exponential</a></li>
+<li class="chapter" data-level="3.1.6" data-path="L12.html"><a href="L12.html#additional-homework-problems"><i class="fa fa-check"></i><b>3.1.6</b> Additional Homework Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="L13.html"><a href="L13.html"><i class="fa fa-check"></i><b>3.2</b> Moments</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="L13.html"><a href="L13.html#objectives-12"><i class="fa fa-check"></i><b>3.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.2.2" data-path="L13.html"><a href="L13.html#review-1"><i class="fa fa-check"></i><b>3.2.2</b> Review</a></li>
+<li class="chapter" data-level="3.2.3" data-path="L13.html"><a href="L13.html#definitions-2"><i class="fa fa-check"></i><b>3.2.3</b> Definitions</a></li>
+<li class="chapter" data-level="3.2.4" data-path="L13.html"><a href="L13.html#practice-1"><i class="fa fa-check"></i><b>3.2.4</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="L14.html"><a href="L14.html"><i class="fa fa-check"></i><b>3.3</b> Generating Functions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="L14.html"><a href="L14.html#objectives-13"><i class="fa fa-check"></i><b>3.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.3.2" data-path="L14.html"><a href="L14.html#review-2"><i class="fa fa-check"></i><b>3.3.2</b> Review</a></li>
+<li class="chapter" data-level="3.3.3" data-path="L14.html"><a href="L14.html#moment-generating-functions"><i class="fa fa-check"></i><b>3.3.3</b> Moment Generating Functions</a></li>
+<li class="chapter" data-level="3.3.4" data-path="L14.html"><a href="L14.html#practice-2"><i class="fa fa-check"></i><b>3.3.4</b> Practice</a></li>
+<li class="chapter" data-level="3.3.5" data-path="L14.html"><a href="L14.html#transformations"><i class="fa fa-check"></i><b>3.3.5</b> Transformations</a></li>
+<li class="chapter" data-level="3.3.6" data-path="L14.html"><a href="L14.html#practice-3"><i class="fa fa-check"></i><b>3.3.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="L15.html"><a href="L15.html"><i class="fa fa-check"></i><b>3.4</b> Important Continous Distributions</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="L15.html"><a href="L15.html#objectives-14"><i class="fa fa-check"></i><b>3.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.4.2" data-path="L15.html"><a href="L15.html#normal"><i class="fa fa-check"></i><b>3.4.2</b> Normal</a></li>
+<li class="chapter" data-level="3.4.3" data-path="L15.html"><a href="L15.html#gamma"><i class="fa fa-check"></i><b>3.4.3</b> Gamma</a></li>
+<li class="chapter" data-level="3.4.4" data-path="L15.html"><a href="L15.html#weibull"><i class="fa fa-check"></i><b>3.4.4</b> Weibull</a></li>
+<li class="chapter" data-level="3.4.5" data-path="L15.html"><a href="L15.html#beta"><i class="fa fa-check"></i><b>3.4.5</b> Beta</a></li>
+<li class="chapter" data-level="3.4.6" data-path="L15.html"><a href="L15.html#problems-1"><i class="fa fa-check"></i><b>3.4.6</b> Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="L16.html"><a href="L16.html"><i class="fa fa-check"></i><b>3.5</b> Plots of Distributions</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="L16.html"><a href="L16.html#objectives-15"><i class="fa fa-check"></i><b>3.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.5.2" data-path="L16.html"><a href="L16.html#review-3"><i class="fa fa-check"></i><b>3.5.2</b> Review</a></li>
+<li class="chapter" data-level="3.5.3" data-path="L16.html"><a href="L16.html#background-1"><i class="fa fa-check"></i><b>3.5.3</b> Background</a></li>
+<li class="chapter" data-level="3.5.4" data-path="L16.html"><a href="L16.html#density-estimation"><i class="fa fa-check"></i><b>3.5.4</b> Density Estimation</a></li>
+<li class="chapter" data-level="3.5.5" data-path="L16.html"><a href="L16.html#practice-4"><i class="fa fa-check"></i><b>3.5.5</b> Practice</a></li>
+<li class="chapter" data-level="3.5.6" data-path="L16.html"><a href="L16.html#q-q-plots"><i class="fa fa-check"></i><b>3.5.6</b> Q-Q Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="L17.html"><a href="L17.html"><i class="fa fa-check"></i><b>3.6</b> Continuous Joint Distributions</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="L17.html"><a href="L17.html#objectives-16"><i class="fa fa-check"></i><b>3.6.1</b> Objectives</a></li>
+<li class="chapter" data-level="3.6.2" data-path="L17.html"><a href="L17.html#background-2"><i class="fa fa-check"></i><b>3.6.2</b> Background</a></li>
+<li class="chapter" data-level="3.6.3" data-path="L17.html"><a href="L17.html#practice-5"><i class="fa fa-check"></i><b>3.6.3</b> Practice</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="Chpt4.html"><a href="Chpt4.html"><i class="fa fa-check"></i><b>4</b> Parameter Estimation and Testing</a><ul>
+<li class="chapter" data-level="4.1" data-path="L18.html"><a href="L18.html"><i class="fa fa-check"></i><b>4.1</b> Method of Moments</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="L18.html"><a href="L18.html#objectives-17"><i class="fa fa-check"></i><b>4.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.1.2" data-path="L18.html"><a href="L18.html#introduction"><i class="fa fa-check"></i><b>4.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.1.3" data-path="L18.html"><a href="L18.html#method-of-moment-estimates"><i class="fa fa-check"></i><b>4.1.3</b> Method of Moment Estimates</a></li>
+<li class="chapter" data-level="4.1.4" data-path="L18.html"><a href="L18.html#example-1"><i class="fa fa-check"></i><b>4.1.4</b> Example</a></li>
+<li class="chapter" data-level="4.1.5" data-path="L18.html"><a href="L18.html#practice-6"><i class="fa fa-check"></i><b>4.1.5</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="L19.html"><a href="L19.html"><i class="fa fa-check"></i><b>4.2</b> Estimates and Estimators</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="L19.html"><a href="L19.html#objectives-18"><i class="fa fa-check"></i><b>4.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.2.2" data-path="L19.html"><a href="L19.html#background-3"><i class="fa fa-check"></i><b>4.2.2</b> Background</a></li>
+<li class="chapter" data-level="4.2.3" data-path="L19.html"><a href="L19.html#estimator-as-a-random-variable"><i class="fa fa-check"></i><b>4.2.3</b> Estimator as a Random Variable</a></li>
+<li class="chapter" data-level="4.2.4" data-path="L19.html"><a href="L19.html#properties-of-estimators"><i class="fa fa-check"></i><b>4.2.4</b> Properties of Estimators</a></li>
+<li class="chapter" data-level="4.2.5" data-path="L19.html"><a href="L19.html#chebyshevs-inequality"><i class="fa fa-check"></i><b>4.2.5</b> Chebyshev’s Inequality</a></li>
+<li class="chapter" data-level="4.2.6" data-path="L19.html"><a href="L19.html#practice-7"><i class="fa fa-check"></i><b>4.2.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="L20.html"><a href="L20.html"><i class="fa fa-check"></i><b>4.3</b> Limit Theorems</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="L20.html"><a href="L20.html#objectives-19"><i class="fa fa-check"></i><b>4.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.3.2" data-path="L20.html"><a href="L20.html#introduction-1"><i class="fa fa-check"></i><b>4.3.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.3.3" data-path="L20.html"><a href="L20.html#parent-population-is-normal"><i class="fa fa-check"></i><b>4.3.3</b> Parent Population is Normal</a></li>
+<li class="chapter" data-level="4.3.4" data-path="L20.html"><a href="L20.html#parent-population-is-not-normal"><i class="fa fa-check"></i><b>4.3.4</b> Parent Population is not Normal</a></li>
+<li class="chapter" data-level="4.3.5" data-path="L20.html"><a href="L20.html#more-examples-of-the-clt"><i class="fa fa-check"></i><b>4.3.5</b> More examples of the CLT</a></li>
+<li class="chapter" data-level="4.3.6" data-path="L20.html"><a href="L20.html#continuity-correction"><i class="fa fa-check"></i><b>4.3.6</b> Continuity Correction</a></li>
+<li class="chapter" data-level="4.3.7" data-path="L20.html"><a href="L20.html#practice-8"><i class="fa fa-check"></i><b>4.3.7</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="L21.html"><a href="L21.html"><i class="fa fa-check"></i><b>4.4</b> Inference for Mean (Variance Known)</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="L21.html"><a href="L21.html#objectives-20"><i class="fa fa-check"></i><b>4.4.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.4.2" data-path="L21.html"><a href="L21.html#background-4"><i class="fa fa-check"></i><b>4.4.2</b> Background</a></li>
+<li class="chapter" data-level="4.4.3" data-path="L21.html"><a href="L21.html#problem-3"><i class="fa fa-check"></i><b>4.4.3</b> Problem</a></li>
+<li class="chapter" data-level="4.4.4" data-path="L21.html"><a href="L21.html#hypothesis-testing-for-the-mean"><i class="fa fa-check"></i><b>4.4.4</b> Hypothesis Testing for the Mean</a></li>
+<li class="chapter" data-level="4.4.5" data-path="L21.html"><a href="L21.html#hypothesis-testing-explained-in-depth"><i class="fa fa-check"></i><b>4.4.5</b> Hypothesis Testing Explained in Depth</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="L22.html"><a href="L22.html"><i class="fa fa-check"></i><b>4.5</b> Estimating Variance</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="L22.html"><a href="L22.html#objectives-21"><i class="fa fa-check"></i><b>4.5.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.5.2" data-path="L22.html"><a href="L22.html#sample-variance"><i class="fa fa-check"></i><b>4.5.2</b> Sample Variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="L22.html"><a href="L22.html#inference-for-variance"><i class="fa fa-check"></i><b>4.5.3</b> Inference for Variance</a></li>
+<li class="chapter" data-level="4.5.4" data-path="L22.html"><a href="L22.html#inference-for-mean-when-population-variance-is-unknown"><i class="fa fa-check"></i><b>4.5.4</b> Inference for Mean when Population Variance is Unknown</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="L23.html"><a href="L23.html"><i class="fa fa-check"></i><b>4.6</b> Two Additional Tests</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="L23.html"><a href="L23.html#objectives-22"><i class="fa fa-check"></i><b>4.6.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="L24.html"><a href="L24.html"><i class="fa fa-check"></i><b>4.7</b> Permutations Tests</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="L24.html"><a href="L24.html#objectives-23"><i class="fa fa-check"></i><b>4.7.1</b> Objectives</a></li>
+<li class="chapter" data-level="4.7.2" data-path="L24.html"><a href="L24.html#introduction-2"><i class="fa fa-check"></i><b>4.7.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.7.3" data-path="L24.html"><a href="L24.html#review-4"><i class="fa fa-check"></i><b>4.7.3</b> Review</a></li>
+<li class="chapter" data-level="4.7.4" data-path="L24.html"><a href="L24.html#another-example"><i class="fa fa-check"></i><b>4.7.4</b> Another Example</a></li>
+<li class="chapter" data-level="4.7.5" data-path="L24.html"><a href="L24.html#test-of-the-median"><i class="fa fa-check"></i><b>4.7.5</b> Test of the Median</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="Chpt5.html"><a href="Chpt5.html"><i class="fa fa-check"></i><b>5</b> Likelihood-Based Statistics</a><ul>
+<li class="chapter" data-level="5.1" data-path="L25.html"><a href="L25.html"><i class="fa fa-check"></i><b>5.1</b> Maximum Likelihood Estimators</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="L25.html"><a href="L25.html#objectives-24"><i class="fa fa-check"></i><b>5.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="5.1.2" data-path="L25.html"><a href="L25.html#introduction-3"><i class="fa fa-check"></i><b>5.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.1.3" data-path="L25.html"><a href="L25.html#example-2"><i class="fa fa-check"></i><b>5.1.3</b> Example:</a></li>
+<li class="chapter" data-level="5.1.4" data-path="L25.html"><a href="L25.html#data"><i class="fa fa-check"></i><b>5.1.4</b> Data</a></li>
+<li class="chapter" data-level="5.1.5" data-path="L25.html"><a href="L25.html#practice-10"><i class="fa fa-check"></i><b>5.1.5</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="LRT.html"><a href="LRT.html"><i class="fa fa-check"></i><b>5.2</b> Likelihood Ratio Tests</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="LRT.html"><a href="LRT.html#objective"><i class="fa fa-check"></i><b>5.2.1</b> Objective</a></li>
+<li class="chapter" data-level="5.2.2" data-path="LRT.html"><a href="LRT.html#introduction-4"><i class="fa fa-check"></i><b>5.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.2.3" data-path="LRT.html"><a href="LRT.html#review-5"><i class="fa fa-check"></i><b>5.2.3</b> Review</a></li>
+<li class="chapter" data-level="5.2.4" data-path="LRT.html"><a href="LRT.html#hypothesis-testing"><i class="fa fa-check"></i><b>5.2.4</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="5.2.5" data-path="LRT.html"><a href="LRT.html#likelihood-ratio-test"><i class="fa fa-check"></i><b>5.2.5</b> Likelihood Ratio Test</a></li>
+<li class="chapter" data-level="5.2.6" data-path="LRT.html"><a href="LRT.html#practice-11"><i class="fa fa-check"></i><b>5.2.6</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="L27.html"><a href="L27.html"><i class="fa fa-check"></i><b>5.3</b> Goodness of Fit Testing</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="L27.html"><a href="L27.html#objectives-25"><i class="fa fa-check"></i><b>5.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="5.3.2" data-path="L27.html"><a href="L27.html#introduction-5"><i class="fa fa-check"></i><b>5.3.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.3.3" data-path="L27.html"><a href="L27.html#review-6"><i class="fa fa-check"></i><b>5.3.3</b> Review</a></li>
+<li class="chapter" data-level="5.3.4" data-path="L27.html"><a href="L27.html#goodness-of-fit-test"><i class="fa fa-check"></i><b>5.3.4</b> Goodness of Fit Test</a></li>
+<li class="chapter" data-level="5.3.5" data-path="L27.html"><a href="L27.html#improved-test"><i class="fa fa-check"></i><b>5.3.5</b> Improved Test</a></li>
+<li class="chapter" data-level="5.3.6" data-path="L27.html"><a href="L27.html#theta-unknown"><i class="fa fa-check"></i><b>5.3.6</b> <span class="math inline">\(\theta\)</span> Unknown</a></li>
+<li class="chapter" data-level="5.3.7" data-path="L27.html"><a href="L27.html#practice-12"><i class="fa fa-check"></i><b>5.3.7</b> Practice</a></li>
+<li class="chapter" data-level="5.3.8" data-path="L27.html"><a href="L27.html#solution"><i class="fa fa-check"></i><b>5.3.8</b> Solution</a></li>
+<li class="chapter" data-level="5.3.9" data-path="L27.html"><a href="L27.html#practice-13"><i class="fa fa-check"></i><b>5.3.9</b> Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="L28.html"><a href="L28.html"><i class="fa fa-check"></i><b>5.4</b> Two-way Tables</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="L28.html"><a href="L28.html#objective-1"><i class="fa fa-check"></i><b>5.4.1</b> Objective</a></li>
+<li class="chapter" data-level="5.4.2" data-path="L28.html"><a href="L28.html#background-5"><i class="fa fa-check"></i><b>5.4.2</b> Background</a></li>
+<li class="chapter" data-level="5.4.3" data-path="L28.html"><a href="L28.html#review-7"><i class="fa fa-check"></i><b>5.4.3</b> Review</a></li>
+<li class="chapter" data-level="5.4.4" data-path="L28.html"><a href="L28.html#introduction-to-rxc-tables"><i class="fa fa-check"></i><b>5.4.4</b> Introduction to RxC Tables</a></li>
+<li class="chapter" data-level="5.4.5" data-path="L28.html"><a href="L28.html#example-3"><i class="fa fa-check"></i><b>5.4.5</b> Example</a></li>
+<li class="chapter" data-level="5.4.6" data-path="L28.html"><a href="L28.html#second-example"><i class="fa fa-check"></i><b>5.4.6</b> Second Example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="Chpt6.html"><a href="Chpt6.html"><i class="fa fa-check"></i><b>6</b> Introduction to Linear Models</a><ul>
+<li class="chapter" data-level="6.1" data-path="L29.html"><a href="L29.html"><i class="fa fa-check"></i><b>6.1</b> Introduction to Linear Models</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="L29.html"><a href="L29.html#objectives-26"><i class="fa fa-check"></i><b>6.1.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.1.2" data-path="L29.html"><a href="L29.html#linear-regression"><i class="fa fa-check"></i><b>6.1.2</b> Linear Regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="L29.html"><a href="L29.html#examples-1"><i class="fa fa-check"></i><b>6.1.3</b> Examples</a></li>
+<li class="chapter" data-level="6.1.4" data-path="L29.html"><a href="L29.html#least-squares"><i class="fa fa-check"></i><b>6.1.4</b> Least Squares</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="L30.html"><a href="L30.html"><i class="fa fa-check"></i><b>6.2</b> Simple Linear Regression</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="L30.html"><a href="L30.html#objectives-27"><i class="fa fa-check"></i><b>6.2.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.2.2" data-path="L30.html"><a href="L30.html#review-8"><i class="fa fa-check"></i><b>6.2.2</b> Review</a></li>
+<li class="chapter" data-level="6.2.3" data-path="L30.html"><a href="L30.html#estimating-parameters"><i class="fa fa-check"></i><b>6.2.3</b> Estimating parameters</a></li>
+<li class="chapter" data-level="6.2.4" data-path="L30.html"><a href="L30.html#in-r"><i class="fa fa-check"></i><b>6.2.4</b> In R</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="L31.html"><a href="L31.html"><i class="fa fa-check"></i><b>6.3</b> Inference for Simple Linear Regression</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="L31.html"><a href="L31.html#objectives-28"><i class="fa fa-check"></i><b>6.3.1</b> Objectives</a></li>
+<li class="chapter" data-level="6.3.2" data-path="L31.html"><a href="L31.html#inference-for-regression-model-slope"><i class="fa fa-check"></i><b>6.3.2</b> Inference for Regression Model Slope</a></li>
+<li class="chapter" data-level="6.3.3" data-path="L31.html"><a href="L31.html#inference-for-regression-model-predicted-values"><i class="fa fa-check"></i><b>6.3.3</b> Inference for Regression Model Predicted Values</a></li>
+<li class="chapter" data-level="6.3.4" data-path="L31.html"><a href="L31.html#anova"><i class="fa fa-check"></i><b>6.3.4</b> ANOVA</a></li>
+<li class="chapter" data-level="6.3.5" data-path="L31.html"><a href="L31.html#example-4"><i class="fa fa-check"></i><b>6.3.5</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="L32.html"><a href="L32.html"><i class="fa fa-check"></i><b>6.4</b> Regression Diagnosics</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="L32.html"><a href="L32.html#objective-2"><i class="fa fa-check"></i><b>6.4.1</b> Objective</a></li>
+<li class="chapter" data-level="6.4.2" data-path="L32.html"><a href="L32.html#review-9"><i class="fa fa-check"></i><b>6.4.2</b> Review</a></li>
+<li class="chapter" data-level="6.4.3" data-path="L32.html"><a href="L32.html#assumptions-about-the-errors"><i class="fa fa-check"></i><b>6.4.3</b> Assumptions about the Errors</a></li>
+<li class="chapter" data-level="6.4.4" data-path="L32.html"><a href="L32.html#outliers-leverage-and-influence"><i class="fa fa-check"></i><b>6.4.4</b> Outliers, Leverage, and Influence</a></li>
+<li class="chapter" data-level="6.4.5" data-path="L32.html"><a href="L32.html#example-5"><i class="fa fa-check"></i><b>6.4.5</b> Example</a></li>
+</ul></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="AppA.html"><a href="AppA.html"><i class="fa fa-check"></i><b>A</b> Syllabus</a></li>
+<li class="chapter" data-level="B" data-path="AppB.html"><a href="AppB.html"><i class="fa fa-check"></i><b>B</b> Project</a><ul>
+<li class="chapter" data-level="B.0.1" data-path="AppB.html"><a href="AppB.html#introduction-6"><i class="fa fa-check"></i><b>B.0.1</b> Introduction</a></li>
+<li class="chapter" data-level="B.0.2" data-path="AppB.html"><a href="AppB.html#deliverables"><i class="fa fa-check"></i><b>B.0.2</b> Deliverables</a></li>
+<li class="chapter" data-level="B.0.3" data-path="AppB.html"><a href="AppB.html#components"><i class="fa fa-check"></i><b>B.0.3</b> Components</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/BawCOS/undergraduate-statistics-notes" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Notes for Teaching an Undergraduate Statistics Using fastR</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="AppB" class="section level1">
+<h1><span class="header-section-number">B</span> Project</h1>
+<div id="introduction-6" class="section level3">
+<h3><span class="header-section-number">B.0.1</span> Introduction</h3>
+<p>This project will guide you through a small research project. We will be building a simple probability based spell checker in R, this work is based on the blog of the same topic <a href="https://www.r-bloggers.com/a-spell-checker-in-r/" class="uri">https://www.r-bloggers.com/a-spell-checker-in-r/</a>. The objectives of this project are:<br />
+1. Read and summarize a research paper<br />
+2. Find and experiment with existing functions in R<br />
+3. Find existing code and pseudo code<br />
+4. Acquire appropriate materials<br />
+5. Implement in R<br />
+6. Test and validate</p>
+<p>To complete this project you may need to run the 32-bit version of R in RStudio. That is because the <code>qdap</code> package has the capability to open interactive windows, widgets. This relies on RJava and this may mean you are running 32-bit java. We will not use the interactive windows in the package, which require <code>rjava</code>, but the package will not load if your version of java does not match your version of R.</p>
+<p>Authorized Resources: Anyone and anything.</p>
+<p>Points: 75</p>
+</div>
+<div id="deliverables" class="section level3">
+<h3><span class="header-section-number">B.0.2</span> Deliverables</h3>
+<p>You must use reproducible research by creating an RMarkdown file where your compiled code and data is visible to the reader. There is an RMarkdown information sheet on the course website under reference materials to help get you started. You should add the following elements to your file to show at the top of the compiled document:</p>
+<p>Title<br />
+Name<br />
+Section<br />
+Documentation</p>
+<p>You will complete each of the sections below. You will turn in an html file with your section and name as the title on the course website. The are some suggested completion dates as well to help keep you on track.</p>
+</div>
+<div id="components" class="section level3">
+<h3><span class="header-section-number">B.0.3</span> Components</h3>
+<p><code>1.</code> (5 pts) (September 8) Research the history of spell checkers using <a href="http://en.wikipedia.org/wiki/Spell_checker">Wikipedia</a>. Briefly, one paragraph, summarize your reading.</p>
+<p><code>2.</code> (10pts) (September 16) The <a href="https://trinkerrstuff.wordpress.com/2014/09/04/spell-checker-for-r-qdapcheck_spelling/">package <code>qdap</code> in R</a> has a spell checker. Load the package and use it in your RMarkdown file to get the spelling of the following using the function <code>check_spelling</code> and the default options.</p>
+<pre><code>c(&quot;Robots are evl creatres and derv exterimanitation.&quot;,&quot;tes&quot;)</code></pre>
+<p>Notice that word <code>desv</code> is probably <code>deserve</code> but it did not appear in the list of suggestions. This is because <code>deserve</code> is too far away from <code>derv</code>. Run the following command:</p>
+<pre><code>adist(&quot;derv&quot;,&quot;deserve&quot;)</code></pre>
+<p>Now change the appropriate option in <code>check_spelling</code> to get <code>deserve</code> as a suggestion.</p>
+<p><code>3.</code> (10pts) (October 15) Read <a href="http://www.norvig.com/spell-correct.html">Peter Norvig’s article</a>. Yes, the code is in Python but it gives us the ideas we need. Reading the article, we are going to use Bayes Theorem to find a probability for the suggestion given the typed word. You should spend some time thinking about Professor Norvig’s claim that <span class="math inline">\(P(c|w)\)</span> is difficult to find empirically. Instead we need to find <span class="math inline">\(P(c)\)</span>, the probability of correctly spelled word, and <span class="math inline">\(P(w|c)\)</span>. To understand his code, we will work with a smaller data set. Go the the <a href="http://www.gutenberg.org/ebooks/49163">Gutenburg Project website</a> and download the book the <em>Journal of a Soldier</em> as a text file. We need to read this data into R. It is a text file with line breaks so we need to use the <code>readLines</code> command. Here is my command for reading the first 10 lines from the file both from the website and my local hard drive.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">readLines</span>(<span class="st">&quot;http://www.gutenberg.org/files/49163/49163-0.txt&quot;</span>,<span class="dt">n=</span><span class="dv">10</span>)</code></pre></div>
+<pre><code>##  [1] &quot;ï»¿The Project Gutenberg EBook of Journal of a Soldier of the Seventy-First&quot;
+##  [2] &quot;or Glasgow Regiment Highland Light Infant, by Anonymous&quot;                    
+##  [3] &quot;&quot;                                                                           
+##  [4] &quot;This eBook is for the use of anyone anywhere at no cost and with&quot;           
+##  [5] &quot;almost no restrictions whatsoever.  You may copy it, give it away or&quot;       
+##  [6] &quot;re-use it under the terms of the Project Gutenberg License included&quot;        
+##  [7] &quot;with this eBook or online at www.gutenberg.org/license&quot;                     
+##  [8] &quot;&quot;                                                                           
+##  [9] &quot;&quot;                                                                           
+## [10] &quot;Title: Journal of a Soldier&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">readLines</span>(<span class="st">&quot;./data/Journal of a Soldier.txt&quot;</span>,<span class="dt">n=</span><span class="dv">10</span>)</code></pre></div>
+<pre><code>##  [1] &quot;ï»¿The Project Gutenberg EBook of Journal of a Soldier of the Seventy-First&quot;
+##  [2] &quot;or Glasgow Regiment Highland Light Infant, by Anonymous&quot;                    
+##  [3] &quot;&quot;                                                                           
+##  [4] &quot;This eBook is for the use of anyone anywhere at no cost and with&quot;           
+##  [5] &quot;almost no restrictions whatsoever.  You may copy it, give it away or&quot;       
+##  [6] &quot;re-use it under the terms of the Project Gutenberg License included&quot;        
+##  [7] &quot;with this eBook or online at www.gutenberg.org/license&quot;                     
+##  [8] &quot;&quot;                                                                           
+##  [9] &quot;&quot;                                                                           
+## [10] &quot;Title: Journal of a Soldier&quot;</code></pre>
+<p>I am going to save the first 100 rows to an object and then see what I have to do to clean it up.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_sample&lt;-<span class="kw">readLines</span>(<span class="st">&quot;~/Classes/Math 377/Fall 2015/Project/Journal of a Soldier.txt&quot;</span>,<span class="dt">n=</span><span class="dv">100</span>)
+<span class="kw">str</span>(test_sample)</code></pre></div>
+<pre><code>##  chr [1:100] &quot;ï»¿The Project Gutenberg EBook of Journal of a Soldier of the Seventy-First&quot; ...</code></pre>
+<p>This is a vector of characters that I need to collapse to one vector using paste.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_sample&lt;-<span class="kw">paste</span>(test_sample,<span class="dt">collapse=</span><span class="st">&quot; &quot;</span>)
+<span class="kw">str</span>(test_sample)</code></pre></div>
+<pre><code>##  chr &quot;ï»¿The Project Gutenberg EBook of Journal of a Soldier of the Seventy-First or Glasgow Regiment Highland Light &quot;| __truncated__</code></pre>
+<p>Next, in Professor Norvig’s paper, he converts everything to lower case.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_sample&lt;-<span class="kw">tolower</span>(test_sample)
+<span class="kw">str</span>(test_sample)</code></pre></div>
+<pre><code>##  chr &quot;ï»¿the project gutenberg ebook of journal of a soldier of the seventy-first or glasgow regiment highland light &quot;| __truncated__</code></pre>
+<p>The next part is a little tricky. Professor Norvig is using a regular expression to parse the character string. Luckily, R has a function called <code>strsplit</code> that will do this for us. It returns a list so we need to make it a vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_sample&lt;-<span class="kw">strsplit</span>(test_sample, <span class="st">&quot;[^a-z]+&quot;</span>)
+test_sample&lt;-<span class="kw">unlist</span>(test_sample)
+<span class="kw">str</span>(test_sample)</code></pre></div>
+<pre><code>##  chr [1:363] &quot;&quot; &quot;the&quot; &quot;project&quot; &quot;gutenberg&quot; &quot;ebook&quot; &quot;of&quot; &quot;journal&quot; ...</code></pre>
+<p>Wow, that was powerful. Notice that there are several odd entries such as blank, www, or single letters. We could do more processing or simply hope that in a large corpus, these will be so rare as to not impact our answer. It appears that Professor Norvig assumes the later as he does no more data cleaning. Now let’s table our data to get the frequencies and also the probabilities.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">table</span>(test_sample),<span class="dt">n=</span><span class="dv">30</span>)</code></pre></div>
+<pre><code>## test_sample
+##                           a       account      accounts      accuracy 
+##             1             8             2             1             1 
+##          adam     adventure advertisement        almost    alteration 
+##             1             1             1             1             1 
+##       america      american           and     anecdotes     anonymous 
+##             1             1            14             1             2 
+##        anyone      anywhere       archive          army       arrival 
+##             1             1             1             1             4 
+##     ascertain            at        attack      attempts        author 
+##             1             6             1             1             1 
+##     available          away         ayres             b        battle 
+##             1             1             1             1             2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">prop.table</span>(<span class="kw">table</span>(test_sample)),<span class="dt">n=</span><span class="dv">30</span>)</code></pre></div>
+<pre><code>## test_sample
+##                           a       account      accounts      accuracy 
+##   0.002754821   0.022038567   0.005509642   0.002754821   0.002754821 
+##          adam     adventure advertisement        almost    alteration 
+##   0.002754821   0.002754821   0.002754821   0.002754821   0.002754821 
+##       america      american           and     anecdotes     anonymous 
+##   0.002754821   0.002754821   0.038567493   0.002754821   0.005509642 
+##        anyone      anywhere       archive          army       arrival 
+##   0.002754821   0.002754821   0.002754821   0.002754821   0.011019284 
+##     ascertain            at        attack      attempts        author 
+##   0.002754821   0.016528926   0.002754821   0.002754821   0.002754821 
+##     available          away         ayres             b        battle 
+##   0.002754821   0.002754821   0.002754821   0.002754821   0.005509642</code></pre>
+<p>I will save the data, sort it, and finally save the result as a character vector</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">probs_of_word&lt;-<span class="kw">sort</span>(<span class="kw">prop.table</span>(<span class="kw">table</span>(test_sample)),<span class="dt">decreasing=</span><span class="ot">TRUE</span>)
+freq_word&lt;-<span class="kw">names</span>(<span class="kw">sort</span>(<span class="kw">prop.table</span>(<span class="kw">table</span>(test_sample)), <span class="dt">decreasing =</span> <span class="ot">TRUE</span>))
+<span class="kw">head</span>(freq_word)</code></pre></div>
+<pre><code>## [1] &quot;the&quot; &quot;of&quot;  &quot;and&quot; &quot;a&quot;   &quot;at&quot;  &quot;for&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(probs_of_word)</code></pre></div>
+<pre><code>## test_sample
+##        the         of        and          a         at        for 
+## 0.07713499 0.06887052 0.03856749 0.02203857 0.01652893 0.01652893</code></pre>
+<p>Based on this work, <code>the</code> is the most frequently used word and has a probability of occurring of .077. Thus we now have <span class="math inline">\(P(c)\)</span>.</p>
+<p>Your assignments is to now read in the entire document, Journal of a Soldier, and report the 10th most common word and its probability of occurrence.</p>
+<p><code>4.</code> (10pts) (October 30) Finding <span class="math inline">\(P(w|c)\)</span> is difficult. Professor Norvig made, what he called, the <code>trivial</code> model in the he looked at the distance from the given word to the closest words in the corpus and assumed that words with a distance of 1 were infinitely more likely than words with a distance of 2. Also, he wrote his own code to calculate the distance between two words but luckily for us, as we saw in part 2, R has a function called <code>adist</code> that does this for us. Thus Professor Norvig looked for words with a distance of zero and if it existed returned this as the correct spelling. If this was not the case, he found the words with distance one and returned the one that is most probable. If there was not a word or set of words with a distance of 1, he went to a distance of 2 and repeated. This stopped after 2 because he claimed that 98% of spelling errors were within a distance of 2. Let’s implement this in R.</p>
+<p>First we need to find the distance between our word and the words in the sorted list, this is what I called freq_word above. As an example, suppose my word is “tha”. I would type:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">adist</span>(<span class="st">&quot;tha&quot;</span>,freq_word)</code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
+## [1,]    1    3    3    2    3    3    5    6    3     7     6     4     6
+##      [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24]
+## [1,]     8     3     3     2     3     5     2     6     4     3     7
+##      [,25] [,26] [,27] [,28] [,29] [,30] [,31] [,32] [,33] [,34] [,35]
+## [1,]     8     7     3     7     9     5     4     4     9     8     7
+##      [,36] [,37] [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45] [,46]
+## [1,]     3     3     7     7     7     4     6     6     8     3     5
+##      [,47] [,48] [,49] [,50] [,51] [,52] [,53] [,54] [,55] [,56] [,57]
+## [1,]     4     6     4     1     2     3     5     3     5     3     3
+##      [,58] [,59] [,60] [,61] [,62] [,63] [,64] [,65] [,66] [,67] [,68]
+## [1,]     8     7     3     8    12     6     8     6     7     8     6
+##      [,69] [,70] [,71] [,72] [,73] [,74] [,75] [,76] [,77] [,78] [,79]
+## [1,]     7     6     4     8     4     7     4     8     3     5     3
+##      [,80] [,81] [,82] [,83] [,84] [,85] [,86] [,87] [,88] [,89] [,90]
+## [1,]     7     6     5     4     4     4     6     6     3     7     5
+##      [,91] [,92] [,93] [,94] [,95] [,96] [,97] [,98] [,99] [,100] [,101]
+## [1,]     4     3     3     9     7    11     4     9     4      5      4
+##      [,102] [,103] [,104] [,105] [,106] [,107] [,108] [,109] [,110] [,111]
+## [1,]      8     10      8      7     10      5      5      3      4      9
+##      [,112] [,113] [,114] [,115] [,116] [,117] [,118] [,119] [,120] [,121]
+## [1,]      3      6      8     10      4      4      5      7      4      3
+##      [,122] [,123] [,124] [,125] [,126] [,127] [,128] [,129] [,130] [,131]
+## [1,]      3      5     11      8      5      9      7      3      4      5
+##      [,132] [,133] [,134] [,135] [,136] [,137] [,138] [,139] [,140] [,141]
+## [1,]      5      4      2      8      6      6      5      3      5      4
+##      [,142] [,143] [,144] [,145] [,146] [,147] [,148] [,149] [,150] [,151]
+## [1,]      3      5     10      7      3      3      4      5      8      5
+##      [,152] [,153] [,154] [,155] [,156] [,157] [,158] [,159] [,160] [,161]
+## [1,]      6      4      4      6      6      8      9      6     11      9
+##      [,162] [,163] [,164] [,165] [,166] [,167] [,168] [,169] [,170] [,171]
+## [1,]      3      9      6      6     11      6      5      3      7      4
+##      [,172] [,173] [,174] [,175] [,176] [,177] [,178] [,179] [,180] [,181]
+## [1,]      4      9      5     11      3      2      4      1      1      2
+##      [,182] [,183] [,184] [,185] [,186] [,187] [,188] [,189] [,190] [,191]
+## [1,]      3      4      4      3      5      5      3      3      2      8
+##      [,192] [,193] [,194] [,195] [,196]
+## [1,]      8      7      4      6      3</code></pre>
+<p>Notice this gives us all the distances. Next we want to extract those words that meet a specified distance, Professor Norvig used 2.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">freq_word[<span class="kw">adist</span>(<span class="st">&quot;tha&quot;</span>,freq_word)<span class="op">&lt;=</span><span class="dv">2</span>]</code></pre></div>
+<pre><code>##  [1] &quot;the&quot;  &quot;a&quot;    &quot;this&quot; &quot;has&quot;  &quot;than&quot; &quot;to&quot;   &quot;la&quot;   &quot;team&quot; &quot;th&quot;   &quot;that&quot;
+## [11] &quot;them&quot; &quot;what&quot;</code></pre>
+<p>Now the problem is that some of these words could have distance of 0, 1, or 2. Based on Professor Norvig’s suggestion we should ignore higher distances. For example, if we have a distance of 1, we should ignore all distances of 2. We will now implement this idea:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">freq_word[<span class="kw">adist</span>(<span class="st">&quot;tha&quot;</span>,freq_word)<span class="op">&lt;=</span><span class="kw">min</span>(<span class="kw">adist</span>(<span class="st">&quot;tha&quot;</span>,freq_word),<span class="dv">2</span>)]</code></pre></div>
+<pre><code>## [1] &quot;the&quot;  &quot;than&quot; &quot;th&quot;   &quot;that&quot;</code></pre>
+<p>Since the list is ordered by frequency, we would suggest the first element.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">freq_word[<span class="kw">adist</span>(<span class="st">&quot;tha&quot;</span>,freq_word)<span class="op">&lt;=</span><span class="kw">min</span>(<span class="kw">adist</span>(<span class="st">&quot;tha&quot;</span>,freq_word),<span class="dv">2</span>)][<span class="dv">1</span>]</code></pre></div>
+<pre><code>## [1] &quot;the&quot;</code></pre>
+<p>Write a function called, my_spell_checker that takes as input the character vector, the vector of sorted words, this is your dictionary, and an option for distance with a default of 2. In your code, you need to account for the issue that you might not find a word that is within the range. In that case, your code should return the original word. Read in the entire file Journal of a Soldier, I call it freq_word in my example below, and run your function on the following:</p>
+<pre><code>my_spell_checker(&quot;off&quot;,freq_word)
+my_spell_checker(&quot;tha&quot;,freq_word)
+my_spell_checker(&quot;drvvve&quot;,freq_word)
+my_spell_checker(&quot;you&#39;re&quot;,freq_word)
+my_spell_checker(&quot;hgkdjurhc&quot;,freq_word)
+my_spell_checker(&quot;hgkdjurhc&quot;,freq_word,range=6)</code></pre>
+<p><code>5.</code> (15pts) (November 17) I like that we have a list of suggestions but without knowing <span class="math inline">\(P(w|c)\)</span> we cannot calculate the probabilities. Let’s modify Professor Norvig’s code by instead of assuming an infinite probability let’s assume that <span class="math inline">\(P(w|c)\)</span> for a distance of 1 has a probability of 3 times that of a distance of 2, and likewise a distance of 3 has 3 times the probability of 2. This could continue indefinitely but at some point we need to stop. Let’s stop at 20 and call everything with a distance of 20 or higher the same probability. If the distance is 0, then we just return the word. For the rest, we have <span class="math inline">\(P(w|c)=p\)</span> for a distance of 1, <span class="math inline">\(P(w|c)=p/3\)</span> for a distance of 2, <span class="math inline">\(P(w|c)=p/3^2\)</span> for a distance of 3, and on. Find <span class="math inline">\(p\)</span> and then use this to write a function that returns the top three words, based on <span class="math inline">\(P(c|w)=P(w|c)P(c)\)</span>, as a default with the option to change this value. Call the function, <code>my_suggestions</code>. For reference, the probability <span class="math inline">\(P(w|c)\)</span> for a distance of 2 is 0.22222.</p>
+<p>Now I will run my function below as an example</p>
+<pre><code>my_suggestions(&quot;akk&quot;,probs_of_word2,p_of_w_given_c,2,3)  
+        and           a          at   
+0.006613722 0.004873876 0.001832024   
+my_suggestions(&quot;akk&quot;,probs_of_word2,p_of_w_given_c,2,5)  
+        and           a          at          as         all   
+0.006613722 0.004873876 0.001832024 0.001520926 0.001111889   
+my_suggestions(&quot;akk&quot;,probs_of_word2,p_of_w_given_c,3,5)  
+        and         the           a          of          to   
+0.006613722 0.004919964 0.004873876 0.002319796 0.002139282   
+my_suggestions(&quot;the&quot;,probs_of_word2,p_of_w_given_c,2,3)  
+ &quot;the&quot;  
+my_suggestions(&quot;thethethethethethethe&quot;,probs_of_word2,p_of_w_given_c,2,3)  
+ &quot;thethethethethethethe&quot;  
+my_suggestions(&quot;bradley&quot;,probs_of_word2,p_of_w_given_c,2,3)  
+       badly   
+1.152216e-05   </code></pre>
+<p>The first option is the word, the second is the table of probabilities, the third is the conditional probabilities, the fourth the maximum distance, and the last the number of words to report.</p>
+<p>Using your own code, perform the equivalent to the following statements:</p>
+<pre><code>my_suggestions(&quot;off&quot;,probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions(&quot;tha&quot;,probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions(&quot;drvvve&quot;,probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions(&quot;you&#39;re&quot;,probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions(&quot;hgkdjurhc&quot;,probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions(&quot;hgkdjurhc&quot;,probs_of_word2,p_of_w_given_c,6,3)</code></pre>
+<p><code>6.</code> (December 4) The last thing we need to do is validate the spell checker. This is what Professor Norvig did in the final phase. We will only do an abbreviated evaluation.</p>
+<p><code>a.</code> (10 pts) First read into R Professor Norvig’s big.txt document, on the course website, and process it as we did above for the Journal of a Soldier. We want to use this bigger document to improve the accuracy. Use the new word frequency table in your spell checker from part 4 on the following words:</p>
+<pre><code>off  
+tha  
+drvvve  
+you&#39;re
+hgkdjurhc  (with default settings) 
+hgkdjurhc  (with range=6)  </code></pre>
+<p>There are still some problems with the spell checker. But we will proceed any way.</p>
+<p><code>b.</code> (10pts) There is a file on the course website called test_data.txt that contains only up through the letter d of Professor Norvig’s test data. The first few lines are below.</p>
+<pre><code>&#39;access&#39;: &#39;acess&#39; 
+&#39;accessing&#39;: &#39;accesing&#39; 
+&#39;accommodation&#39;:&#39;accomodation acommodation acomodation&#39; </code></pre>
+<p>The correct spelling is before the colon and the incorrect is after. Read the data in and create a vector of the strings with the correct and all the incorrect spellings. This vector should be of length 48.</p>
+<p>We next need to create a vector with the correct spelling and another with the incorrect spellings. This is not an easy matter since some words have multiple misspelled words. This is good practice because in analysis getting data into your computer in a clean and efficient manner is difficult. You may want to use functions such as gsub, strsplit, and unlist to split the data apart. You want to also remove leading and trailing blank spaces. You want two vectors, the first has the answers and the second has the common misspellings. Each of these vectors will be of length 78 because that is the total number of misspelled words in the text file. As an example, for the three lines above with the words access, accessing, and accommodation, your answer vector would be</p>
+<pre><code>access
+accessing
+accommodation
+accommodation
+accommodation</code></pre>
+<p>and your example vector would be</p>
+<pre><code>acess
+accesing
+accomodation
+acommodation
+acomodation</code></pre>
+<p>Print out the 53rd through the 70th value of each vector. Make sure you include your code to clean the data.</p>
+<p><code>c.</code> (5 pts) After cleaning your data, run the data through your function my_spell_checker and compare with the correct answer, this is easier if you use the sapply function. Report your error rate.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="AppA.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/BawCOS/undergraduate-statistics-notes/edit/master/09-Appendix-B.Rmd",
+"text": "Edit"
+},
+"download": ["fastR-Notes.pdf", "fastR-Notes.epub"],
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

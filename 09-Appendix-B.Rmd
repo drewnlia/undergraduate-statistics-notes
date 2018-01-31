@@ -1,0 +1,221 @@
+# Project {#AppB}
+
+### Introduction 
+
+This project will guide you through a small research project.  We will be building a simple probability based spell checker in R, this work is based on the blog of the same topic <https://www.r-bloggers.com/a-spell-checker-in-r/>.  The objectives of this project are:  
+1. Read and summarize a research paper  
+2. Find and experiment with existing functions in R  
+3. Find existing code and pseudo code  
+4. Acquire appropriate materials  
+5. Implement in R  
+6. Test and validate  
+
+To complete this project you may need to run the 32-bit version of R in RStudio.  That is because the `qdap` package has the capability to open interactive windows, widgets.  This relies on RJava and this may mean you are running 32-bit java.  We will not use the interactive windows in the package, which require `rjava`, but the package will not load if your version of java does not match your version of R.
+
+Authorized Resources: Anyone and anything.
+
+Points: 75
+
+### Deliverables  
+You must use reproducible research by creating an RMarkdown file where your compiled code and data is visible to the reader.  There is an RMarkdown information sheet on the course website under reference materials to help get you started.  You should add the following elements to your file to show at the top of the compiled document:
+
+Title  
+Name  
+Section  
+Documentation  
+
+You will complete each of the sections below.  You will turn in an html file with your section and name as the title on the course website. The are some suggested completion dates as well to help keep you on track.
+
+### Components
+`1.`  (5 pts) (September 8)  Research the history of spell checkers using [Wikipedia](http://en.wikipedia.org/wiki/Spell_checker).  Briefly, one paragraph, summarize your reading. 
+
+`2.`  (10pts) (September 16)  The [package `qdap` in R](https://trinkerrstuff.wordpress.com/2014/09/04/spell-checker-for-r-qdapcheck_spelling/) has a spell checker.  Load the package and use it in your RMarkdown file to get the spelling of the following using the function `check_spelling` and the default options.
+
+```
+c("Robots are evl creatres and derv exterimanitation.","tes")
+```
+
+Notice that word `desv` is probably `deserve` but it did not appear in the list of suggestions.  This is because `deserve` is too far away from `derv`.  Run the following command:
+
+```
+adist("derv","deserve")
+```
+
+Now change the appropriate option in `check_spelling` to get `deserve` as a suggestion.  
+
+`3.`  (10pts) (October 15) Read [Peter Norvig's article](http://www.norvig.com/spell-correct.html).  Yes, the code is in Python but it gives us the ideas we need.  Reading the article, we are going to use Bayes Theorem to find a probability for the suggestion given the typed word.  You should spend some time thinking about Professor Norvig's claim that $P(c|w)$ is difficult to find empirically.  Instead we need to find $P(c)$, the probability of correctly spelled word, and $P(w|c)$.  To understand his code, we will work with a smaller data set.  Go the the [Gutenburg Project website](http://www.gutenberg.org/ebooks/49163) and download the book the *Journal of a Soldier* as a text file.  We need to read this data into R.  It is a text file with line breaks so we need to use the `readLines` command.  Here is my command for reading the first 10 lines from the file both from the website and my local hard drive.
+
+```{r}
+readLines("http://www.gutenberg.org/files/49163/49163-0.txt",n=10)
+readLines("./data/Journal of a Soldier.txt",n=10)
+```
+
+I am going to save the first 100 rows to an object and then see what I have to do to clean it up.
+
+```{r}
+test_sample<-readLines("~/Classes/Math 377/Fall 2015/Project/Journal of a Soldier.txt",n=100)
+str(test_sample)
+```
+This is a vector of characters that I need to collapse to one vector using paste.
+
+```{r}
+test_sample<-paste(test_sample,collapse=" ")
+str(test_sample)
+```
+
+Next, in Professor Norvig's paper, he converts everything to lower case.
+
+```{r}
+test_sample<-tolower(test_sample)
+str(test_sample)
+```
+
+The next part is a little tricky.  Professor Norvig is using a regular expression to parse the character string.  Luckily, R has a function called `strsplit` that will do this for us.  It returns a list so we need to make it a vector.
+
+```{r}
+test_sample<-strsplit(test_sample, "[^a-z]+")
+test_sample<-unlist(test_sample)
+str(test_sample)
+```
+
+Wow, that was powerful.  Notice that there are several odd entries such as blank, www, or single letters.  We could do more processing or simply hope that in a large corpus, these will be so rare as to not impact our answer.  It appears that Professor Norvig assumes the later as he does no more data cleaning.  Now let's table our data to get the frequencies and also the probabilities.
+
+```{r}
+head(table(test_sample),n=30)
+head(prop.table(table(test_sample)),n=30)
+```
+
+I will save the data, sort it, and finally save the result as a character vector
+
+```{r}
+probs_of_word<-sort(prop.table(table(test_sample)),decreasing=TRUE)
+freq_word<-names(sort(prop.table(table(test_sample)), decreasing = TRUE))
+head(freq_word)
+head(probs_of_word)
+```
+
+Based on this work, `the` is the most frequently used word and has a probability of occurring of .077.  Thus we now have $P(c)$.
+
+Your assignments is to now read in the entire document, Journal of a Soldier, and report the 10th most common word and its probability of occurrence.
+
+
+`4.`  (10pts) (October 30) Finding $P(w|c)$ is difficult.  Professor Norvig made, what he called, the `trivial` model in the he looked at the distance from the given word to the closest words in the corpus and assumed that words with a distance of 1 were infinitely more likely than words with a distance of 2.  Also, he wrote his own code to calculate the distance between two words but luckily for us, as we saw in part 2, R has a function called `adist` that does this for us.  Thus Professor Norvig looked for words with a distance of zero and if it existed returned this as the correct spelling.  If this was not the case, he found the words with distance one and returned the one that is most probable.  If there was not a word or set of words with a distance of 1, he went to a distance of 2 and repeated.  This stopped after 2 because he claimed that 98% of spelling errors were within a distance of 2.  Let's implement this in R.
+
+First we need to find the distance between our word and the words in the sorted list, this is what I called freq_word above.  As an example, suppose my word is "tha".  I would type:
+
+```{r}
+adist("tha",freq_word)
+```
+Notice this gives us all the distances.  Next we want to extract those words that meet a specified distance, Professor Norvig used 2.
+
+```{r}
+freq_word[adist("tha",freq_word)<=2]
+```  
+
+Now the problem is that some of these words could have distance of 0, 1, or 2.  Based on Professor Norvig's suggestion we should ignore higher distances.  For example, if we have a distance of 1, we should ignore all distances of 2.  We will now implement this idea:
+
+```{r}
+freq_word[adist("tha",freq_word)<=min(adist("tha",freq_word),2)]
+```
+
+Since the list is ordered by frequency, we would suggest the first element.
+
+```{r}
+freq_word[adist("tha",freq_word)<=min(adist("tha",freq_word),2)][1]
+```
+
+Write a function called, my_spell_checker that takes as input the character vector, the vector of sorted words, this is your dictionary, and an option for distance with a default of 2.  In your code, you need to account for the issue that you might not find a word that is within the range.  In that case, your code should return the original word.  Read in the entire file Journal of a Soldier, I call it freq_word in my example below, and run your function on the following:
+
+```
+my_spell_checker("off",freq_word)
+my_spell_checker("tha",freq_word)
+my_spell_checker("drvvve",freq_word)
+my_spell_checker("you're",freq_word)
+my_spell_checker("hgkdjurhc",freq_word)
+my_spell_checker("hgkdjurhc",freq_word,range=6)
+```
+
+`5.`  (15pts) (November 17)  I like that we have a list of suggestions but without knowing $P(w|c)$ we cannot calculate the probabilities.  Let's modify Professor Norvig's code by instead of assuming an infinite probability let's assume that $P(w|c)$ for a distance of 1 has a probability of 3 times that of a distance of 2, and likewise a distance of 3 has 3 times the probability of 2.  This could continue indefinitely but at some point we need to stop.  Let's stop at 20 and call everything with a distance of 20 or higher the same probability.  If the distance is 0, then we just return the word.  For the rest, we have $P(w|c)=p$ for a distance of 1, $P(w|c)=p/3$ for a distance of 2, $P(w|c)=p/3^2$ for a distance of 3, and on.  Find $p$ and then use this to write a function that returns the top three words, based on $P(c|w)=P(w|c)P(c)$, as a default with the option to change this value. Call the function, `my_suggestions`.  For reference, the probability $P(w|c)$ for a distance of 2 is 0.22222.
+
+Now I will run my function below as an example
+
+```
+my_suggestions("akk",probs_of_word2,p_of_w_given_c,2,3)  
+        and           a          at   
+0.006613722 0.004873876 0.001832024   
+my_suggestions("akk",probs_of_word2,p_of_w_given_c,2,5)  
+        and           a          at          as         all   
+0.006613722 0.004873876 0.001832024 0.001520926 0.001111889   
+my_suggestions("akk",probs_of_word2,p_of_w_given_c,3,5)  
+        and         the           a          of          to   
+0.006613722 0.004919964 0.004873876 0.002319796 0.002139282   
+my_suggestions("the",probs_of_word2,p_of_w_given_c,2,3)  
+ "the"  
+my_suggestions("thethethethethethethe",probs_of_word2,p_of_w_given_c,2,3)  
+ "thethethethethethethe"  
+my_suggestions("bradley",probs_of_word2,p_of_w_given_c,2,3)  
+       badly   
+1.152216e-05   
+```
+
+The first option is the word, the second is the table of probabilities, the third is the conditional probabilities, the fourth the maximum distance, and the last the number of words to report.
+
+Using your own code, perform the equivalent to the following statements:
+
+```
+my_suggestions("off",probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions("tha",probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions("drvvve",probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions("you're",probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions("hgkdjurhc",probs_of_word2,p_of_w_given_c,2,3)
+my_suggestions("hgkdjurhc",probs_of_word2,p_of_w_given_c,6,3)
+```
+
+`6.` (December 4) The last thing we need to do is validate the spell checker.  This is what Professor Norvig did in the final phase.  We will only do an abbreviated evaluation.  
+
+`a.` (10 pts)  First read into R Professor Norvig's big.txt document, on the course website, and process it as we did above for the Journal of a Soldier.  We want to use this bigger document to improve the accuracy. Use the new word frequency table in your spell checker from part 4 on the following words:
+
+```
+off  
+tha  
+drvvve  
+you're
+hgkdjurhc  (with default settings) 
+hgkdjurhc  (with range=6)  
+```
+
+There are still some problems with the spell checker.  But we will proceed any way.
+
+`b.`  (10pts)  There is a file on the course website called test_data.txt that contains only up through the letter d of Professor Norvig's test data.  The first few lines are below.
+
+```
+'access': 'acess' 
+'accessing': 'accesing' 
+'accommodation':'accomodation acommodation acomodation' 
+```
+
+The correct spelling is before the colon and the incorrect is after.  Read the data in and create a vector of the strings with the correct and all the incorrect spellings.  This vector should be of length 48.  
+
+We next need to create a vector with the correct spelling and another with the incorrect spellings.  This is not an easy matter since some words have multiple misspelled words.  This is good practice because in analysis getting data into your computer in a clean and efficient manner is difficult.  You may want to use functions such as gsub, strsplit, and unlist to split the data apart.  You want to also remove leading and trailing blank spaces.  You want two vectors, the first has the answers and the second has the common misspellings.  Each of these vectors will be of length 78 because that is the total number of misspelled words in the text file.  As an example, for the three lines above with the words access, accessing, and accommodation, your answer vector would be  
+
+```
+access
+accessing
+accommodation
+accommodation
+accommodation
+```  
+and your example vector would be  
+
+```
+acess
+accesing
+accomodation
+acommodation
+acomodation
+```
+
+Print out the 53rd through the 70th value of each vector.  Make sure you include your code to clean the data.
+
+`c.`  (5 pts) After cleaning your data, run the data through your function my_spell_checker and compare with the correct answer, this is easier if you use the sapply function.  Report your error rate.  
+

@@ -27,7 +27,8 @@ nocite: |
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-github-repo: BawCOS/undergraduate-statistics-notes
+github-repo: "BawCOS/undergraduate-statistics-notes"
+cover-image: "images/Cover3.jpg"
 description: "A set of lesson notes to accompany the book Foundations and Application of Statistics: An Introduction Using R by Randall Pruim.  This is for a one semester course and does not use the entire book."
 ---
 

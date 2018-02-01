@@ -4,7 +4,6 @@
 .Rbuildignore
 fastR-Notes.log
 _publish.R
-*_files
 _book
 _bookdown_files
 Original

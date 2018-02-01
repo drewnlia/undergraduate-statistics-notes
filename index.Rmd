@@ -11,7 +11,7 @@ output:
         collapse: subsection
         scroll_highlight: yes
         before: <li><a href="./">Notes for Stats Course</a></li>
-        after: <li><a href="https://github.com/BawCOS/undergraduate-statistics-notes" target="blank">Published with bookdown</a></li>
+        after: <li><a href="https://github.com/BawCOS/undergraduate-statistics-notes" target="blank">Github Rmd Files</a></li>
       toolbar:
         position: fixed
       edit : https://github.com/BawCOS/undergraduate-statistics-notes/edit/master/%s

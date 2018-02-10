@@ -345,10 +345,14 @@ In this problem we can look at the variable result depending on the airline.  Th
 
 There is a plot method called `mosiac`.  Be careful using this because it uses areas and we are not good at visually comparing areas, thus avoid pie charts.  The function is in the `vcd` package. 
 
-```
+```{r eval=FALSE}
 require(vcd)
-mosaic(~Result+Airline,airlineArrival) # This is the wrong plot why?
 ```
+
+```{r}
+mosaic(~Result+Airline,airlineArrival) # This is the wrong plot why?
+```  
+
 Better plot is  
 
 ```{r}

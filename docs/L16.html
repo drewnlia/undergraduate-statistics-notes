@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -425,25 +425,25 @@ K4 &lt;-<span class="st"> </span>dnorm         <span class="co"># Gaussian</span
  }</code></pre></div>
 <p>Let’s look at the kernel K4 at the point 69.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Lesson2_Height<span class="op">$</span>Height,<span class="kw">K4</span>(Lesson2_Height<span class="op">$</span>Height<span class="op">-</span><span class="dv">69</span>),<span class="dt">xlab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Weight Used&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Weigthing of Data Points at 69&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-195-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
 <p>Likewise, here it is at the point 73.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Lesson2_Height<span class="op">$</span>Height,<span class="kw">K4</span>(Lesson2_Height<span class="op">$</span>Height<span class="op">-</span><span class="dv">73</span>),<span class="dt">xlab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Weight Used&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Weigthing of Data Points at 73&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
 <p>Now the kde function, applies the kernel in a moving window across the data. This gives an estimate of the pdf. For the height data, this is the estimate.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">64</span>,<span class="dv">75</span>,.<span class="dv">1</span>),<span class="kw">kde</span>(<span class="dt">data=</span>Lesson2_Height<span class="op">$</span>Height,<span class="dt">kernel =</span> K4)(<span class="kw">seq</span>(<span class="dv">64</span>,<span class="dv">75</span>,.<span class="dv">1</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Density Estimate using Normal Kernel&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
 <p>Now the width of the kernel will impact the estimate of the pdf. Let’s change K4 to have a different width, standard deviation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">64</span>,<span class="dv">75</span>,.<span class="dv">1</span>),<span class="kw">kde</span>(<span class="dt">data=</span>Lesson2_Height<span class="op">$</span>Height,<span class="dt">kernel =</span> K4,<span class="dt">sd=</span>.<span class="dv">5</span>)(<span class="kw">seq</span>(<span class="dv">64</span>,<span class="dv">75</span>,.<span class="dv">1</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Density Estimate using Normal Kernel SD=.5&quot;</span>)       </code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
 <p>This estimate is more sensitive to local data points. In the extreme we have</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">64</span>,<span class="dv">75</span>,.<span class="dv">1</span>),<span class="kw">kde</span>(<span class="dt">data=</span>Lesson2_Height<span class="op">$</span>Height,<span class="dt">kernel =</span> K4,<span class="dt">sd=</span>.<span class="dv">1</span>)(<span class="kw">seq</span>(<span class="dv">64</span>,<span class="dv">75</span>,.<span class="dv">1</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Density Estimate using Normal Kernel SD=.1&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p>
 <p>The width of the kernel is a tuning parameter that we must choose. This requires an objective function. The book talks about using mean integrated square error. Luckily, R has a function that does this for us.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(Lesson2_Height<span class="op">$</span>Height,<span class="dt">xlab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Density Estimate using densityplot&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-202-1.png" width="672" /></p>
 <p>We can change the bandwidth directly or just scale the selected bandwidth using the <code>adjust</code> option.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(Lesson2_Height<span class="op">$</span>Height,<span class="dt">adjust=</span>.<span class="dv">5</span>,<span class="dt">xlab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Density Estimate using densityplot&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-203-1.png" width="672" /></p>
 </div>
 <div id="practice-4" class="section level3">
 <h3><span class="header-section-number">3.5.5</span> Practice</h3>
@@ -458,25 +458,25 @@ K4 &lt;-<span class="st"> </span>dnorm         <span class="co"># Gaussian</span
 ##  Max.   :800   Max.   :800.0   Max.   :35.0   Max.   :4.000</code></pre>
 <p>In Chapter 1 we made a histogram to summarize the data. For examples to summarize the gpa</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(gpa<span class="op">$</span>gpa)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-203-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-205-1.png" width="672" /></p>
 <p>Now let’s use a density plot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(gpa<span class="op">$</span>gpa,<span class="dt">xlab=</span><span class="st">&quot;GPA&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-206-1.png" width="672" /></p>
 <p>I think this gives a better representation of the data. Let’s make the bandwidth 1/2 of the default.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(gpa<span class="op">$</span>gpa,<span class="dt">xlab=</span><span class="st">&quot;GPA&quot;</span>,<span class="dt">adjust=</span>.<span class="dv">5</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-205-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-207-1.png" width="672" /></p>
 <p>This is picking up more of the noise. Let’s make the bandwidth larger which may cause too much smoothing.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(gpa<span class="op">$</span>gpa,<span class="dt">xlab=</span><span class="st">&quot;GPA&quot;</span>,<span class="dt">adjust=</span><span class="dv">4</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-206-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
 </div>
 <div id="q-q-plots" class="section level3">
 <h3><span class="header-section-number">3.5.6</span> Q-Q Plots</h3>
 <p>Next, we would like to be able to justify a certain distribution as a reasonable model for our data. For example, with the gpa data, you may be asked if it is valid to assume that the data is normally distributed. One way to answer this is by comparing the empirical quantiles from the data with the quantiles from the reference distribution. If it is a good match, the scatterplot will have the data points lying on a straight line. The function <code>xqqmath</code> in the fastR package makes this easy for us.</p>
 <p>Let’s start with the height data</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqqmath</span>(<span class="op">~</span>Height,<span class="dt">data=</span>Lesson2_Height)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-207-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-209-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqqmath</span>(<span class="op">~</span>Height,<span class="dt">data=</span>Lesson2_Height,<span class="dt">fitline=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
 <p>This plot is subjective. It is finding the empirical quantiles and then plotting these against the same quantiles from selected distribution, the normal by default. If the data comes from the selected distribution, the quantiles lie along a straight line. The data points will not be perfectly along the line, but as long as they are close, we feel comfortable with our assumption. As a follow-up, we can also check how sensitive our analysis is to the distributional assumption.</p>
 <p>We can build our own q-q plot just to understand the process.</p>
 <p>We have 25 data points that we will sort. The empirical quantiles are found by noticing that each data point is 1/25 or .04 of the data. We don’t want to start or stop at 0 or 1, so let’s split the .04 and start at .02 and end at .98. Thus the quantiles are</p>
@@ -486,7 +486,7 @@ K4 &lt;-<span class="st"> </span>dnorm         <span class="co"># Gaussian</span
 <p>Now, we must decide what to do with ties. We could just treat them as separate data points or we can accumulate all the probability at each point.</p>
 <p>Here is the first method</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">qnorm</span>(<span class="kw">seq</span>(.<span class="dv">02</span>,.<span class="dv">98</span>,.<span class="dv">04</span>)),<span class="kw">sort</span>(Lesson2_Height<span class="op">$</span>Height),<span class="dt">xlab=</span><span class="st">&quot;qnorm&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">main=</span><span class="st">&quot;My Own Q-Q Plot&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
 <p>The second method is harder to do. I must table the numbers</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(Lesson2_Height<span class="op">$</span>Height)</code></pre></div>
 <pre><code>## 
@@ -495,32 +495,32 @@ K4 &lt;-<span class="st"> </span>dnorm         <span class="co"># Gaussian</span
 <p>So at 67, the quantile will jump by 0.12 instead of 0.04. Thus the empirical quantiles are</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp&lt;-<span class="kw">c</span>(<span class="fl">0.02</span>,<span class="fl">0.06</span>,<span class="fl">0.10</span>,<span class="fl">0.14</span>,<span class="fl">0.26</span>,<span class="fl">0.38</span>,<span class="fl">0.46</span>,<span class="fl">0.58</span>,<span class="fl">0.62</span>,<span class="fl">0.70</span>,<span class="fl">0.74</span>,<span class="fl">0.82</span>,<span class="fl">0.86</span>,<span class="fl">0.94</span>,<span class="fl">0.98</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">qnorm</span>(temp),<span class="kw">sort</span>(<span class="kw">unique</span>(Lesson2_Height<span class="op">$</span>Height)),<span class="dt">xlab=</span><span class="st">&quot;qnorm&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Height&quot;</span>,<span class="dt">main=</span><span class="st">&quot;My Own Q-Q Plot&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-215-1.png" width="672" /></p>
 <p>Back to <code>xqqmath</code>, the default method of inserting a line is to put it through the first and third quartiles. Another is the fit a line by estimating the mean and standard deviation. We will learn about these ideas later.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqqmath</span>(<span class="op">~</span>Height,<span class="dt">data=</span>Lesson2_Height,<span class="dt">fitline=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-214-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
 <p>From our data, the normal assumption is not bad.</p>
 <p>Let’s try it for the <code>gpa</code> data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqqmath</span>(<span class="op">~</span>gpa,<span class="dt">data=</span>gpa)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-215-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
 <p>From this plot we can see that our data is skewed to the left compared with the normal distribution. Look at the right side of the figure, if the quantiles from the data increased as fast as those from the normal the points would fall along the line. Using a normal distribution for this data is not a good idea.</p>
 <p>Maybe if we put gpa on a scale of 0 to 1 and then compare with a Beta, that is a better fit.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mygpa&lt;-gpa<span class="op">$</span>gpa<span class="op">/</span><span class="dv">4</span>
 <span class="kw">densityplot</span>(mygpa)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-218-1.png" width="672" /></p>
 <p>Next chapter we will look at estimating the parameters of a distributions; for now we will a Beta(5,2)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,.<span class="dv">01</span>),<span class="kw">dbeta</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,.<span class="dv">01</span>),<span class="dv">5</span>,<span class="dv">2</span>),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qb&lt;-<span class="cf">function</span>(x){<span class="kw">qbeta</span>(x,<span class="dv">5</span>,<span class="dv">2</span>)}
 <span class="kw">xqqmath</span>(<span class="op">~</span>mygpa,<span class="dt">distribution=</span>qb)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-218-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
 <p>There are still some problems with the fit but it is better. The Beta has a longer tail to the right versus our data.</p>
 <p>Finding the parameters using ideas from Chapter 4</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,.<span class="dv">01</span>),<span class="kw">dbeta</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,.<span class="dv">01</span>),<span class="fl">6.156995</span>,<span class="fl">1.189227</span>),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qb&lt;-<span class="cf">function</span>(x){<span class="kw">qbeta</span>(x,<span class="fl">6.156995</span>,<span class="fl">1.189227</span>)}
 <span class="kw">xqqmath</span>(<span class="op">~</span>mygpa,<span class="dt">distribution=</span>qb)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-222-1.png" width="672" /></p>
 <p>Do Homework 3.38</p>
 </div>
 </div>

@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -414,7 +414,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fastR) </code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Les23DataMany&lt;-<span class="kw">replicate</span>(<span class="dv">1000</span>,<span class="kw">rgamma</span>(<span class="dv">40</span>,<span class="dv">5</span>,<span class="dv">2</span>))
 LambdaEstimator&lt;-<span class="kw">apply</span>(Les23DataMany,<span class="dv">2</span>,<span class="cf">function</span>(x)(<span class="dv">1</span><span class="op">/</span><span class="kw">mean</span>(x)))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
 <p>This is just a simulation but this is the idea of thinking of an estimator as a random variable. It will vary from sample to sample and have a distribution. The distribution of the estimator is not necessarily the same as the distribution of the parent population. Since the estimator has a distribution, we can use ideas from previous sections such as moments, <span class="math inline">\(E(X)\)</span>.</p>
 </div>
 <div id="properties-of-estimators" class="section level3">
@@ -439,7 +439,7 @@ LambdaEstimator&lt;-<span class="kw">apply</span>(Les23DataMany,<span class="dv"
 <p>If we think of <span class="math inline">\(\bar{X}\)</span> as estimator of <span class="math inline">\(\pi\)</span>, then we could simulate it sampling distribution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Les23FlipsMany&lt;-<span class="kw">replicate</span>(<span class="dv">1000</span>,<span class="kw">rbinom</span>(<span class="dv">100</span>,<span class="dv">1</span>,.<span class="dv">5</span>))
 PiEstimator&lt;-<span class="kw">apply</span>(Les23FlipsMany,<span class="dv">2</span>,mean)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-246-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
 <p>The two properties of estimators that we are interested in are<br />
 1) Unbiased, definition 4.3.4 and<br />
 2) Consistent, definition 4.3.6</p>
@@ -453,10 +453,10 @@ PiEstimator&lt;-<span class="kw">apply</span>(Les23FlipsMany,<span class="dv">2<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">100</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)), 
     <span class="dt">main =</span> <span class="st">&quot;Simulation of the Distribution of the Method of Moments Estimator </span><span class="ch">\n</span><span class="st">for Binom(0,.5), Sample Size 10&quot;</span>, 
     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-250-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">100</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, 
     <span class="dv">1</span>), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-250-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-252-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(<span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">100</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))))</code></pre></div>
 <pre><code>## [1] 0.499146</code></pre>
 <p>Notice that mean we calculated from the simulated sampling distribution is close to the true mean of 0.50.</p>
@@ -464,31 +464,31 @@ PiEstimator&lt;-<span class="kw">apply</span>(Les23FlipsMany,<span class="dv">2<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">200</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)), 
     <span class="dt">main =</span> <span class="st">&quot;Simulation of the Distribution of the Method of Moments Estimator </span><span class="ch">\n</span><span class="st">for Binom(0,.5) Sample Size 20&quot;</span>, 
     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-255-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">200</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, 
     <span class="dv">1</span>), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-254-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-256-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">1000</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)), 
     <span class="dt">main =</span> <span class="st">&quot;Simulation of the Distribution of the Method of Moments Estimator </span><span class="ch">\n</span><span class="st">for Binom(0,.5) Sample Size 100&quot;</span>, 
     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-255-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-257-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">1000</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, 
     <span class="dv">1</span>), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-256-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">10000</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)), 
     <span class="dt">main =</span> <span class="st">&quot;Simulation of the Distribution of the Method of Moments Estimator </span><span class="ch">\n</span><span class="st">for Binom(0,.5) Sample Size 100&quot;</span>, 
     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-257-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(<span class="op">~</span><span class="kw">replicate</span>(<span class="dv">10000</span>, <span class="kw">mean</span>(<span class="kw">rbinom</span>(<span class="dv">10000</span>, <span class="dv">1</span>, <span class="fl">0.5</span>))), <span class="dt">v =</span> <span class="fl">0.5</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, 
     <span class="dv">1</span>), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">hat</span>(pi)))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-260-1.png" width="672" /></p>
 <p>This is tiresome so let’s write a function that will plot the behavior:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myrbinom&lt;-<span class="cf">function</span>(n){<span class="kw">rbinom</span>(n,<span class="dv">1</span>,.<span class="dv">5</span>)}
 <span class="kw">xyplot</span>(<span class="kw">sapply</span>(<span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>,myrbinom),mean)<span class="op">~</span><span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>,<span class="dt">xlab=</span><span class="st">&quot;n&quot;</span>,<span class="dt">ylab=</span><span class="kw">expression</span>(<span class="kw">hat</span>(pi)),<span class="dt">alpha=</span>.<span class="dv">4</span>,
        <span class="dt">panel =</span> <span class="cf">function</span>(...) {
          <span class="kw">panel.abline</span>(<span class="dt">h=</span>.<span class="dv">5</span>, <span class="dt">lty =</span> <span class="st">&quot;dotted&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;black&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
          <span class="kw">panel.xyplot</span>(...)})</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-261-1.png" width="672" /></p>
 <p>It looks like the sample mean is a consistent estimator of the probability of success. Mathematically we show this as <span class="math display">\[Var(\bar{X})={1 \over n^{2}} \sum_{i=1}^{n}Var(X_{i}) = {1 \over n^{2}}(n\pi(1-\pi))={\pi(1-\pi) \over n}\]</span> We made use of independence in this argument.<br />
 Now <span class="math display">\[\lim{n \to \infty}{\pi(1-\pi) \over n}=0\]</span>.</p>
 </div>

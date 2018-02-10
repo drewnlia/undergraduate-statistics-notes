@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -414,7 +414,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="kw">dbinom</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="dv">100</span>,.<span class="dv">45</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Number of Successes&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Probability&quot;</span>)
 <span class="kw">points</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="kw">dbinom</span>((<span class="dv">30</span><span class="op">:</span><span class="dv">70</span>),<span class="dv">100</span>,.<span class="dv">5</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">col=</span><span class="dv">2</span>)
 <span class="kw">abline</span>(<span class="dt">v=</span><span class="dv">49</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 <p>Notice the use of <code>dbinom</code> in this code.</p>
 <p>One way to decide is to pick a rejection region where the probability of that number of successes is higher under each different value of the probability of success. We can find these by creating a table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prob_table&lt;-<span class="kw">rbind</span>(<span class="kw">dbinom</span>((<span class="dv">40</span><span class="op">:</span><span class="dv">60</span>),<span class="dv">100</span>,.<span class="dv">45</span>),<span class="kw">dbinom</span>((<span class="dv">40</span><span class="op">:</span><span class="dv">60</span>),<span class="dv">100</span>,.<span class="dv">5</span>))
@@ -500,7 +500,7 @@ temp    </code></pre></div>
 <p>So it looks like around 618 trials would work for use. Let’s plot</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="kw">dbinom</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="dv">618</span>,.<span class="dv">45</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Number of Successes&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Probability&quot;</span>)
 <span class="kw">points</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="kw">dbinom</span>((<span class="dv">249</span><span class="op">:</span><span class="dv">329</span>),<span class="dv">618</span>,.<span class="dv">5</span>),<span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">col=</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
 </div>
 <div id="complex-hypothesis" class="section level3">
 <h3><span class="header-section-number">2.5.5</span> Complex Hypothesis</h3>

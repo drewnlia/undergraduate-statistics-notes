@@ -124,7 +124,7 @@
   \postauthor{\par}
   \predate{\centering\large\emph}
   \postdate{\par}
-  \date{2018-01-31}
+  \date{2018-02-10}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -1005,10 +1005,19 @@ There is a plot method called \texttt{mosiac}. Be careful using this
 because it uses areas and we are not good at visually comparing areas,
 thus avoid pie charts. The function is in the \texttt{vcd} package.
 
-\begin{verbatim}
-require(vcd)
-mosaic(~Result+Airline,airlineArrival) # This is the wrong plot why?
-\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{require}\NormalTok{(vcd)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mosaic}\NormalTok{(}\OperatorTok{~}\NormalTok{Result}\OperatorTok{+}\NormalTok{Airline,airlineArrival) }\CommentTok{# This is the wrong plot why?}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-44-1.pdf}
 
 Better plot is
 
@@ -1018,7 +1027,7 @@ Better plot is
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-43-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-45-1.pdf}
 
 Looks like AmericaWest is the better airline because it has a higher
 proportion of the plans arrive on time. But wait.
@@ -1091,7 +1100,7 @@ The following is a plot but I don't like it as much as a table.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-46-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-48-1.pdf}
 
 Bivariate with both quantitative leads to the familiar scatterplot. The
 book's example on the iris data set is good.
@@ -1149,7 +1158,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-48-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-50-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1157,7 +1166,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-49-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-51-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1165,7 +1174,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-49-2.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-51-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1173,7 +1182,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-50-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-52-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1181,7 +1190,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-50-2.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-52-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1189,7 +1198,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-50-3.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-52-3.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1197,7 +1206,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-50-4.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-52-4.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1205,7 +1214,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-50-5.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-52-5.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1213,7 +1222,7 @@ Some more examples
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-50-6.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-52-6.pdf}
 
 Another plotting program that is one of the most popular is ggplot.
 
@@ -1233,7 +1242,7 @@ Another plotting program that is one of the most popular is ggplot.
 ## Warning: Removed 279 rows containing missing values (geom_point).
 \end{verbatim}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-52-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-54-1.pdf}
 
 The example from the book.
 
@@ -1959,7 +1968,7 @@ probability mass function for each case.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-70-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-72-1.pdf}
 
 Notice the use of \texttt{dbinom} in this code.
 
@@ -2231,7 +2240,7 @@ So it looks like around 618 trials would work for use. Let's plot
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-83-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-85-1.pdf}
 
 \subsection{Complex Hypothesis}\label{complex-hypothesis}
 
@@ -3834,7 +3843,7 @@ A plot of the kernel
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-150-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-152-1.pdf}
 
 Notice this is not a pdf. We must find the scaling constant.
 
@@ -3879,7 +3888,7 @@ A plot of the pdf
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-154-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-156-1.pdf}
 
 This is proper pdf since \[f(x) \geq 0\] and
 \[\int_{-\infty}^{\infty}f(x)dx=1\]
@@ -4061,7 +4070,7 @@ A plot of the sample is
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-165-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-167-1.pdf}
 
 This looks like our pdf.
 
@@ -4107,7 +4116,7 @@ We should check that this is a pdf. I will use R to do the work for me.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-167-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-169-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4786,7 +4795,7 @@ Note: Read the last three paragraphs on page 144.
   with \(\alpha = 5\) and \(\beta = 2.7\). Here is a plot of the pdf.
 \end{enumerate}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-186-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-188-1.pdf}
 
 \begin{enumerate}
 \def\labelenumi{\alph{enumi})}
@@ -5005,7 +5014,7 @@ Let's look at the kernel K4 at the point 69.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-195-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-197-1.pdf}
 
 Likewise, here it is at the point 73.
 
@@ -5015,7 +5024,7 @@ Likewise, here it is at the point 73.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-196-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-198-1.pdf}
 
 Now the kde function, applies the kernel in a moving window across the
 data. This gives an estimate of the pdf. For the height data, this is
@@ -5027,7 +5036,7 @@ the estimate.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-197-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-199-1.pdf}
 
 Now the width of the kernel will impact the estimate of the pdf. Let's
 change K4 to have a different width, standard deviation.
@@ -5038,7 +5047,7 @@ change K4 to have a different width, standard deviation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-198-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-200-1.pdf}
 
 This estimate is more sensitive to local data points. In the extreme we
 have
@@ -5049,7 +5058,7 @@ have
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-199-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-201-1.pdf}
 
 The width of the kernel is a tuning parameter that we must choose. This
 requires an objective function. The book talks about using mean
@@ -5062,7 +5071,7 @@ us.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-200-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-202-1.pdf}
 
 We can change the bandwidth directly or just scale the selected
 bandwidth using the \texttt{adjust} option.
@@ -5073,7 +5082,7 @@ bandwidth using the \texttt{adjust} option.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-201-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-203-1.pdf}
 
 \subsection{Practice}\label{practice-4}
 
@@ -5104,7 +5113,7 @@ summarize the gpa
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-203-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-205-1.pdf}
 
 Now let's use a density plot:
 
@@ -5114,7 +5123,7 @@ Now let's use a density plot:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-204-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-206-1.pdf}
 
 I think this gives a better representation of the data. Let's make the
 bandwidth 1/2 of the default.
@@ -5125,7 +5134,7 @@ bandwidth 1/2 of the default.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-205-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-207-1.pdf}
 
 This is picking up more of the noise. Let's make the bandwidth larger
 which may cause too much smoothing.
@@ -5136,7 +5145,7 @@ which may cause too much smoothing.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-206-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-208-1.pdf}
 
 \subsection{Q-Q Plots}\label{q-q-plots}
 
@@ -5157,7 +5166,7 @@ Let's start with the height data
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-207-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-209-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5165,7 +5174,7 @@ Let's start with the height data
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-208-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-210-1.pdf}
 
 This plot is subjective. It is finding the empirical quantiles and then
 plotting these against the same quantiles from selected distribution,
@@ -5205,7 +5214,7 @@ Here is the first method
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-210-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-212-1.pdf}
 
 The second method is harder to do. I must table the numbers
 
@@ -5236,7 +5245,7 @@ empirical quantiles are
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-213-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-215-1.pdf}
 
 Back to \texttt{xqqmath}, the default method of inserting a line is to
 put it through the first and third quartiles. Another is the fit a line
@@ -5249,7 +5258,7 @@ ideas later.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-214-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-216-1.pdf}
 
 From our data, the normal assumption is not bad.
 
@@ -5261,7 +5270,7 @@ Let's try it for the \texttt{gpa} data.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-215-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-217-1.pdf}
 
 From this plot we can see that our data is skewed to the left compared
 with the normal distribution. Look at the right side of the figure, if
@@ -5279,7 +5288,7 @@ that is a better fit.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-216-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-218-1.pdf}
 
 Next chapter we will look at estimating the parameters of a
 distributions; for now we will a Beta(5,2)
@@ -5290,7 +5299,7 @@ distributions; for now we will a Beta(5,2)
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-217-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-219-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5299,7 +5308,7 @@ distributions; for now we will a Beta(5,2)
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-218-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-220-1.pdf}
 
 There are still some problems with the fit but it is better. The Beta
 has a longer tail to the right versus our data.
@@ -5312,7 +5321,7 @@ Finding the parameters using ideas from Chapter 4
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-219-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-221-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5321,7 +5330,7 @@ Finding the parameters using ideas from Chapter 4
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-220-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-222-1.pdf}
 
 Do Homework 3.38
 
@@ -5559,7 +5568,7 @@ Let's plot it:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-225-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-227-1.pdf}
 
 I don't know the population mean, what would be a reasonable estimate?
 The sample mean is an obvious choice. Thus my estimate of \(E(X)\) which
@@ -5622,7 +5631,7 @@ We could check using a q-q plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-227-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-229-1.pdf}
 
 This is not a good model, so we need to estimate both \(\alpha\) and
 \(\lambda\).
@@ -5808,7 +5817,7 @@ Load \texttt{fastR} and set the seed for repeatability.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-239-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-241-1.pdf}
 
 This is just a simulation but this is the idea of thinking of an
 estimator as a random variable. It will vary from sample to sample and
@@ -5884,7 +5893,7 @@ simulate it sampling distribution.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-246-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-248-1.pdf}
 
 The two properties of estimators that we are interested in are\\
 1) Unbiased, definition 4.3.4 and\\
@@ -5913,7 +5922,7 @@ Thus we have an unbiased estimator. Let's simulate to get an idea
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-248-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-250-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5922,7 +5931,7 @@ Thus we have an unbiased estimator. Let's simulate to get an idea
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-250-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-252-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5954,7 +5963,7 @@ sample size and see what happens in our simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-253-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-255-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5963,7 +5972,7 @@ sample size and see what happens in our simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-254-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-256-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5973,7 +5982,7 @@ sample size and see what happens in our simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-255-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-257-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5982,7 +5991,7 @@ sample size and see what happens in our simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-256-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-258-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5992,7 +6001,7 @@ sample size and see what happens in our simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-257-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-259-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6001,7 +6010,7 @@ sample size and see what happens in our simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-258-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-260-1.pdf}
 
 This is tiresome so let's write a function that will plot the behavior:
 
@@ -6015,7 +6024,7 @@ This is tiresome so let's write a function that will plot the behavior:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-259-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-261-1.pdf}
 
 It looks like the sample mean is a consistent estimator of the
 probability of success. Mathematically we show this as
@@ -6151,7 +6160,7 @@ Using the central limit theorem the distribution of \(\bar{X}\) is
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-264-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-266-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6159,7 +6168,7 @@ Using the central limit theorem the distribution of \(\bar{X}\) is
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-265-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-267-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6167,7 +6176,7 @@ Using the central limit theorem the distribution of \(\bar{X}\) is
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-265-2.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-267-2.pdf}
 
 There is some difficulty because the binomial is discrete while the
 normal is continuous. We will deal with that shortly.
@@ -6197,7 +6206,7 @@ As a baseline, here are the four distributions,
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-267-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-269-1.pdf}
 
 Now let's plot the distribution of the sample mean from each of these
 where the sample size is 2.
@@ -6208,7 +6217,7 @@ where the sample size is 2.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-268-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-270-1.pdf}
 
 Of course, the sample mean from a normal is already normal. The uniform
 is already looking like a normal but it was symmetric to begin with.
@@ -6221,7 +6230,7 @@ Now let's take the sample size to 5.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-269-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-271-1.pdf}
 
 The results are even better.
 
@@ -6233,7 +6242,7 @@ Finally let's try 30.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-270-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-272-1.pdf}
 
 A better plot would be the q-q plot. But you should get the idea.
 
@@ -6491,12 +6500,12 @@ Going back to example 4.5.1, this means that
 
 A plot of this distribution is
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-278-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-280-1.pdf}
 
 For a normal we know that 95\% of the possible value will fall within
 \(\pm\) 1.96 standard deviations.
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-279-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-281-1.pdf}
 
 What a confidence interval does is invert this. It centers the
 distribution on the observed sample mean with the hope that the true
@@ -6506,13 +6515,13 @@ For our example, the standard deviation was 0.05 and the sample size was
 10. Let's pretend that the true mean, unknown to us, is 5. Thus the
 sampling distribution of the mean would be
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-280-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-282-1.pdf}
 
 Our observed sample mean was 4.96. If we center the distribution on this
 value we hope that the true unknown population mean is capture in an
 interval around the value of 4.96.
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-281-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-283-1.pdf}
 
 Our 95\% confidence interval in this case is
 
@@ -6609,7 +6618,7 @@ If \(H_{0}\) is true, then\\
 
 A plot of this will look like
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-284-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-286-1.pdf}
 
 If we use \(\alpha\) the level of significance or probability of a Type
 I error to be 0.05, we can setup a rejection region. Remember that a
@@ -6628,14 +6637,14 @@ true. We calculate this rejection region as follows:
 
 Thus our plot
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-286-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-288-1.pdf}
 
 Now since we know the value of \(\mu\) under the alternative hypothesis,
 we can calculate \(\beta\) the probability of a Type II error or its
 complement power. In the plot, if \(H_{A}\) were true we would have the
 following
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-287-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-289-1.pdf}
 
 The probability of a Type II error is the probability we fail to reject,
 given the alternative is true. In R we calculate this as
@@ -6687,7 +6696,7 @@ the weights of the 10 free weights
 
 Our observed sample mean, \(\bar{x}\) is 4.96. In the plot, we have
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-292-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-294-1.pdf}
 
 Thus we reject. We could also calculate the p-value, the probability of
 the data or more extreme given that the null hypothesis is true.
@@ -6719,7 +6728,7 @@ problem.
   First we will change \(\alpha\) to 0.10. Here is the plot
 \end{enumerate}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-294-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-296-1.pdf}
 
 The power of this test is
 
@@ -6755,7 +6764,7 @@ or equivalently increases power.
   a sample size of 20.
 \end{enumerate}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-296-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-298-1.pdf}
 
 Here the power changed to
 
@@ -6844,7 +6853,7 @@ approach. We will do it using simulation in R.
 I will pick a Beta distribution with parameters \(\alpha\)=5 and
 \(\beta\)=2, but you can select any other distribution. Here is a plot
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-299-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-301-1.pdf}
 
 From theory we know the variance of a Beta is
 
@@ -6898,7 +6907,7 @@ A plot of the data
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-306-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-308-1.pdf}
 
 The mean of this is
 
@@ -6953,7 +6962,7 @@ To see what a chi-squared distribution looks like, plot it
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-310-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-312-1.pdf}
 
 Using the example from last class
 
@@ -7382,7 +7391,7 @@ of a difference
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-331-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-333-1.pdf}
 
 This is because there is so much variability in wear from boy to boy and
 this variance masks the difference in the materials. Thus the
@@ -7407,7 +7416,7 @@ boys. This data looks like
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-332-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-334-1.pdf}
 
 The hypothesis test is
 
@@ -7699,7 +7708,7 @@ A plot of the data:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-342-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-344-1.pdf}
 
 Again, the sample to sample variation is so large that it is hard to see
 a difference in means. If we look at the differences within sample we
@@ -7733,7 +7742,7 @@ get:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-343-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-345-1.pdf}
 
 Now the t-test. The following are all equivalent:
 
@@ -7820,7 +7829,7 @@ assumption. As a reference here is the qq-plot:
 ## 'data' specification ignored
 \end{verbatim}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-346-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-348-1.pdf}
 
 If we are not comfortable with the normality assumption, we could use
 the sign test we learned about from last lesson. If the null hypothesis
@@ -7905,7 +7914,7 @@ Here is a plot of the sampling distribution of the test statistic.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-351-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-353-1.pdf}
 
 Or using a ``fancy'' histogram
 
@@ -7916,7 +7925,7 @@ Or using a ``fancy'' histogram
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-352-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-354-1.pdf}
 
 Now we can calculate the simulated p-value.
 
@@ -8081,7 +8090,7 @@ Now we can simulate the distribution of the test statistic.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-360-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-362-1.pdf}
 
 This is close to the two-sample t-test.
 
@@ -8476,7 +8485,7 @@ range of \(\theta\) values.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-372-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-374-1.pdf}
 
 Just for interest, let's plot the likelihood. We will drop the terms
 that don't have \(\theta\) in them as there are only constants.
@@ -8497,7 +8506,7 @@ that don't have \(\theta\) in them as there are only constants.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-374-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-376-1.pdf}
 As a comparison, our method of moments estimate is
 
 \begin{Shaded}
@@ -8682,7 +8691,7 @@ A plot of the values
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-384-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-386-1.pdf}
 
 It looks normal. The empirical p-value is
 
@@ -8759,7 +8768,7 @@ process a little easier.
 ##  4103 ( 41.03 % ) had test stats >= 0.05
 \end{verbatim}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-387-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-389-1.pdf}
 
 \subsection{Likelihood Ratio Test}\label{likelihood-ratio-test}
 
@@ -8980,7 +8989,7 @@ A plot of the values
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-398-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-400-1.pdf}
 
 This is our data
 
@@ -9823,7 +9832,7 @@ Using the package \texttt{vcd} we can visualize the results.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-434-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-436-1.pdf}
 
 From this visual analysis, the republicans that claim we know all the
 facts are the significant reason for rejection of the null hypothesis.
@@ -9966,7 +9975,7 @@ Or using R
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-437-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-439-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -10314,7 +10323,7 @@ And the residuals, the difference between observed and predicted are
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-448-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-450-1.pdf}
 
 As another example, consider the baseball batting data set
 
@@ -10522,7 +10531,7 @@ Here is a different view of the data
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-453-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-455-1.pdf}
 
 Or using a data frame
 
@@ -10626,7 +10635,7 @@ from three different perspectives. First if we plot the data
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-455-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-457-1.pdf}
 
 or using the lattice package
 
@@ -10642,7 +10651,7 @@ or using the lattice package
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-457-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-459-1.pdf}
 
 In this situation we want the best line, the line that minimizes the sum
 of the squared errors, of the form \(y=\beta_{0}+\beta_{1}x\).
@@ -11491,7 +11500,7 @@ We will first build a data set where \[y=2x+\epsilon\] where
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-486-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-488-1.pdf}
 
 Independence is difficult to evaluate and can typically only be done if
 the data is collected in an experiment and there is a time element. For
@@ -11540,7 +11549,7 @@ Then plot the x-values versus the residuals.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-488-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-490-1.pdf}
 
 If independence is not a valid assumption, then we would see a pattern
 in the plot. We do not see any pattern here. Some examples of patterns
@@ -11557,7 +11566,7 @@ against the residuals.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-489-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-491-1.pdf}
 
 To help us understand a lack of independence, let's put a shift in the
 data after 20 data points have been observed.
@@ -11570,7 +11579,7 @@ data after 20 data points have been observed.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-490-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-492-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11605,7 +11614,7 @@ data after 20 data points have been observed.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-490-2.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-492-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11613,7 +11622,7 @@ data after 20 data points have been observed.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-490-3.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-492-3.pdf}
 
 From the plot, it should be clear that the residuals are not in a random
 pattern, there is a dependency. You could in this simulation, introduce
@@ -11664,7 +11673,7 @@ as the x-values increase.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-491-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-493-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11672,7 +11681,7 @@ as the x-values increase.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-492-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-494-1.pdf}
 
 Notice how the spread of the residuals decreases as the fitted values
 get larger, this is an indication that variance is not constant.
@@ -11703,7 +11712,7 @@ residual plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-493-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-495-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11711,7 +11720,7 @@ residual plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-494-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-496-1.pdf}
 
 The plot indicates that there is a non-linear relationship between x and
 y.
@@ -11729,7 +11738,7 @@ Normality can be checked using a qq-plot.
 ## 'data' specification ignored
 \end{verbatim}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-495-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-497-1.pdf}
 
 We have discussed this plot in detail in a previous lesson.
 
@@ -11824,7 +11833,7 @@ Luckily, R has plots and functions for all of these measures.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-497-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-499-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11872,7 +11881,7 @@ html widget to examine the data.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-500-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-502-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11880,7 +11889,7 @@ html widget to examine the data.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-501-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-503-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11918,7 +11927,7 @@ Checking the assumptions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-502-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-504-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -11932,7 +11941,7 @@ Checking the assumptions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-503-1.pdf}
+\includegraphics{fastR-Notes_files/figure-latex/unnamed-chunk-505-1.pdf}
 
 What are your conclusions from these plots?
 

@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -401,7 +401,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Let’s plot it:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fastR)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(Les22Data)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
 <p>I don’t know the population mean, what would be a reasonable estimate? The sample mean is an obvious choice. Thus my estimate of <span class="math inline">\(E(X)\)</span> which is also called <span class="math inline">\(\mu\)</span> is <span class="math inline">\(\hat{\mu}\)</span>.</p>
 <p>Again, the key idea from this section is that the population moments are a function of the parameters of the distribution. Thus we can estimate those parameters by equating sample moments with population moments.</p>
 <p>Here are the first sample moment about the origin and the second sample moment about the sample mean. Notice that the second sample moment about the sample mean is not the same as the sample variance. That is because one divides by <code>n</code> and the other by <code>n-1</code>.</p>
@@ -416,7 +416,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We could check using a q-q plot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qLes22&lt;-<span class="cf">function</span>(x){<span class="kw">qgamma</span>(x,<span class="dv">2</span>,<span class="dt">rate=</span><span class="dv">2</span><span class="op">/</span>Les22Datamean)}
 <span class="kw">xqqmath</span>(<span class="op">~</span>Les22Data,<span class="dt">distribution=</span>qLes22)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
 <p>This is not a good model, so we need to estimate both <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>.</p>
 </div>
 <div id="practice-6" class="section level3">

@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -436,11 +436,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##   OnTime  0.29763636  0.58527273</code></pre>
 <p>In this problem we can look at the variable result depending on the airline. Thus we summarize the data differently than if both variables were thought of being independent. We will see this more in chapter 4.</p>
 <p>There is a plot method called <code>mosiac</code>. Be careful using this because it uses areas and we are not good at visually comparing areas, thus avoid pie charts. The function is in the <code>vcd</code> package.</p>
-<pre><code>require(vcd)
-mosaic(~Result+Airline,airlineArrival) # This is the wrong plot why?</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(vcd)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mosaic</span>(<span class="op">~</span>Result<span class="op">+</span>Airline,airlineArrival) <span class="co"># This is the wrong plot why?</span></code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 <p>Better plot is</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mosaic</span>(Result<span class="op">~</span>Airline,airlineArrival)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>Looks like AmericaWest is the better airline because it has a higher proportion of the plans arrive on time. But wait.</p>
 <p>Let’s break it down by airport.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">structable</span>(<span class="op">~</span>Result<span class="op">+</span>Airline<span class="op">+</span>Airport,airlineArrival)</code></pre></div>
@@ -481,7 +482,7 @@ mosaic(~Result+Airline,airlineArrival) # This is the wrong plot why?</code></pre
 <p>See this site for another example of <a href="http://vudlab.com/simpsons/">Simpson’s Paradox</a> and the idea of a lurking variable.</p>
 <p>The following is a plot but I don’t like it as much as a table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mosaic</span>(Result<span class="op">~</span>Airline<span class="op">+</span>Airport,airlineArrival)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>Bivariate with both quantitative leads to the familiar scatterplot. The book’s example on the iris data set is good.</p>
 <p>In that case they add a third qualitative variable and use color via the groups option to visualize.</p>
 <p>Some more examples</p>
@@ -504,28 +505,28 @@ mosaic(~Result+Airline,airlineArrival) # This is the wrong plot why?</code></pre
 ##   2004    47  140
 ##   2005    70  118</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(<span class="op">~</span>GradGPA<span class="op">|</span><span class="kw">factor</span>(Cohort),students)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(<span class="op">~</span>GradGPA<span class="op">|</span><span class="kw">factor</span>(Cohort),students)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(GradGPA<span class="op">~</span><span class="kw">factor</span>(Cohort),students)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-49-2.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(GradGPA<span class="op">~</span>HSGPA,students)</code></pre></div>
 <p><img src="fastR-Notes_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(<span class="op">~</span>GradGPA<span class="op">|</span><span class="kw">factor</span>(Cohort),students)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(GradGPA<span class="op">~</span><span class="kw">factor</span>(Cohort),students)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-51-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(GradGPA<span class="op">~</span>HSGPA,students)</code></pre></div>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(GradGPA<span class="op">~</span>HSGPA,students,<span class="dt">main=</span><span class="st">&quot;Lesson 3 Example&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-50-2.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-52-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(GradGPA<span class="op">~</span>HSGPA,<span class="dt">group=</span>Cohort,students,<span class="dt">main=</span><span class="st">&quot;Lesson 3 Example&quot;</span>,<span class="dt">auto.key=</span>T)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-50-3.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-52-3.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(GradGPA<span class="op">~</span>HSGPA<span class="op">|</span>Cohort,students,<span class="dt">main=</span><span class="st">&quot;Lesson 3 Example&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-50-4.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-52-4.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(GradGPA<span class="op">~</span>HSGPA<span class="op">|</span><span class="kw">factor</span>(Cohort),students,<span class="dt">main=</span><span class="st">&quot;Lesson 3 Example&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-50-5.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-52-5.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(students<span class="op">$</span>HSGPA,students<span class="op">$</span>GradGPA)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-50-6.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-52-6.png" width="672" /></p>
 <p>Another plotting program that is one of the most popular is ggplot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(ggplot2)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(HSGPA,GradGPA,<span class="dt">data=</span>students)</code></pre></div>
 <pre><code>## Warning: Removed 279 rows containing missing values (geom_point).</code></pre>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <p>The example from the book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xtabs</span>(<span class="op">~</span>Defendant<span class="op">+</span>Penalty,deathPenalty)</code></pre></div>
 <pre><code>##          Penalty

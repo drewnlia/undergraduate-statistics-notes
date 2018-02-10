@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -392,11 +392,11 @@ y&lt;-<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</sp
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">abline</span>(<span class="dt">a=</span><span class="dv">2</span>,<span class="dt">b=</span><span class="op">-</span>.<span class="dv">5</span>)
 <span class="co"># abline(lm(y~x)) also works</span>
 <span class="kw">points</span>(x,<span class="kw">lm</span>(y<span class="op">~</span>x)<span class="op">$</span>fitted,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-455-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-457-1.png" width="672" /></p>
 <p>or using the lattice package</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lattice)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(y<span class="op">~</span>x,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;p&quot;</span>,<span class="st">&quot;r&quot;</span>))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-457-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-459-1.png" width="672" /></p>
 <p>In this situation we want the best line, the line that minimizes the sum of the squared errors, of the form <span class="math inline">\(y=\beta_{0}+\beta_{1}x\)</span>.</p>
 <p>Another perspective is to solve an over-determined set of linear equations <span class="math display">\[1=\beta_{0}+1\beta_{1}\]</span> <span class="math display">\[2=\beta_{0}+2\beta_{1}\]</span> <span class="math display">\[0=\beta_{0}+3\beta_{1}\]</span></p>
 <p>And finally, similar but using matrices and vectors, solving <span class="math display">\[\left( \begin{array}{c} 1 \\ 2 \\ 0 \end{array} \right) = \left( \begin{array}{cc} 1 &amp; 1 \\ 1 &amp; 2 \\ 1 &amp; 3 \end{array} \right)\left( \begin{array}{c} \beta_{0} \\ \beta_{1} \end{array} \right)\]</span></p>

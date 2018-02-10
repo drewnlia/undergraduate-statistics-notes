@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -453,14 +453,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Going back to example 4.5.1, this means that</p>
 <p><span class="math display">\[\bar{X}\dot{\sim} \mbox{Norm}\left(\mu,{0.05 \over \sqrt{10}}\right)\]</span></p>
 <p>A plot of this distribution is</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-278-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-280-1.png" width="672" /></p>
 <p>For a normal we know that 95% of the possible value will fall within <span class="math inline">\(\pm\)</span> 1.96 standard deviations.</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-279-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-281-1.png" width="672" /></p>
 <p>What a confidence interval does is invert this. It centers the distribution on the observed sample mean with the hope that the true mean is captured in an interval.</p>
 <p>For our example, the standard deviation was 0.05 and the sample size was 10. Let’s pretend that the true mean, unknown to us, is 5. Thus the sampling distribution of the mean would be</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-280-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-282-1.png" width="672" /></p>
 <p>Our observed sample mean was 4.96. If we center the distribution on this value we hope that the true unknown population mean is capture in an interval around the value of 4.96.</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-281-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-283-1.png" width="672" /></p>
 <p>Our 95% confidence interval in this case is</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(.<span class="dv">025</span>,<span class="fl">4.96</span>,.<span class="dv">05</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">10</span>))</code></pre></div>
 <pre><code>## [1] 4.92901</code></pre>
@@ -493,14 +493,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We will use <span class="math inline">\(\bar{X}\)</span> as the test statistic to test this hypothesis. If <span class="math inline">\(H_{0}\)</span> is true, then<br />
 <span class="math display">\[\bar{X}\dot{\sim}\mbox{Norm}\left(5.0,{0.05 \over \sqrt{10}}\right)\]</span></p>
 <p>A plot of this will look like</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-284-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-286-1.png" width="672" /></p>
 <p>If we use <span class="math inline">\(\alpha\)</span> the level of significance or probability of a Type I error to be 0.05, we can setup a rejection region. Remember that a Type I error occurs when we reject given that the null hypothesis is true. We calculate this rejection region as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(.<span class="dv">05</span>,<span class="dv">5</span>,.<span class="dv">05</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">10</span>))</code></pre></div>
 <pre><code>## [1] 4.973993</code></pre>
 <p>Thus our plot</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-286-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-288-1.png" width="672" /></p>
 <p>Now since we know the value of <span class="math inline">\(\mu\)</span> under the alternative hypothesis, we can calculate <span class="math inline">\(\beta\)</span> the probability of a Type II error or its complement power. In the plot, if <span class="math inline">\(H_{A}\)</span> were true we would have the following</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-287-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-289-1.png" width="672" /></p>
 <p>The probability of a Type II error is the probability we fail to reject, given the alternative is true. In R we calculate this as</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="fl">4.973993</span>,<span class="fl">4.94</span>,.<span class="dv">05</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">10</span>))</code></pre></div>
 <pre><code>## [1] 0.01578132</code></pre>
@@ -513,7 +513,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(Less25Data)</code></pre></div>
 <pre><code>## [1] 4.96</code></pre>
 <p>Our observed sample mean, <span class="math inline">\(\bar{x}\)</span> is 4.96. In the plot, we have</p>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-292-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-294-1.png" width="672" /></p>
 <p>Thus we reject. We could also calculate the p-value, the probability of the data or more extreme given that the null hypothesis is true.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="fl">4.96</span>,<span class="dv">5</span>,.<span class="dv">05</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">10</span>))</code></pre></div>
 <pre><code>## [1] 0.005706018</code></pre>
@@ -522,7 +522,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ol style="list-style-type: decimal">
 <li>First we will change <span class="math inline">\(\alpha\)</span> to 0.10. Here is the plot</li>
 </ol>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-294-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-296-1.png" width="672" /></p>
 <p>The power of this test is</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(.<span class="dv">1</span>,<span class="dv">5</span>,.<span class="dv">05</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">10</span>))</code></pre></div>
 <pre><code>## [1] 4.979737</code></pre>
@@ -532,7 +532,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ol start="2" style="list-style-type: decimal">
 <li>Change sample size, but leave <span class="math inline">\(\alpha\)</span> at 0.05. Here is the plot for a sample size of 20.</li>
 </ol>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-296-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-298-1.png" width="672" /></p>
 <p>Here the power changed to</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(.<span class="dv">1</span>,<span class="dv">5</span>,.<span class="dv">05</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">20</span>))</code></pre></div>
 <pre><code>## [1] 4.985672</code></pre>

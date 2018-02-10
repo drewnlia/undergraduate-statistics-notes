@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -406,11 +406,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>##    min    Q1 median    Q3  max     mean         sd     n missing
 ##  0.365 0.475    0.5 0.525 0.64 0.500005 0.03516857 10000       0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(<span class="op">~</span>Less24Data,<span class="dt">xlab=</span><span class="st">&quot;Binomial Sample Mean&quot;</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-264-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-266-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(Less24Data)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-265-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqqmath</span>(<span class="op">~</span>Less24Data)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-265-2.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-267-2.png" width="672" /></p>
 <p>There is some difficulty because the binomial is discrete while the normal is continuous. We will deal with that shortly.</p>
 <p>There is also a question of how fast the convergence to the normal is. We will investigate that next with a simulation.</p>
 </div>
@@ -421,18 +421,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>This package has four distributions, the normal, the gamma, the uniform, and the beta. They each have different degrees of symmetry/skewness.</p>
 <p>As a baseline, here are the four distributions,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clt.examp</span>(<span class="dv">1</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-269-1.png" width="672" /></p>
 <p>Now let’s plot the distribution of the sample mean from each of these where the sample size is 2.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clt.examp</span>(<span class="dv">2</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-268-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-270-1.png" width="672" /></p>
 <p>Of course, the sample mean from a normal is already normal. The uniform is already looking like a normal but it was symmetric to begin with.</p>
 <p>Now let’s take the sample size to 5.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clt.examp</span>(<span class="dv">5</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-269-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-271-1.png" width="672" /></p>
 <p>The results are even better.</p>
 <p>Finally let’s try 30.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clt.examp</span>(<span class="dv">30</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-270-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-272-1.png" width="672" /></p>
 <p>A better plot would be the q-q plot. But you should get the idea.</p>
 <p>In practice, people make the claim that a sample size of 30 is enough to use a normal approximation for the mean.</p>
 </div>

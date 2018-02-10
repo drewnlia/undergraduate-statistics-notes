@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -420,7 +420,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 24  30.79 Method2</code></pre>
 <p>A plot of the data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(values<span class="op">~</span>ind,<span class="dt">data=</span>Lesson28StrengthLongForm,<span class="dt">main=</span><span class="st">&quot;Strength Measured with Two Different Methods&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-342-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-344-1.png" width="672" /></p>
 <p>Again, the sample to sample variation is so large that it is hard to see a difference in means. If we look at the differences within sample we get:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(Lesson28Strength&lt;-<span class="kw">transform</span>(Less28.Strength.Data,<span class="dt">Diff=</span>Method2<span class="op">-</span>Method1))</code></pre></div>
 <pre><code>##    Method1 Method2  Diff
@@ -437,7 +437,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 11   29.20   29.18 -0.02
 ## 12   30.76   30.79  0.03</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(Lesson28Strength<span class="op">$</span>Diff,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span>.<span class="dv">05</span>,.<span class="dv">05</span>))</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-343-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-345-1.png" width="672" /></p>
 <p>Now the t-test. The following are all equivalent:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Lesson28Strength<span class="op">$</span>Diff)</code></pre></div>
 <pre><code>## 
@@ -481,7 +481,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqqmath</span>(Lesson28Strength<span class="op">$</span>Diff)</code></pre></div>
 <pre><code>## Warning in qqmath.numeric(x, data = data, panel = panel, ...): explicit
 ## &#39;data&#39; specification ignored</code></pre>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-346-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-348-1.png" width="672" /></p>
 <p>If we are not comfortable with the normality assumption, we could use the sign test we learned about from last lesson. If the null hypothesis were true, the number of positive difference would be equal to the number of negative differences. The result of the sign test is:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">binom.test</span>( <span class="kw">sum</span>(Lesson28Strength<span class="op">$</span>Diff<span class="op">&gt;</span><span class="dv">0</span>),<span class="kw">length</span>(Lesson28Strength<span class="op">$</span>Diff))</code></pre></div>
 <pre><code>## 
@@ -511,11 +511,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Less28teststat.sample.dist&lt;-<span class="kw">replicate</span>(<span class="dv">10000</span>,<span class="kw">sum</span>(Lesson28Strength<span class="op">$</span>Diff<span class="op">*</span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>),<span class="dv">12</span>,<span class="dt">replace=</span><span class="ot">TRUE</span>)))</code></pre></div>
 <p>Here is a plot of the sampling distribution of the test statistic.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">densityplot</span>(Less28teststat.sample.dist)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-351-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-353-1.png" width="672" /></p>
 <p>Or using a “fancy” histogram</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">histogram</span>(Less28teststat.sample.dist,<span class="dt">breaks=</span><span class="kw">seq</span>(<span class="op">-</span>.<span class="dv">4</span>,.<span class="dv">4</span>,.<span class="dv">02</span>), <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span>.<span class="dv">5</span>, .<span class="dv">5</span>),
 <span class="dt">groups=</span>(Les28teststat<span class="op">&gt;</span>Less28teststat.sample.dist)<span class="op">&amp;</span>(<span class="op">-</span>Les28teststat<span class="op">&lt;</span>Less28teststat.sample.dist), <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span>.<span class="dv">8</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-352-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-354-1.png" width="672" /></p>
 <p>Now we can calculate the simulated p-value.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">abs</span>(Less28teststat.sample.dist)<span class="op">&gt;=</span>Les28teststat)<span class="op">/</span><span class="dv">10000</span></code></pre></div>
 <pre><code>## [1] 0.0609</code></pre>
@@ -581,7 +581,7 @@ results[j]&lt;-<span class="kw">diff</span>(<span class="kw">apply</span>(temp.d
 <span class="kw">sum</span>(simans<span class="op">&gt;=</span>teststat)<span class="op">/</span><span class="dv">10000</span></code></pre></div>
 <pre><code>## [1] 0.4028</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">histogram</span>(simans,<span class="dt">n=</span><span class="dv">25</span>, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>, .<span class="dv">5</span>),<span class="dt">groups=</span>simans <span class="op">&gt;=</span><span class="st"> </span>teststat, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span>.<span class="dv">8</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-360-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-362-1.png" width="672" /></p>
 <p>This is close to the two-sample t-test.</p>
 <p>Of course with the permutation test, we could use different test statistics. Suppose instead of mean we look at a difference of the 90th-percentile.</p>
 <p>I will write a function to find the 90th-percentile.</p>

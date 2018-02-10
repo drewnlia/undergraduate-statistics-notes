@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -405,7 +405,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Notice that I used a function inside the function. Since I did not give it a name it is often called an anonymous function.</p>
 <p>A plot of the kernel</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>),<span class="kw">f</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;f(x)&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
 <p>Notice this is not a pdf. We must find the scaling constant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MASS)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fractions</span>(<span class="kw">integrate</span>(f,<span class="op">-</span><span class="ot">Inf</span>,<span class="ot">Inf</span>)<span class="op">$</span>value)</code></pre></div>
@@ -418,7 +418,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>This would be an R function that started with the letter <code>d</code>.</p>
 <p>A plot of the pdf</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>),<span class="kw">f3.1</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>,.<span class="dv">01</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;f(x)&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-156-1.png" width="672" /></p>
 <p>This is proper pdf since <span class="math display">\[f(x) \geq 0\]</span> and <span class="math display">\[\int_{-\infty}^{\infty}f(x)dx=1\]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">integrate</span>(f3.<span class="dv">1</span>,<span class="op">-</span><span class="ot">Inf</span>,<span class="ot">Inf</span>)<span class="op">$</span>value</code></pre></div>
 <pre><code>## [1] 1</code></pre>
@@ -474,7 +474,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lattice)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2019</span>)
 <span class="kw">densityplot</span>(<span class="kw">r3.1</span>(<span class="dv">2000</span>),<span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
 <p>This looks like our pdf.</p>
 </div>
 <div id="transformation-problem" class="section level3">
@@ -491,7 +491,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We should check that this is a pdf. I will use R to do the work for me.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f3.1a&lt;-<span class="cf">function</span>(y)(<span class="op">-</span><span class="dv">3</span><span class="op">/</span><span class="dv">32</span><span class="op">*</span>((y<span class="op">-</span><span class="dv">2</span>)<span class="op">^</span><span class="dv">2</span><span class="op">-</span><span class="dv">4</span>)<span class="op">*</span>{y<span class="op">&gt;=</span><span class="dv">0</span><span class="op">&amp;</span>y<span class="op">&lt;=</span><span class="dv">4</span>})</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,.<span class="dv">01</span>),<span class="kw">f3.1a</span>(<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,.<span class="dv">01</span>)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;f(y)&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;y&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">integrate</span>(f3.1a,<span class="dv">0</span>,<span class="dv">4</span>)<span class="op">$</span>value</code></pre></div>
 <pre><code>## [1] 1</code></pre>
 </div>

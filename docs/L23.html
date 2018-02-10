@@ -25,7 +25,7 @@
 <meta name="author" content="Bradley Warner">
 
 
-<meta name="date" content="2018-01-31">
+<meta name="date" content="2018-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -498,12 +498,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 20  10 13.6        B</code></pre>
 <p>If I simply look at the two materials it does not appear there is much of a difference</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(Wear<span class="op">~</span>Material,Shoe)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-331-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-333-1.png" width="672" /></p>
 <p>This is because there is so much variability in wear from boy to boy and this variance masks the difference in the materials. Thus the experiments put each type of material on each of the shoes for the boys. Thus one shoe had type A and the other type B. This is called a blocked design or paired design. Now I look at the difference in wear within the boys. This data looks like</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Shoe[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">2</span>]<span class="op">-</span>Shoe[<span class="dv">11</span><span class="op">:</span><span class="dv">20</span>,<span class="dv">2</span>]</code></pre></div>
 <pre><code>##  [1] -0.8 -0.6 -0.3  0.1 -1.1  0.2 -0.3 -0.5 -0.5 -0.3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(<span class="op">~</span>Shoe[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">2</span>]<span class="op">-</span>Shoe[<span class="dv">11</span><span class="op">:</span><span class="dv">20</span>,<span class="dv">2</span>],<span class="dt">xlab=</span><span class="st">&quot;Difference in Shoe Wear (A-B)&quot;</span>)</code></pre></div>
-<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-332-1.png" width="672" /></p>
+<p><img src="fastR-Notes_files/figure-html/unnamed-chunk-334-1.png" width="672" /></p>
 <p>The hypothesis test is</p>
 <p><span class="math display">\[H_{0}: D = 0\]</span> <span class="math display">\[H_{A}: D \neq 0\]</span> where <span class="math inline">\(D\)</span> is the difference. If the differences are iid and normal, then I can use a t-test on this data.</p>
 <p>First we could get the data in wide format</p>

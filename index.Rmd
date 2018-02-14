@@ -1,6 +1,6 @@
 --- 
 title: "Notes for Teaching an Undergraduate Statistics Using fastR"
-author: "Bradley Warner"
+author: "Bradley Warner, PhD"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: 
